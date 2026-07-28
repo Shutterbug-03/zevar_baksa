@@ -23,22 +23,7 @@ export default function Home() {
         />
 
         {/* Content — fills viewport */}
-        <div className="relative z-10 flex flex-col h-full mx-auto w-full max-w-[1600px] px-8 md:px-16 pt-[5.5rem] pb-12 justify-between">
-
-          {/* Top Grand Brand Title Banner */}
-          <div className="pt-6 md:pt-10 text-center flex flex-col items-center select-none">
-            <p className="text-[10px] uppercase tracking-[0.45em] text-amber-300/90 font-sans font-semibold mb-2 drop-shadow-md">
-              Haute Joaillerie Atelier • Jaipur
-            </p>
-            <h1 className="font-fancy text-5xl md:text-7xl lg:text-8xl text-[#FAF7F2] tracking-[0.18em] uppercase drop-shadow-[0_4px_20px_rgba(0,0,0,0.85)] leading-none">
-              ZEVAR BAKSA
-            </h1>
-            <div className="flex items-center gap-3 mt-4">
-              <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-200/50 to-transparent" />
-              <div className="h-1.5 w-1.5 rotate-45 border border-amber-300/60" />
-              <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-200/50 to-transparent" />
-            </div>
-          </div>
+        <div className="relative z-10 flex flex-col h-full mx-auto w-full max-w-[1600px] px-8 md:px-16 pt-[5.5rem] pb-12">
 
           {/* ── Bottom row: left copy / right links */}
           <div className="mt-auto flex items-end justify-between gap-12">
