@@ -17,7 +17,7 @@ export default function Home() {
       <section className="relative w-full h-screen overflow-hidden bg-background flex flex-col">
         {/* Background */}
         <img
-          src="/images/hero-spaced-2026.jpg"
+          src="/images/hero-maroon-2026.jpg"
           alt="Zevar Baksa Hero"
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
         />
