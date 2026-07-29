@@ -3,20 +3,27 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Search, ShoppingBag, X, ChevronDown } from "lucide-react";
+import { Search, ShoppingBag, X, ChevronDown, Heart } from "lucide-react";
 import { collections } from "@/data/collections";
+import { useCartStore } from "@/store/cartStore";
+import { useWishlistStore } from "@/store/wishlistStore";
+import { useUIStore } from "@/store/uiStore";
+import { useCurrencyStore, ALL_CURRENCIES, FLAGS, type Currency } from "@/store/currencyStore";
+
+// WhatsApp number — update this to the real Zevar Baksa number
+const WHATSAPP_NUMBER = "919876543210";
 
 const mainLinks = [
   { label: "Shop", to: "/shop" },
   { label: "Collections", to: "/collection/celestial-heritage", isCollections: true },
   { label: "About Us", to: "/about" },
   { label: "Retail Store", to: "/contact" },
-  { label: "Wishlist", to: "/shop" },
+  { label: "Wishlist", to: "/wishlist" },
 ];
 
 const secondaryLinks = [
-  { label: "Log in", to: "/contact" },
-  { label: "Search", to: "/shop" },
+  { label: "Log in", action: "login" as const },
+  { label: "Search", action: "search" as const },
   { label: "Jewellery Care & Material", to: "/about" },
   { label: "Shipping Policy", to: "/about" },
   { label: "Returns & Exchange", to: "/about" },
@@ -30,15 +37,18 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [collectionsExpanded, setCollectionsExpanded] = useState(false);
-  const [currency, setCurrency] = useState("INR");
+
+  // Stores
+  const { openCart, totalItems } = useCartStore();
+  const { count: wishlistCount } = useWishlistStore();
+  const { openSearch, openLogin } = useUIStore();
+  const { currency, setCurrency } = useCurrencyStore();
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 12);
     on();
     window.addEventListener("scroll", on, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", on);
-    };
+    return () => window.removeEventListener("scroll", on);
   }, []);
 
   // Prevent background scroll when menu is open
@@ -53,22 +63,23 @@ export function Nav() {
     };
   }, [menuOpen]);
 
-  // Determine text and icon color based on page type & menu state
   const isLightHeader = !isDarkHeroPage || menuOpen;
 
   return (
     <>
       <header
-        className={`absolute inset-x-0 top-0 z-50 transition-all duration-500 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           menuOpen
             ? "bg-background/98 backdrop-blur-md border-b border-border text-foreground"
             : isDarkHeroPage
-            ? "bg-transparent text-[#FAF7F2]"
+            ? scrolled
+              ? "bg-background/90 backdrop-blur-md border-b border-border/60 text-foreground"
+              : "bg-transparent text-[#FAF7F2]"
             : "bg-background/90 backdrop-blur-md border-b border-border/60 text-foreground"
         }`}
       >
         <nav className="mx-auto flex max-w-[1600px] items-center h-[5.5rem] px-6 md:px-12 justify-between">
-          
+
           {/* Left: Hamburger Button */}
           <div className="flex-1 flex justify-start items-center">
             {menuOpen ? (
@@ -85,27 +96,9 @@ export function Nav() {
                 onClick={() => setMenuOpen(true)}
                 className="group flex flex-col justify-center items-start gap-1.5 h-10 w-10 active:scale-95 transition-transform"
               >
-                <span
-                  className={`w-6 h-[1.5px] transition-all duration-300 shadow-sm ${
-                    isLightHeader
-                      ? "bg-foreground group-hover:bg-primary group-hover:w-8"
-                      : "bg-[#FAF7F2] group-hover:bg-amber-300 group-hover:w-8"
-                  }`}
-                />
-                <span
-                  className={`w-8 h-[1.5px] transition-all duration-300 shadow-sm ${
-                    isLightHeader
-                      ? "bg-foreground group-hover:bg-primary"
-                      : "bg-[#FAF7F2] group-hover:bg-amber-300"
-                  }`}
-                />
-                <span
-                  className={`w-5 h-[1.5px] transition-all duration-300 shadow-sm ${
-                    isLightHeader
-                      ? "bg-foreground group-hover:bg-primary group-hover:w-8"
-                      : "bg-[#FAF7F2] group-hover:bg-amber-300 group-hover:w-8"
-                  }`}
-                />
+                <span className={`w-6 h-[1.5px] transition-all duration-300 shadow-sm ${isLightHeader ? "bg-foreground group-hover:bg-primary group-hover:w-8" : "bg-[#FAF7F2] group-hover:bg-amber-300 group-hover:w-8"}`} />
+                <span className={`w-8 h-[1.5px] transition-all duration-300 shadow-sm ${isLightHeader ? "bg-foreground group-hover:bg-primary" : "bg-[#FAF7F2] group-hover:bg-amber-300"}`} />
+                <span className={`w-5 h-[1.5px] transition-all duration-300 shadow-sm ${isLightHeader ? "bg-foreground group-hover:bg-primary group-hover:w-8" : "bg-[#FAF7F2] group-hover:bg-amber-300 group-hover:w-8"}`} />
               </button>
             )}
           </div>
@@ -127,12 +120,9 @@ export function Nav() {
             />
           </Link>
 
-          {/* Right: Currency Selector, Search & Bag */}
-          <div
-            className={`flex-1 flex justify-end items-center gap-4 md:gap-6 ${
-              isLightHeader ? "text-foreground" : "text-[#FAF7F2]"
-            }`}
-          >
+          {/* Right: Currency, Search, Wishlist & Cart */}
+          <div className={`flex-1 flex justify-end items-center gap-3 md:gap-5 ${isLightHeader ? "text-foreground" : "text-[#FAF7F2]"}`}>
+
             {/* Currency Picker */}
             <div className="relative group/currency hidden sm:flex items-center">
               <button
@@ -142,34 +132,57 @@ export function Nav() {
                     : "border-[#FAF7F2]/40 hover:border-amber-200 bg-black/20 text-[#FAF7F2] backdrop-blur-sm"
                 }`}
               >
-                <span className="text-[12px]">{currency === "INR" ? "🇮🇳" : "🇺🇸"}</span>
+                <span className="text-[12px]">{FLAGS[currency]}</span>
                 <span>{currency}</span>
                 <ChevronDown className="h-3 w-3 stroke-[1.4]" />
               </button>
-              <div className="absolute right-0 top-full pt-2 opacity-0 pointer-events-none group-hover/currency:opacity-100 group-hover/currency:pointer-events-auto transition duration-300">
-                <div className="bg-background border border-border text-foreground shadow-lg py-1 text-[10px] tracking-[0.1em] min-w-[80px] font-sans">
-                  <button
-                    onClick={() => setCurrency("INR")}
-                    className="w-full text-left px-3 py-1.5 hover:bg-muted hover:text-primary transition"
-                  >
-                    🇮🇳 INR
-                  </button>
-                  <button
-                    onClick={() => setCurrency("USD")}
-                    className="w-full text-left px-3 py-1.5 hover:bg-muted hover:text-primary transition"
-                  >
-                    🇺🇸 USD
-                  </button>
+              <div className="absolute right-0 top-full pt-2 opacity-0 pointer-events-none group-hover/currency:opacity-100 group-hover/currency:pointer-events-auto transition duration-300 z-10">
+                <div className="bg-background border border-border text-foreground shadow-lg py-1 text-[10px] tracking-[0.1em] min-w-[90px] font-sans rounded-lg overflow-hidden">
+                  {ALL_CURRENCIES.map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setCurrency(c as Currency)}
+                      className={`w-full text-left px-3 py-1.5 hover:bg-muted hover:text-primary transition flex items-center gap-2 ${currency === c ? "text-primary font-semibold" : ""}`}
+                    >
+                      {FLAGS[c as Currency]} {c}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <button aria-label="Search" className="hover:text-primary transition">
+            {/* Search */}
+            <button
+              aria-label="Search"
+              onClick={openSearch}
+              className="hover:text-primary transition relative"
+            >
               <Search className="h-4 w-4 stroke-[1.4]" />
             </button>
-            <Link href="/shop" aria-label="Cart" className="hover:text-primary transition">
-              <ShoppingBag className="h-4 w-4 stroke-[1.4]" />
+
+            {/* Wishlist */}
+            <Link href="/wishlist" aria-label="Wishlist" className="hover:text-primary transition relative">
+              <Heart className="h-4 w-4 stroke-[1.4]" />
+              {wishlistCount() > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] flex items-center justify-center font-bold">
+                  {wishlistCount()}
+                </span>
+              )}
             </Link>
+
+            {/* Cart */}
+            <button
+              aria-label="Cart"
+              onClick={openCart}
+              className="hover:text-primary transition relative"
+            >
+              <ShoppingBag className="h-4 w-4 stroke-[1.4]" />
+              {totalItems() > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] flex items-center justify-center font-bold">
+                  {totalItems()}
+                </span>
+              )}
+            </button>
           </div>
         </nav>
       </header>
@@ -191,7 +204,7 @@ export function Nav() {
           <X className="h-5 w-5 stroke-[1.2] text-foreground group-hover:text-primary transition-colors" />
         </button>
 
-        {/* Main centered navigation list matching existing style */}
+        {/* Main centered navigation list */}
         <div className="flex flex-col items-center gap-6 w-full max-w-xl text-center font-sans">
           {mainLinks.map((link) => {
             if (link.isCollections) {
@@ -208,8 +221,6 @@ export function Nav() {
                       }`}
                     />
                   </button>
-
-                  {/* SIMPLE NESTED SUB-ITEM IN MATCHING TYPOGRAPHY */}
                   {collectionsExpanded && (
                     <div className="mt-3 flex flex-col items-center gap-3 animate-fade-in">
                       {collections.map((c) => (
@@ -234,7 +245,7 @@ export function Nav() {
             return (
               <Link
                 key={link.label}
-                href={link.to}
+                href={link.to!}
                 onClick={() => setMenuOpen(false)}
                 className="font-display text-2xl md:text-3xl uppercase tracking-[0.18em] text-foreground hover:text-primary transition-colors py-1"
               >
@@ -249,16 +260,59 @@ export function Nav() {
 
         {/* Secondary links */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 max-w-2xl text-center w-full font-sans">
-          {secondaryLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.to}
-              onClick={() => setMenuOpen(false)}
-              className="text-xs uppercase tracking-[0.2em] font-sans text-foreground/75 hover:text-primary transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {secondaryLinks.map((link) => {
+            if (link.action === "login") {
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    openLogin();
+                  }}
+                  className="text-xs uppercase tracking-[0.2em] font-sans text-foreground/75 hover:text-primary transition-colors text-center"
+                >
+                  {link.label}
+                </button>
+              );
+            }
+            if (link.action === "search") {
+              return (
+                <button
+                  key={link.label}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    openSearch();
+                  }}
+                  className="text-xs uppercase tracking-[0.2em] font-sans text-foreground/75 hover:text-primary transition-colors text-center"
+                >
+                  {link.label}
+                </button>
+              );
+            }
+            return (
+              <Link
+                key={link.label}
+                href={link.to!}
+                onClick={() => setMenuOpen(false)}
+                className="text-xs uppercase tracking-[0.2em] font-sans text-foreground/75 hover:text-primary transition-colors"
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* WhatsApp CTA in menu */}
+        <div className="mt-10 pt-8 border-t border-border/20 w-full max-w-xl text-center">
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20Zevar%20Baksa%20Atelier!%20I'd%20like%20to%20enquire%20about%20your%20collection.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-sans text-foreground/60 hover:text-primary transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="text-base">💬</span> WhatsApp Atelier Concierge
+          </a>
         </div>
       </div>
     </>

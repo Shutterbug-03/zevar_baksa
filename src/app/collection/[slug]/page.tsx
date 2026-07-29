@@ -121,8 +121,8 @@ function ProductShowcase({
   return (
     <div
       ref={ref}
-      className={`grid grid-cols-1 md:grid-cols-2 min-h-[85vh] transition-all duration-[1200ms] ease-out ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+      className={`w-full grid grid-cols-1 md:grid-cols-2 min-h-[85vh] border-b border-border/20 transition-all duration-[1200ms] ease-out ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >
       {/* IMAGE PANEL */}

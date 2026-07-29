@@ -15,10 +15,17 @@ import {
   CheckCircle2,
   Calendar,
   Share2,
+  Heart,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { products, getProductById } from "@/data/products";
+import { useCartStore } from "@/store/cartStore";
+import { useWishlistStore } from "@/store/wishlistStore";
+import { useCurrencyStore } from "@/store/currencyStore";
+
+// Update this to the real Zevar Baksa WhatsApp number
+const WHATSAPP_NUMBER = "919876543210";
 
 export default function ProductDetailPage({
   params,
@@ -38,13 +45,20 @@ export default function ProductDetailPage({
   const [addedToBag, setAddedToBag] = useState(false);
 
   // Sizing selection state
-  const [selectedSize, setSelectedSize] = useState("Standard / Custom");
+  const [selectedSize, setSelectedSize] = useState("Standard Atelier Fit");
+
+  // Stores
+  const { addItem } = useCartStore();
+  const { toggle: toggleWishlist, isWishlisted } = useWishlistStore();
+  const { format } = useCurrencyStore();
+  const wishlisted = isWishlisted(product.id);
 
   const toggleTab = (tab: string) => {
     setOpenTab(openTab === tab ? null : tab);
   };
 
   const handleAddToBag = () => {
+    addItem(product, selectedSize);
     setAddedToBag(true);
     setTimeout(() => setAddedToBag(false), 3500);
   };
@@ -169,7 +183,7 @@ export default function ProductDetailPage({
               {/* Price & Taxes */}
               <div className="flex items-baseline gap-3 border-y border-border/60 py-4">
                 <span className="font-display text-3xl md:text-4xl text-primary font-normal">
-                  ₹{product.price.toLocaleString("en-IN")}
+                  {format(product.price)}
                 </span>
                 <span className="text-xs text-foreground/55 font-sans">
                   Inclusive of all taxes & insured shipping
@@ -236,11 +250,24 @@ export default function ProductDetailPage({
                   )}
                 </button>
 
+                {/* Wishlist Button */}
+                <button
+                  onClick={() => toggleWishlist(product)}
+                  className={`w-full py-3 px-6 rounded-full border text-[11px] uppercase tracking-[0.22em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5 ${
+                    wishlisted
+                      ? "border-primary/60 bg-primary/5 text-primary"
+                      : "border-border text-foreground/60 hover:border-primary/40 hover:text-primary"
+                  }`}
+                >
+                  <Heart className={`h-4 w-4 ${wishlisted ? "fill-primary text-primary" : ""}`} />
+                  {wishlisted ? "Saved to Wishlist" : "Save to Wishlist"}
+                </button>
+
                 {/* Direct WhatsApp Concierge Button */}
                 <a
-                  href={`https://wa.me/?text=Hello%20Zevar%20Baksa%20Atelier,%20I%20am%20interested%20in%20inquiring%20about%20the%20${encodeURIComponent(
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20Zevar%20Baksa%20Atelier,%20I%20am%20interested%20in%20the%20${encodeURIComponent(
                     product.name
-                  )}%20(₹${product.price}).`}
+                  )}%20(${format(product.price)}).%20Could%20you%20assist%20me%20further?`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3.5 px-6 rounded-full border border-primary/30 text-primary hover:bg-primary/5 text-[11px] uppercase tracking-[0.22em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5"
