@@ -24,8 +24,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 
-// Update this to the real Zevar Baksa WhatsApp number
-const WHATSAPP_NUMBER = "919876543210";
+
 
 export default function ProductDetailPage({
   params,
@@ -263,18 +262,14 @@ export default function ProductDetailPage({
                   {wishlisted ? "Saved to Wishlist" : "Save to Wishlist"}
                 </button>
 
-                {/* Direct WhatsApp Concierge Button */}
-                <a
-                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20Zevar%20Baksa%20Atelier,%20I%20am%20interested%20in%20the%20${encodeURIComponent(
-                    product.name
-                  )}%20(${format(product.price)}).%20Could%20you%20assist%20me%20further?`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* WhatsApp Concierge Button — add your number to /contact */}
+                <Link
+                  href="/contact"
                   className="w-full py-3.5 px-6 rounded-full border border-primary/30 text-primary hover:bg-primary/5 text-[11px] uppercase tracking-[0.22em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5"
                 >
                   <MessageCircle className="h-4 w-4 text-emerald-600" />
                   Inquire via WhatsApp Concierge
-                </a>
+                </Link>
               </div>
 
               {/* SUCCESS TOAST NOTIFICATION */}

@@ -189,14 +189,13 @@ export function CartDrawer() {
               Proceed to Checkout <ArrowRight className="h-3.5 w-3.5" />
             </Link>
 
-            <a
-              href={`https://wa.me/919876543210?text=Hello%20Zevar%20Baksa!%20I%20have%20${totalItems()}%20item(s)%20worth%20${format(totalPrice())}%20in%20my%20cart.%20I'd%20like%20to%20complete%20my%20order.`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/contact"
+              onClick={closeCart}
               className="w-full py-3 rounded-full border border-primary/30 text-primary text-[11px] uppercase tracking-[0.2em] font-sans font-semibold flex items-center justify-center gap-2 hover:bg-primary/5 transition-all duration-300"
             >
-              Order via WhatsApp
-            </a>
+              Order via WhatsApp Concierge
+            </Link>
           </div>
         )}
       </aside>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { X, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight } from "lucide-react";
 import { useUIStore } from "@/store/uiStore";
 
@@ -109,14 +110,13 @@ export function LoginModal() {
                     ? "Password reset link sent to your email."
                     : "Customer accounts are coming soon. Use WhatsApp for order tracking."}
                 </p>
-                <a
-                  href="https://wa.me/919876543210?text=Hello%20Zevar%20Baksa!%20I'd%20like%20help%20with%20my%20account."
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/contact"
+                  onClick={closeLogin}
                   className="inline-flex items-center gap-2 mt-2 text-[11px] uppercase tracking-[0.2em] font-sans text-primary hover:underline"
                 >
-                  Contact via WhatsApp <ArrowRight className="h-3.5 w-3.5" />
-                </a>
+                  Contact our Atelier <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -234,14 +234,13 @@ export function LoginModal() {
           <div className="px-8 pb-6 border-t border-border/30 pt-4 text-center">
             <p className="text-[10px] text-foreground/30 font-sans">
               Need immediate help?{" "}
-              <a
-                href="https://wa.me/919876543210"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/contact"
+                onClick={closeLogin}
                 className="text-primary hover:underline"
               >
-                Chat with our atelier concierge
-              </a>
+                Contact our atelier concierge
+              </Link>
             </p>
           </div>
         </div>

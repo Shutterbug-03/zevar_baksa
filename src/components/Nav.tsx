@@ -10,8 +10,7 @@ import { useWishlistStore } from "@/store/wishlistStore";
 import { useUIStore } from "@/store/uiStore";
 import { useCurrencyStore, ALL_CURRENCIES, FLAGS, type Currency } from "@/store/currencyStore";
 
-// WhatsApp number — update this to the real Zevar Baksa number
-const WHATSAPP_NUMBER = "919876543210";
+
 
 const mainLinks = [
   { label: "Shop", to: "/shop" },
@@ -68,7 +67,7 @@ export function Nav() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        className={`absolute inset-x-0 top-0 z-50 transition-all duration-500 ${
           menuOpen
             ? "bg-background/98 backdrop-blur-md border-b border-border text-foreground"
             : isDarkHeroPage
@@ -302,17 +301,15 @@ export function Nav() {
           })}
         </div>
 
-        {/* WhatsApp CTA in menu */}
+        {/* WhatsApp CTA — add your number here when ready */}
         <div className="mt-10 pt-8 border-t border-border/20 w-full max-w-xl text-center">
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20Zevar%20Baksa%20Atelier!%20I'd%20like%20to%20enquire%20about%20your%20collection.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-sans text-foreground/60 hover:text-primary transition-colors"
+          <Link
+            href="/contact"
             onClick={() => setMenuOpen(false)}
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-sans text-foreground/60 hover:text-primary transition-colors"
           >
-            <span className="text-base">💬</span> WhatsApp Atelier Concierge
-          </a>
+            <span className="text-base">💬</span> Contact Atelier Concierge
+          </Link>
         </div>
       </div>
     </>

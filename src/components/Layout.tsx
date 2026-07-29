@@ -1,8 +1,6 @@
 import { Nav } from "./Nav";
 import { Footer } from "./Footer";
-import { CartDrawer } from "./CartDrawer";
-import { SearchModal } from "./SearchModal";
-import { LoginModal } from "./LoginModal";
+import { GlobalOverlays } from "./GlobalOverlays";
 import type { ReactNode } from "react";
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -11,10 +9,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <Nav />
       <main className="flex-1">{children}</main>
       <Footer />
-      {/* Global overlays — always mounted */}
-      <CartDrawer />
-      <SearchModal />
-      <LoginModal />
+      <GlobalOverlays />
     </div>
   );
 }
