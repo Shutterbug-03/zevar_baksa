@@ -6,10 +6,13 @@ import { Heart } from "lucide-react";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 
+import { useHydrated } from "@/hooks/useHydrated";
+
 export function ProductCard({ product }: { product: Product }) {
   const { toggle, isWishlisted } = useWishlistStore();
   const { format } = useCurrencyStore();
-  const wishlisted = isWishlisted(product.id);
+  const hydrated = useHydrated();
+  const wishlisted = hydrated ? isWishlisted(product.id) : false;
 
   return (
     <div className="group block relative">
@@ -49,7 +52,7 @@ export function ProductCard({ product }: { product: Product }) {
             {product.name}
           </h3>
           <span className="text-sm font-body text-foreground/75 font-medium flex-shrink-0">
-            {format(product.price)}
+            {hydrated ? format(product.price) : `₹${product.price.toLocaleString("en-IN")}`}
           </span>
         </div>
         <p className="mt-1 text-[10px] uppercase tracking-[0.24em] font-body text-muted-foreground">

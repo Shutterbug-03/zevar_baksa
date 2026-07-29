@@ -23,6 +23,7 @@ import { products, getProductById } from "@/data/products";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCurrencyStore } from "@/store/currencyStore";
+import { useHydrated } from "@/hooks/useHydrated";
 
 
 
@@ -50,7 +51,8 @@ export default function ProductDetailPage({
   const { addItem } = useCartStore();
   const { toggle: toggleWishlist, isWishlisted } = useWishlistStore();
   const { format } = useCurrencyStore();
-  const wishlisted = isWishlisted(product.id);
+  const hydrated = useHydrated();
+  const wishlisted = hydrated ? isWishlisted(product.id) : false;
 
   const toggleTab = (tab: string) => {
     setOpenTab(openTab === tab ? null : tab);
@@ -182,7 +184,7 @@ export default function ProductDetailPage({
               {/* Price & Taxes */}
               <div className="flex items-baseline gap-3 border-y border-border/60 py-4">
                 <span className="font-display text-3xl md:text-4xl text-primary font-normal">
-                  {format(product.price)}
+                  {hydrated ? format(product.price) : `₹${product.price.toLocaleString("en-IN")}`}
                 </span>
                 <span className="text-xs text-foreground/55 font-sans">
                   Inclusive of all taxes & insured shipping

@@ -6,11 +6,15 @@ import { Layout } from "@/components/Layout";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export default function WishlistPage() {
   const { items, removeItem } = useWishlistStore();
   const { addItem } = useCartStore();
   const { format } = useCurrencyStore();
+  const hydrated = useHydrated();
+
+  const wishlistItems = hydrated ? items : [];
 
   return (
     <Layout>
@@ -18,13 +22,13 @@ export default function WishlistPage() {
         <div className="mx-auto max-w-[1600px] px-6 md:px-12">
           <p className="text-[11px] uppercase tracking-[0.32em] text-primary">Your Collection</p>
           <h1 className="mt-4 font-display text-6xl md:text-8xl leading-[0.9]">
-            Wishlist.<em className="not-italic italic"> ({items.length})</em>
+            Wishlist.<em className="not-italic italic"> ({wishlistItems.length})</em>
           </h1>
         </div>
       </section>
 
       <section className="mx-auto max-w-[1600px] px-6 md:px-12 py-16 md:py-20">
-        {items.length === 0 ? (
+        {wishlistItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-5 text-center">
             <div className="h-20 w-20 rounded-full bg-secondary/60 flex items-center justify-center">
               <Heart className="h-9 w-9 text-foreground/20 stroke-[1.2]" />
@@ -44,7 +48,7 @@ export default function WishlistPage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
-            {items.map((product) => (
+            {wishlistItems.map((product) => (
               <div key={product.id} className="group relative">
                 {/* Image */}
                 <Link href={`/product/${product.id}`} className="block">

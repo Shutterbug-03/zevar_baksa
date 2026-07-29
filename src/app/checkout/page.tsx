@@ -24,6 +24,7 @@ import {
 import { Layout } from "@/components/Layout";
 import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
+import { useHydrated } from "@/hooks/useHydrated";
 
 /* ────────────────────────────────────────────────────────
    TYPES
@@ -106,9 +107,14 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
   const { items, totalPrice, totalItems } = useCartStore();
   const { format } = useCurrencyStore();
   const [open, setOpen] = useState(!collapsed);
+  const hydrated = useHydrated();
+
+  const cartItems = hydrated ? items : [];
+  const totalItemCount = hydrated ? totalItems() : 0;
+  const priceTotal = hydrated ? totalPrice() : 0;
 
   const shipping = 0; // Free insured shipping
-  const tax = Math.round(totalPrice() * 0.03); // 3% GST placeholder
+  const tax = Math.round(priceTotal * 0.03); // 3% GST placeholder
 
   return (
     <div className="bg-secondary/30 border border-border/60 rounded-2xl overflow-hidden">
@@ -123,7 +129,7 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
             Order Summary
           </span>
           <span className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-semibold">
-            {totalItems()}
+            {totalItemCount}
           </span>
         </div>
         <span className="font-display text-lg text-primary md:hidden">
@@ -134,7 +140,7 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
       {/* Items list */}
       <div className={`${open ? "block" : "hidden"} md:block`}>
         <div className="px-5 pb-4 space-y-4 border-t border-border/40">
-          {items.map((item) => (
+          {cartItems.map((item) => (
             <div
               key={`${item.product.id}-${item.sizePreference}`}
               className="flex gap-3 pt-4"
@@ -163,7 +169,7 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
                 </p>
               </div>
               <span className="text-sm font-sans font-semibold text-foreground flex-shrink-0">
-                {format(item.product.price * item.quantity)}
+                {hydrated ? format(item.product.price * item.quantity) : `₹${(item.product.price * item.quantity).toLocaleString("en-IN")}`}
               </span>
             </div>
           ))}
@@ -173,7 +179,7 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
         <div className="border-t border-border/40 px-5 py-4 space-y-2.5">
           <div className="flex justify-between text-xs font-sans text-foreground/60">
             <span>Subtotal</span>
-            <span>{format(totalPrice())}</span>
+            <span>{hydrated ? format(priceTotal) : `₹${priceTotal.toLocaleString("en-IN")}`}</span>
           </div>
           <div className="flex justify-between text-xs font-sans text-foreground/60">
             <span>Insured Shipping</span>
@@ -181,14 +187,14 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
           </div>
           <div className="flex justify-between text-xs font-sans text-foreground/60">
             <span>GST (inclusive)</span>
-            <span>{format(tax)}</span>
+            <span>{hydrated ? format(tax) : `₹${tax.toLocaleString("en-IN")}`}</span>
           </div>
           <div className="flex justify-between pt-2 border-t border-border/40">
             <span className="text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-foreground">
               Total
             </span>
             <span className="font-display text-xl text-primary">
-              {format(totalPrice())}
+              {hydrated ? format(priceTotal) : `₹${priceTotal.toLocaleString("en-IN")}`}
             </span>
           </div>
         </div>
@@ -881,6 +887,7 @@ function EmptyCartState() {
 ──────────────────────────────────────────────────────── */
 export default function CheckoutPage() {
   const { items, clearCart } = useCartStore();
+  const hydrated = useHydrated();
 
   const [step, setStep] = useState<Step>("address");
   const [placing, setPlacing] = useState(false);
@@ -919,8 +926,8 @@ export default function CheckoutPage() {
     );
   }
 
-  // Show empty cart
-  if (items.length === 0 && !placed) {
+  // Show empty cart when hydrated and empty
+  if (hydrated && items.length === 0 && !placed) {
     return (
       <Layout>
         <EmptyCartState />

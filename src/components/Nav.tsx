@@ -9,8 +9,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useUIStore } from "@/store/uiStore";
 import { useCurrencyStore, ALL_CURRENCIES, FLAGS, type Currency } from "@/store/currencyStore";
-
-
+import { useHydrated } from "@/hooks/useHydrated";
 
 const mainLinks = [
   { label: "Shop", to: "/shop" },
@@ -42,6 +41,8 @@ export function Nav() {
   const { count: wishlistCount } = useWishlistStore();
   const { openSearch, openLogin } = useUIStore();
   const { currency, setCurrency } = useCurrencyStore();
+
+  const hydrated = useHydrated();
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 12);
@@ -131,8 +132,8 @@ export function Nav() {
                     : "border-[#FAF7F2]/40 hover:border-amber-200 bg-black/20 text-[#FAF7F2] backdrop-blur-sm"
                 }`}
               >
-                <span className="text-[12px]">{FLAGS[currency]}</span>
-                <span>{currency}</span>
+                <span className="text-[12px]">{hydrated ? FLAGS[currency] : "🇮🇳"}</span>
+                <span>{hydrated ? currency : "INR"}</span>
                 <ChevronDown className="h-3 w-3 stroke-[1.4]" />
               </button>
               <div className="absolute right-0 top-full pt-2 opacity-0 pointer-events-none group-hover/currency:opacity-100 group-hover/currency:pointer-events-auto transition duration-300 z-10">
@@ -141,7 +142,7 @@ export function Nav() {
                     <button
                       key={c}
                       onClick={() => setCurrency(c as Currency)}
-                      className={`w-full text-left px-3 py-1.5 hover:bg-muted hover:text-primary transition flex items-center gap-2 ${currency === c ? "text-primary font-semibold" : ""}`}
+                      className={`w-full text-left px-3 py-1.5 hover:bg-muted hover:text-primary transition flex items-center gap-2 ${hydrated && currency === c ? "text-primary font-semibold" : ""}`}
                     >
                       {FLAGS[c as Currency]} {c}
                     </button>
@@ -162,7 +163,7 @@ export function Nav() {
             {/* Wishlist */}
             <Link href="/wishlist" aria-label="Wishlist" className="hover:text-primary transition relative">
               <Heart className="h-4 w-4 stroke-[1.4]" />
-              {wishlistCount() > 0 && (
+              {hydrated && wishlistCount() > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] flex items-center justify-center font-bold">
                   {wishlistCount()}
                 </span>
@@ -176,7 +177,7 @@ export function Nav() {
               className="hover:text-primary transition relative"
             >
               <ShoppingBag className="h-4 w-4 stroke-[1.4]" />
-              {totalItems() > 0 && (
+              {hydrated && totalItems() > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] flex items-center justify-center font-bold">
                   {totalItems()}
                 </span>

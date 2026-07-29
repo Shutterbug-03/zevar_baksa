@@ -5,15 +5,20 @@ import Link from "next/link";
 import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, Sparkles } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice } =
     useCartStore();
   const { format } = useCurrencyStore();
+  const hydrated = useHydrated();
+
+  const isDrawerOpen = hydrated && isOpen;
+  const cartItems = hydrated ? items : [];
 
   // Lock body scroll when open
   useEffect(() => {
-    if (isOpen) {
+    if (isDrawerOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -21,7 +26,7 @@ export function CartDrawer() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen]);
+  }, [isDrawerOpen]);
 
   return (
     <>
@@ -29,14 +34,14 @@ export function CartDrawer() {
       <div
         onClick={closeCart}
         className={`fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm transition-opacity duration-500 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isDrawerOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       />
 
       {/* Drawer Panel */}
       <aside
         className={`fixed top-0 right-0 z-[70] h-full w-full max-w-[440px] bg-background border-l border-border shadow-2xl flex flex-col transition-transform duration-500 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+          isDrawerOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
@@ -46,7 +51,7 @@ export function CartDrawer() {
             <h2 className="text-[11px] uppercase tracking-[0.3em] font-sans font-semibold text-foreground">
               Heirloom Box
             </h2>
-            {totalItems() > 0 && (
+            {hydrated && totalItems() > 0 && (
               <span className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-semibold">
                 {totalItems()}
               </span>
@@ -62,7 +67,7 @@ export function CartDrawer() {
 
         {/* Items */}
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-5">
-          {items.length === 0 ? (
+          {cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center pt-16">
               <div className="h-16 w-16 rounded-full bg-secondary/60 flex items-center justify-center">
                 <ShoppingBag className="h-7 w-7 text-foreground/30 stroke-[1.2]" />
@@ -81,7 +86,7 @@ export function CartDrawer() {
               </button>
             </div>
           ) : (
-            items.map((item) => (
+            cartItems.map((item) => (
               <div
                 key={`${item.product.id}-${item.sizePreference}`}
                 className="flex gap-4 pb-5 border-b border-border/40 last:border-0"
@@ -159,7 +164,7 @@ export function CartDrawer() {
         </div>
 
         {/* Footer — only show when cart has items */}
-        {items.length > 0 && (
+        {cartItems.length > 0 && (
           <div className="border-t border-border/60 px-6 py-5 space-y-4 bg-background">
             {/* Trust badges */}
             <div className="flex items-center gap-2 text-[10px] text-foreground/50 font-sans bg-secondary/40 rounded-lg px-3 py-2.5">
