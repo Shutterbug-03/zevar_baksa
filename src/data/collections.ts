@@ -15,58 +15,89 @@ export interface Collection {
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
+  story?: {
+    meenakariHistory: string;
+    artisanDesigner: string;
+    founderNote: string;
+    philosophy: string;
+    makingFormats: string[];
+    careInstructions: string[];
+  };
   items: CollectionItem[];
 }
 
 export const collections: Collection[] = [
   {
-    slug: "celestial-heritage",
-    name: "Celestial Heritage",
-    subtitle: "Constellations in Gold & Uncut Polki",
-    heroTitle: "Celestial Heritage",
+    slug: "mina-bagh",
+    name: "Mina Bagh",
+    subtitle: "The Devotion of Permanent Colour — Meenakari & Gold",
+    heroTitle: "Mina Bagh",
     heroSubtitle:
-      "A tribute to Rajasthan's starlit skies — each piece channels the radiance of constellations into gold, polki, and precious gemstones.",
+      "Meenakari is the art of placing colour onto metal and making it permanent. Fired at 750°C, each piece is a collaboration between centuries of Jaipur tradition and modern design.",
     heroImage: "/images/real-shot-2.jpg",
+    story: {
+      meenakariHistory:
+        "The name comes from the Persian 'mina', meaning paradise. The craft travelled from Persia into the Mughal court, and from there to Jaipur, where it found the hands that would keep it alive for centuries. A single piece passes through many artisans before it is finished, each adding what the last could not, then fired at close to 750°C — fused to metal by heat that forgives nothing.",
+      artisanDesigner:
+        "Deepak Sankit (Designer/Artisan) was born into this craft. Seven generations of jewellers came before him, and he picked up the brush his elders once put in his hands as a child, choosing to carry the family's legacy forward.",
+      founderNote:
+        "For Tanishka (Founder), meenakari has always stood apart: a craft where colour becomes permanent, where patience shows in places no one thinks to look. It was the kind of artistry she wanted the brand built around from the start. Not decoration, but devotion, fired into metal.",
+      philosophy:
+        "A woman chooses to wear what another woman once wore. She does not inherit it passively, she chooses it again, the way Deepak chooses the bench each morning. The thread survives because someone, generation after generation, decides to pick it up. Not a craft to be sold quickly, but one to be understood, and then worn.",
+      makingFormats: [
+        "925 Silver",
+        "925 Silver with Gold Plating",
+        "22kt Gold"
+      ],
+      careInstructions: [
+        "Keep your piece dry. Remove it before swimming, showering, or exercising.",
+        "Avoid direct contact with perfume, sweat, and liquids — they can affect enamel and plating over time.",
+        "Store in a soft pouch away from direct sunlight and abrasive surfaces.",
+        "Clean gently with a soft, dry cloth. Avoid harsh chemicals or ultrasonic cleaners.",
+        "925 silver pieces naturally oxidise over time. Gentle polishing with a silver cloth restores shine.",
+        "22kt gold pieces are naturally soft; handle with care to avoid bending or scratching."
+      ]
+    },
     items: [
       {
-        id: "ruhnoor",
-        name: "Ruhnoor Cuff",
-        tagline: "Wrist Armour, Reimagined",
+        id: "mina-choker",
+        name: "Mina Paradise Choker",
+        tagline: "Fired Enamel & Hand-carved Gold",
         description:
-          "Forged from 22k gold with hand-set uncut diamonds, the Ruhnoor Cuff is a modern heirloom that speaks of quiet power. Each cuff is individually cast by master artisans in our Jaipur atelier, taking over 120 hours of meticulous handwork.",
+          "Intricate Jaipur Meenakari in royal green and crimson enamel, set in 925 silver with 22kt gold plating. Designed by Tanishka and crafted in collaboration with Deepak Sankit.",
         image: "/images/real-shot-1.jpg",
-        price: "₹9,400",
-        cta: "Explore Ruhnoor",
+        price: "₹12,500",
+        cta: "Explore Mina Choker",
       },
       {
-        id: "iraaya",
-        name: "Iraaya Choker",
-        tagline: "The Collar of Queens",
+        id: "bagh-jhumka",
+        name: "Bagh Meenakari Jhumka",
+        tagline: "750°C Enamel & Pearl Drops",
         description:
-          "Inspired by the chokers worn by Rajasthani royalty, the Iraaya wraps the neck in cascading Kundan work framed by seed pearls and deep green emerald drops.",
+          "Hand-painted floral motifs on solid silver & gold plating, carrying 7 generations of Sankit family expertise. Lightweight yet opulent.",
         image: "/images/real-shot-3.jpg",
-        price: "₹4,300",
-        cta: "Discover Iraaya",
+        price: "₹8,900",
+        cta: "Discover Bagh Jhumka",
       },
       {
-        id: "noorzaan",
-        name: "Noorzaan Jhumka",
-        tagline: "Movement & Light",
+        id: "mina-ring",
+        name: "Persian Rose Mina Ring",
+        tagline: "Permanent Colour on Metal",
         description:
-          "These statement jhumkas sway with deliberate grace — the dome engraved with floral Meenakari, suspended by delicate gold chains that catch every whisper of movement.",
+          "A statement cocktail ring capturing paradise motifs. Available in 925 silver, 18kt gold plated silver, or solid 22kt gold upon request.",
         image: "/images/real-shot-5.jpg",
-        price: "₹8,300",
-        cta: "View Noorzaan",
+        price: "₹6,400",
+        cta: "View Mina Ring",
       },
       {
-        id: "nishat",
-        name: "Nishat Bridal Set",
-        tagline: "Your Forever Heirloom",
+        id: "mina-bangle-set",
+        name: "Mina Bagh Royal Kangan",
+        tagline: "Heritage Jaipur Artistry",
         description:
-          "The crown jewel of our Celestial Heritage collection — a complete bridal parure of necklace, earrings, maang tikka, and haath phool set with Zambian emeralds.",
+          "Paired bangles with intricate reverse Meenakari detailing, ensuring beauty both inside and out.",
         image: "/images/real-shot-7.jpg",
-        price: "₹14,840",
-        cta: "Explore Nishat",
+        price: "₹16,800",
+        cta: "Explore Royal Kangan",
       },
     ],
   },

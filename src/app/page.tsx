@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { NewReleasesCarousel } from "@/components/NewReleasesCarousel";
 import { MarqueeRibbon } from "@/components/MarqueeRibbon";
+import { ShopByCategory } from "@/components/ShopByCategory";
 import { FaqSection } from "@/components/FaqSection";
 
 export default function Home() {
@@ -14,120 +15,187 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           1. HERO — full viewport, celestial image bg
       ════════════════════════════════════════════════════ */}
-      <section className="relative w-full h-screen overflow-hidden bg-background flex flex-col">
-        {/* Background */}
+      <section className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-background flex flex-col">
+        {/* Background & Mobile-optimized Legibility Gradient */}
         <img
           src="/images/hero-maroon-2026.jpg"
           alt="Zevar Baksa Hero"
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 pointer-events-none" />
+        {/* Seamless Blend Gradient into Section 2 */}
+        <div className="absolute bottom-0 inset-x-0 h-32 sm:h-44 bg-gradient-to-b from-transparent via-[#1A0307]/70 to-[#1A0307] pointer-events-none z-10" />
 
         {/* Content — fills viewport */}
-        <div className="relative z-10 flex flex-col h-full mx-auto w-full max-w-[1600px] px-8 md:px-16 pt-[5.5rem] pb-12">
+        <div className="relative z-20 flex flex-col justify-between h-full mx-auto w-full max-w-[1600px] px-5 sm:px-8 md:px-16 pt-24 md:pt-[6rem] pb-8 md:pb-12">
 
-          {/* ── Bottom row: left copy / right links */}
-          <div className="mt-auto flex items-end justify-between gap-12">
-            {/* Left — Collection blurb */}
-            <div className="flex flex-col items-start gap-4 max-w-[280px]">
-              <p className="text-[9px] uppercase tracking-[0.35em] font-sans text-amber-200/90 font-semibold drop-shadow-sm">
-                Collection 2026
-              </p>
-              <p className="text-[13px] text-[#FAF7F2]/90 leading-[1.7] font-sans drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-                Discover exquisite jewellery inspired by the beauty of the
-                heavens. Each piece crafted to bring elegance to your most
-                cherished occasions.
-              </p>
-              <Link
-                href="/shop"
-                className="mt-1 inline-flex items-center gap-2 bg-[#FAF7F2] text-[#2D0D12] px-5 py-2.5 rounded-full text-[10px] uppercase tracking-[0.22em] font-sans font-semibold hover:bg-amber-100 transition-all duration-300 shadow-md hover:scale-[1.03]"
-              >
-                Discover <ArrowRight className="h-3 w-3" />
-              </Link>
+          {/* ── Top / Center: Grand Royal Editorial Title Lockup */}
+          <div className="flex flex-col items-start max-w-2xl mt-4 sm:mt-8">
+            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+              <span className="text-[10px] text-amber-300">✦</span>
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-amber-200/90 font-medium font-sans drop-shadow-sm">
+                Mina Bagh • Jaipur Atelier
+              </span>
+              <span className="text-[10px] text-amber-300">✦</span>
             </div>
 
-            {/* Right — Celestial tagline + category links */}
-            <div className="flex flex-col gap-5 min-w-[210px] max-w-[240px]">
-              <p className="text-[9px] uppercase tracking-[0.28em] text-amber-200 font-semibold font-sans text-right leading-[1.9] drop-shadow-sm">
-                A Celestial Touch<br />for Timeless Moments
-              </p>
-              <div className="flex flex-col border-t border-[#FAF7F2]/20">
-                {[
-                  { label: "Rings" },
-                  { label: "Earrings" },
-                  { label: "Necklaces" },
-                  { label: "Bracelets" },
-                ].map(({ label }) => (
-                  <Link
-                    key={label}
-                    href="/shop"
-                    className="group relative flex items-center justify-between py-2.5 border-b border-[#FAF7F2]/20 text-[10px] uppercase tracking-[0.22em] font-sans text-[#FAF7F2]/90 hover:text-amber-200 transition-colors duration-300 overflow-hidden drop-shadow-sm"
-                  >
-                    <span className="absolute bottom-0 left-0 h-px w-full bg-amber-300 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
-                    <span className="group-hover:translate-x-0.5 transition-transform duration-300">{label}</span>
-                    <span className="group-hover:translate-x-1 transition-transform duration-300 text-[#FAF7F2]/70 group-hover:text-amber-200">→</span>
-                  </Link>
-                ))}
-              </div>
+            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] text-[#FAF7F2] leading-[1.08] tracking-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+              Heirlooms of <br />
+              <span className="font-serif-brand italic font-normal text-amber-200 drop-shadow-md">
+                Devotion & Starlight.
+              </span>
+            </h1>
+
+            {/* Ornamental Gold Divider */}
+            <div className="flex items-center gap-2.5 my-3 sm:my-4">
+              <div className="h-px w-10 sm:w-14 bg-gradient-to-r from-transparent to-amber-300/80" />
+              <div className="h-[2.5px] w-14 sm:w-16 bg-gradient-to-r from-[#7A1D2E] via-amber-300 to-[#7A1D2E] rounded-full shadow-[0_0_10px_rgba(252,211,77,0.5)]" />
+              <div className="h-px w-10 sm:w-14 bg-gradient-to-l from-transparent to-amber-300/80" />
             </div>
+          </div>
+
+          {/* ── Bottom row: left copy blurb & Luxury CTA Button ── */}
+          <div className="mt-auto flex flex-col items-start gap-3.5 sm:gap-4 max-w-lg pt-6">
+            <p className="text-xs sm:text-[14px] text-[#FAF7F2]/90 leading-[1.65] sm:leading-[1.75] font-sans drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] font-light">
+              Discover exquisite jewellery inspired by the beauty of the heavens. Each piece crafted in Jaipur to bring elegance to your most cherished occasions.
+            </p>
+            <Link
+              href="/collection/mina-bagh"
+              className="group inline-flex items-center gap-2.5 rounded-full border border-amber-300/40 bg-[#2B050B]/90 px-6 sm:px-7 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-[#FAF7F2] backdrop-blur-md shadow-[0_4px_25px_rgba(0,0,0,0.6)] transition-all duration-300 hover:border-amber-300 hover:bg-[#450A14] hover:shadow-[0_0_25px_rgba(252,211,77,0.25)] hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              <span>Explore Collection</span>
+              <ArrowRight className="h-3.5 w-3.5 text-amber-300 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════
-          2. ABOUT US — natural full-width editorial section
+          2. ABOUT US — Authentic Jaipur Heritage Editorial
       ════════════════════════════════════════════════════ */}
-      <section className="relative w-full min-h-[90vh] py-20 md:py-28 overflow-hidden bg-background flex flex-col justify-center">
-        {/* Background Image */}
+      <section className="relative w-full min-h-[85vh] md:min-h-[92vh] pt-20 sm:pt-28 pb-12 sm:pb-16 overflow-hidden bg-[#1A0307] flex flex-col justify-center">
+        {/* Previous Red Pattern Background */}
         <img
           src="/images/about-bg.jpg"
-          alt="Zevar Baksa About Background"
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+          alt="Zevar Baksa Royal Heritage Background"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none opacity-90"
         />
+        {/* Subtle Warm Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-black/50 pointer-events-none" />
+        
+        {/* Seamless Blend Gradient from Hero */}
+        <div className="absolute top-0 inset-x-0 h-28 sm:h-40 bg-gradient-to-b from-[#1A0307] via-[#1A0307]/70 to-transparent pointer-events-none z-10" />
+
+        {/* Seamless Blend Gradient to Section 3 */}
+        <div className="absolute bottom-0 inset-x-0 h-32 sm:h-44 bg-gradient-to-b from-transparent via-[#1A0307]/70 to-[#1A0307] pointer-events-none z-10" />
 
         {/* Content Container */}
-        <div className="relative z-10 w-full pl-8 md:pl-16 pr-0 h-full flex items-stretch py-0">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center w-full h-full">
+        <div className="relative z-20 mx-auto w-full max-w-[1500px] px-6 sm:px-10 md:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            {/* Left — copy */}
-            <div className="md:col-span-5 flex flex-col justify-center h-full pl-2 py-8 pr-4 md:pr-8">
-              <div className="flex flex-col gap-6">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.4em] text-amber-400 font-semibold font-sans mb-2 drop-shadow-sm">
-                    Our story
-                  </p>
-                  <span className="text-[10px] uppercase tracking-[0.32em] text-[#FAF7F2]/90 font-sans drop-shadow-sm">
-                    Jaipur, Rajasthan
-                  </span>
-                </div>
-                <h3 className="font-display text-[3.5vw] min-text-[2.2rem] text-amber-300 leading-[1.05] drop-shadow-[0_2px_4px_rgba(0,0,0,0.7)]">
-                  Where Royal Heritage Meets<br />Modern Craftsmanship.
-                </h3>
-                <p className="text-[14px] md:text-[15px] text-[#FAF7F2]/95 leading-[1.8] font-sans max-w-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]">
-                  Inspired by the architectural grandeur of Rajasthan, every
-                  piece in our collection is a testament to centuries-old
-                  techniques, reimagined for the contemporary woman. Our
-                  artisans weave stories of gold and gemstones, capturing the
-                  soul of Jaipur.
-                </p>
+            {/* Left Column — Editorial Craft Narrative */}
+            <div className="lg:col-span-6 flex flex-col items-start text-left">
+              
+              {/* Bespoke Heritage Submark */}
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <span className="text-[10px] text-amber-300">✦</span>
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-amber-300 font-medium font-sans">
+                  Jaipur, Rajasthan • Atelier Heritage
+                </span>
+                <span className="text-[10px] text-amber-300">✦</span>
               </div>
-              <div className="flex items-center gap-6 mt-10">
+
+              {/* Bold Editorial Headline */}
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] text-amber-200 leading-[1.12] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] max-w-xl">
+                Not Made to Be Waited On.<br />
+                <span className="font-serif-brand italic font-normal text-[#FAF7F2]">
+                  Made to Be Worn.
+                </span>
+              </h2>
+
+              {/* Delicate Gold Ornamental Line */}
+              <div className="flex items-center gap-2.5 my-4 sm:my-5">
+                <div className="h-px w-10 bg-gradient-to-r from-transparent to-amber-300/80" />
+                <div className="h-[2.5px] w-14 bg-gradient-to-r from-[#7A1D2E] via-amber-300 to-[#7A1D2E] rounded-full shadow-[0_0_8px_rgba(252,211,77,0.4)]" />
+                <div className="h-px w-10 bg-gradient-to-l from-transparent to-amber-300/80" />
+              </div>
+
+              {/* Narrative Text */}
+              <p className="text-[13.5px] sm:text-[15px] md:text-[15.5px] text-[#FAF7F2]/90 leading-[1.8] sm:leading-[1.85] font-sans max-w-lg drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] font-light">
+                It started with crayons on a bedroom floor watching a mother design jewellery. Today, Zevar Baksa gives Jaipur’s master artisans the credit they deserve — crediting karigars by name and giving heritage craft a contemporary edge.
+              </p>
+
+              {/* Karigar & Heritage Hallmarks — Natural Editorial Lockup */}
+              <div className="mt-6 sm:mt-8 pt-5 border-t border-amber-300/20 w-full max-w-lg flex flex-wrap items-center justify-between gap-4 text-[#FAF7F2]/80">
+                <div className="flex flex-col">
+                  <span className="font-display text-base sm:text-lg text-amber-200">Jaipur Pink City</span>
+                  <span className="text-[9px] uppercase tracking-wider text-[#FAF7F2]/60 font-sans">Royal Atelier Roots</span>
+                </div>
+                <div className="h-8 w-px bg-amber-300/20 hidden sm:block" />
+                <div className="flex flex-col">
+                  <span className="font-display text-base sm:text-lg text-amber-200">750°C Enamel</span>
+                  <span className="text-[9px] uppercase tracking-wider text-[#FAF7F2]/60 font-sans">Permanent Meenakari</span>
+                </div>
+                <div className="h-8 w-px bg-amber-300/20 hidden sm:block" />
+                <div className="flex flex-col">
+                  <span className="font-display text-base sm:text-lg text-amber-200">BIS 925 / 22K</span>
+                  <span className="text-[9px] uppercase tracking-wider text-[#FAF7F2]/60 font-sans">Hallmarked Purity</span>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="mt-8 sm:mt-10">
                 <Link
                   href="/about"
-                  className="inline-flex items-center gap-2 bg-[#FAF7F2] text-[#2D0D12] px-7 py-3.5 rounded-full text-[10px] uppercase tracking-[0.25em] font-sans font-semibold hover:bg-amber-100 transition-all duration-300 shadow-md hover:scale-[1.03]"
+                  className="group inline-flex items-center gap-2.5 bg-[#FAF7F2] text-[#2D0D12] px-7 sm:px-8 py-3 sm:py-3.5 rounded-full text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans font-semibold hover:bg-amber-100 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:scale-105 active:scale-95"
                 >
-                  More About Us <ArrowRight className="h-3.5 w-3.5" />
+                  More About Us
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
+
             </div>
 
-            {/* Right — portrait image */}
-            <div className="md:col-span-7 h-[70vh] min-h-[480px] max-h-[640px] flex justify-end">
-              <div className="w-full h-full rounded-tl-[9rem] overflow-hidden bg-black/25 backdrop-blur-xs shadow-2xl border-l border-t border-[#FAF7F2]/20">
-                <img
-                  src="/images/about-editorial.jpg"
-                  alt="Zevar Baksa Heritage Craftsmanship"
-                  className="h-full w-full object-cover object-[center_68%] transition-transform duration-500 hover:scale-105"
-                />
+            {/* Right Column — Archival Heritage Visual Showcase */}
+            <div className="lg:col-span-6 relative flex justify-center lg:justify-end mt-6 lg:mt-0">
+              <div className="relative w-full max-w-[500px]">
+                
+                {/* Main Large Photo: Editorial Jewellery Model & Craftsmanship */}
+                <div className="relative z-10 w-full aspect-[4/5] sm:aspect-[14/15] rounded-3xl overflow-hidden shadow-[0_25px_65px_rgba(0,0,0,0.85)] border border-amber-300/30 bg-black/40 group">
+                  <img
+                    src="/images/about-editorial.jpg"
+                    alt="Zevar Baksa Editorial Heritage Jewellery Craftsmanship"
+                    className="h-full w-full object-cover object-[center_65%] transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  {/* Subtle Gradient & Inner Gold Hairline */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+                  <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-amber-300/25" />
+                </div>
+
+                {/* Secondary Floating Iconic Jaipur Palace Arch */}
+                <div className="absolute -bottom-6 -left-3 sm:-bottom-8 sm:-left-8 z-30 w-36 sm:w-48 aspect-square rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.95)] border-2 border-amber-300/50 bg-[#1A0307] group/accent transition-transform duration-500 hover:scale-105">
+                  <img
+                    src="/images/hawa-mahal.jpg"
+                    alt="Jaipur Royal Palace Architecture"
+                    className="h-full w-full object-cover object-top origin-top transition-transform duration-700 group-hover/accent:scale-105"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent p-2 text-center">
+                    <p className="text-[7.5px] sm:text-[8.5px] uppercase tracking-widest text-amber-200 font-semibold font-sans">
+                      Jaipur, Rajasthan
+                    </p>
+                  </div>
+                </div>
+
+                {/* Floating Artisan Monogram Seal Badge */}
+                <div className="absolute -top-3 -right-3 sm:-top-5 sm:-right-5 z-30 flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-full border border-amber-300/50 bg-[#2B050B]/95 backdrop-blur-md shadow-[0_0_25px_rgba(252,211,77,0.3)]">
+                  <div className="absolute inset-1 rounded-full border border-amber-300/20" />
+                  <img
+                    src="/logos/submark.png"
+                    alt="Zevar Baksa Artisan Seal"
+                    className="h-8 sm:h-10 w-auto object-contain brightness-0 invert opacity-95"
+                  />
+                </div>
+
               </div>
             </div>
 
@@ -136,67 +204,17 @@ export default function Home() {
       </section>
 
       {/* ════════════════════════════════════════════════════
-          3. NEW RELEASES CAROUSEL
+          3. NEW RELEASES CAROUSEL — Seamless Transition
       ════════════════════════════════════════════════════ */}
       <NewReleasesCarousel />
 
       {/* MARQUEE RIBBON */}
-      <MarqueeRibbon text="New Releases" />
+      <MarqueeRibbon text="Mina Bagh • New Releases" />
 
       {/* ════════════════════════════════════════════════════
-          4. SHOP BY CATEGORY — Natural fluid grid
+          4. SHOP BY CATEGORY — Royal Jharokha Archive & Interactive Filters
       ════════════════════════════════════════════════════ */}
-      <section className="w-full bg-background py-24 md:py-32">
-        <div className="mx-auto w-full max-w-[1400px] px-8 md:px-16">
-          {/* Title */}
-          <div className="pb-8 border-b border-foreground/10 flex items-end justify-between">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.38em] text-foreground/40 font-sans mb-2">Explore</p>
-              <h2 className="font-display text-4xl md:text-5xl text-primary leading-none">Shop by Category</h2>
-            </div>
-            <Link
-              href="/shop"
-              className="text-[10px] uppercase tracking-[0.22em] font-sans text-primary/70 hover:text-primary transition-colors duration-300 flex items-center gap-1.5 font-semibold"
-            >
-              View All <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-
-          {/* 3×3 Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-10">
-            {[
-              { label: "Rings", img: "/images/real-shot-1.jpg" },
-              { label: "Earrings", img: "/images/real-shot-2.jpg" },
-              { label: "Necklaces", img: "/images/real-shot-3.jpg" },
-              { label: "Bracelets", img: "/images/real-shot-4.jpg" },
-              { label: "Chokers", img: "/images/real-shot-5.jpg" },
-              { label: "Jhumkas", img: "/images/real-shot-6.jpg" },
-              { label: "Bridal Sets", img: "/images/real-shot-7.jpg" },
-              { label: "Cuffs", img: "/images/real-shot-8.jpg" },
-              { label: "All Jewellery", img: "/images/real-shot-3.jpg" },
-            ].map(({ label, img }) => (
-              <Link
-                key={label}
-                href="/shop"
-                className="group flex flex-col gap-3"
-              >
-                <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-muted shadow-sm">
-                  <img
-                    src={img}
-                    alt={label}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                </div>
-                <span className="text-[11px] uppercase tracking-[0.22em] font-sans text-foreground/80 group-hover:text-primary transition-colors duration-300 font-semibold">
-                  {label}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ShopByCategory />
 
       {/* ════════════════════════════════════════════════════
           5. FAQ & DIRECT QUERY SECTION
@@ -204,42 +222,51 @@ export default function Home() {
       <FaqSection />
 
       {/* ════════════════════════════════════════════════════
-          6. NEWSLETTER
+          6. NEWSLETTER — Royal Atelier Letter
       ════════════════════════════════════════════════════ */}
-      <section className="bg-secondary/70 py-24">
-        <div className="mx-auto max-w-[1600px] px-8 md:px-16 flex flex-col md:flex-row items-center justify-between gap-12">
+      <section className="relative w-full bg-gradient-to-r from-[#1A0307] via-[#33070E] to-[#1A0307] py-20 sm:py-24 md:py-28 overflow-hidden">
+        {/* Seamless Blend Gradients */}
+        <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#1A0307] via-[#1A0307]/70 to-transparent pointer-events-none z-10" />
+        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-b from-transparent via-[#1A0307]/80 to-[#1A0307] pointer-events-none z-10" />
+
+        <div className="relative z-20 mx-auto max-w-[1600px] px-5 sm:px-8 md:px-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 sm:gap-12">
           {/* Left copy */}
           <div className="flex-1 max-w-lg">
-            <p className="text-[10px] uppercase tracking-[0.38em] text-primary font-sans mb-3 font-semibold">The Baksa Letter</p>
-            <h2 className="font-display text-4xl md:text-5xl text-primary leading-tight">
-              Whispers from <em className="not-italic italic text-zb-red">our atelier.</em>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[10px] text-amber-300">✦</span>
+              <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-amber-300 font-semibold font-sans">
+                The Baksa Letter
+              </span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-[#FAF7F2] leading-tight drop-shadow-md">
+              Whispers from <em className="font-serif-brand italic font-normal text-amber-200">our atelier.</em>
             </h2>
-            <p className="mt-4 text-[14px] text-foreground/70 leading-[1.75] font-sans">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-[14px] text-[#FAF7F2]/90 leading-[1.7] font-sans font-light drop-shadow-sm">
               New releases, private previews, and the occasional love letter.
               No noise, ever.
             </p>
           </div>
 
           {/* Right form */}
-          <div className="flex-shrink-0 w-full max-w-sm">
+          <div className="flex-shrink-0 w-full max-w-md">
             <form
-              className="flex items-center border-b-2 border-foreground/20 focus-within:border-primary transition-colors duration-300"
+              className="flex items-center border-b-2 border-amber-300/50 focus-within:border-amber-300 transition-colors duration-300 pb-1"
               onSubmit={(e) => e.preventDefault()}
             >
               <input
                 type="email"
                 required
                 placeholder="your@email.com"
-                className="flex-1 bg-transparent py-4 text-[13px] outline-none text-foreground placeholder:text-foreground/40 font-sans"
+                className="flex-1 bg-transparent py-3 sm:py-4 text-xs sm:text-[14px] outline-none text-[#FAF7F2] placeholder:text-[#FAF7F2]/40 font-sans"
               />
               <button
                 type="submit"
-                className="flex-shrink-0 text-[10px] uppercase tracking-[0.3em] px-3 py-4 text-primary hover:text-zb-red transition-colors duration-300 font-sans font-semibold"
+                className="flex-shrink-0 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.3em] px-4 py-3 sm:py-4 text-amber-300 hover:text-amber-100 transition-colors duration-300 font-sans font-semibold cursor-pointer"
               >
                 Subscribe →
               </button>
             </form>
-            <p className="mt-3 text-[10px] text-foreground/40 font-sans tracking-[0.05em]">
+            <p className="mt-3 text-[9px] sm:text-[10px] text-[#FAF7F2]/60 font-sans tracking-[0.04em]">
               We respect your privacy. Unsubscribe anytime.
             </p>
           </div>

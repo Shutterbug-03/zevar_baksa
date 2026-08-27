@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -908,14 +908,173 @@ export default function CheckoutPage() {
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("upi");
 
-  const handlePlaceOrder = async () => {
+  // Load Razorpay SDK script once on mount
+  useEffect(() => {
+    const existing = document.getElementById("razorpay-sdk");
+    if (!existing) {
+      const script = document.createElement("script");
+      script.id = "razorpay-sdk";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const handlePlaceOrder = useCallback(async () => {
     setPlacing(true);
-    // Simulate processing — replace with real Razorpay/payment gateway call
-    await new Promise((r) => setTimeout(r, 2000));
-    clearCart();
-    setPlaced(true);
-    setPlacing(false);
-  };
+
+    const cartItems = items;
+    const totalINR = Math.round(
+      cartItems.reduce((sum, i) => sum + i.product.price * i.quantity, 0)
+    );
+    const orderItems = cartItems.map((i) => ({
+      product_id: i.product.id,
+      name: i.product.name,
+      image: i.product.image,
+      price: i.product.price,
+      quantity: i.quantity,
+      size_preference: i.sizePreference,
+    }));
+
+    try {
+      // Step 1: Create order on server
+      const createRes = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: totalINR,
+          items: orderItems,
+          customerEmail: address.email,
+          customerName: `${address.firstName} ${address.lastName}`.trim(),
+          customerPhone: address.phone,
+          address,
+          paymentMethod,
+        }),
+      });
+
+      if (!createRes.ok) {
+        const err = await createRes.json();
+        throw new Error(err.error ?? "Failed to create order");
+      }
+
+      const orderData = await createRes.json();
+
+      // COD path — no payment modal needed
+      if (paymentMethod === "cod") {
+        await fetch("/api/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_order_id: orderData.order_id,
+            razorpay_payment_id: "cod",
+            razorpay_signature: "cod",
+            customerEmail: address.email,
+            customerName: `${address.firstName} ${address.lastName}`.trim(),
+            items: orderItems,
+            amount: totalINR,
+          }),
+        });
+        clearCart();
+        setPlaced(true);
+        setPlacing(false);
+        return;
+      }
+
+      // Placeholder / dev mode — skip real modal, simulate success
+      const isPlaceholder = orderData.key?.includes("PLACEHOLDER");
+      if (isPlaceholder) {
+        console.log("Dev mode: Skipping Razorpay modal — placeholder keys");
+        await fetch("/api/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_order_id: orderData.order_id,
+            razorpay_payment_id: `pay_dev_${Date.now()}`,
+            razorpay_signature: "dev_placeholder",
+            customerEmail: address.email,
+            customerName: `${address.firstName} ${address.lastName}`.trim(),
+            items: orderItems,
+            amount: totalINR,
+          }),
+        });
+        clearCart();
+        setPlaced(true);
+        setPlacing(false);
+        return;
+      }
+
+      // Step 2: Open real Razorpay modal
+      type RazorpayOptions = {
+        key: string;
+        amount: number;
+        currency: string;
+        order_id: string;
+        name: string;
+        description: string;
+        image: string;
+        prefill: { name: string; email: string; contact: string };
+        theme: { color: string };
+        handler: (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => void;
+        modal: { ondismiss: () => void };
+      };
+      type RazorpayClass = new (opts: RazorpayOptions) => { open(): void };
+      const RazorpayCtor = (window as unknown as { Razorpay: RazorpayClass }).Razorpay;
+      if (!RazorpayCtor) {
+        throw new Error("Razorpay SDK not loaded. Please refresh and try again.");
+      }
+
+      const rzp = new RazorpayCtor({
+        key: orderData.key,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        order_id: orderData.order_id,
+        name: "Zevar Baksa Atelier",
+        description: `${orderItems.length} heirloom piece${orderItems.length > 1 ? "s" : ""}`,
+        image: "/favicon.ico",
+        prefill: {
+          name: `${address.firstName} ${address.lastName}`.trim(),
+          email: address.email,
+          contact: address.phone,
+        },
+        theme: { color: "#6B1225" },
+        handler: async (response) => {
+          // Step 3: Verify payment server-side
+          const verifyRes = await fetch("/api/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              customerEmail: address.email,
+              customerName: `${address.firstName} ${address.lastName}`.trim(),
+              items: orderItems,
+              amount: totalINR,
+            }),
+          });
+
+          if (verifyRes.ok) {
+            clearCart();
+            setPlaced(true);
+          } else {
+            alert("Payment verification failed. Please contact support.");
+          }
+          setPlacing(false);
+        },
+        modal: {
+          ondismiss: () => {
+            setPlacing(false);
+          },
+        },
+      });
+
+      rzp.open();
+    } catch (err) {
+      console.error("[checkout] Error:", err);
+      alert(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setPlacing(false);
+    }
+  }, [items, address, paymentMethod, clearCart]);
 
   // Show success screen
   if (placed) {

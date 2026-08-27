@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { collections } from "@/data/collections";
-import type { CollectionItem } from "@/data/collections";
+import type { CollectionItem, Collection } from "@/data/collections";
 
 /* ─── Ornamental thin divider ─── */
 function OrnamentalDivider() {
@@ -278,6 +278,91 @@ function BottomCTA() {
 }
 
 /* ═══════════════════════════════════════════
+   COLLECTION STORY & CRAFT SPOTLIGHT
+═══════════════════════════════════════════ */
+function CollectionStorySection({ story }: { story: NonNullable<Collection['story']> }) {
+  return (
+    <section className="w-full bg-zb-cream py-24 px-6 md:px-16 border-b border-border/20">
+      <div className="max-w-[1200px] mx-auto space-y-16">
+        
+        {/* Header / History */}
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-zb-red font-semibold">
+            Craft & Heritage
+          </p>
+          <h2 className="font-display text-4xl md:text-5xl text-primary leading-tight">
+            Meenakari: Paradise Fired at 750°C
+          </h2>
+          <p className="text-[15px] text-foreground/80 leading-relaxed font-sans">
+            {story.meenakariHistory}
+          </p>
+        </div>
+
+        {/* 2-Column: Designer Spotlight & Founder Philosophy */}
+        <div className="grid md:grid-cols-2 gap-10 items-start">
+          <div className="p-8 rounded-2xl bg-background border border-primary/15 shadow-sm space-y-4">
+            <span className="text-[11px] uppercase tracking-[0.25em] text-zb-red font-semibold">
+              Designer & Master Artisan
+            </span>
+            <h3 className="font-display text-2xl text-primary">Deepak Sankit</h3>
+            <p className="text-sm text-foreground/80 leading-relaxed font-sans">
+              {story.artisanDesigner}
+            </p>
+          </div>
+
+          <div className="p-8 rounded-2xl bg-background border border-primary/15 shadow-sm space-y-4">
+            <span className="text-[11px] uppercase tracking-[0.25em] text-zb-red font-semibold">
+              Founder&apos;s Perspective
+            </span>
+            <h3 className="font-display text-2xl text-primary">Tanishka</h3>
+            <p className="text-sm text-foreground/80 leading-relaxed font-sans">
+              {story.founderNote}
+            </p>
+          </div>
+        </div>
+
+        {/* Philosophy */}
+        <div className="text-center max-w-3xl mx-auto bg-zb-maroon text-zb-cream p-10 rounded-2xl shadow-lg space-y-4">
+          <p className="font-display text-2xl md:text-3xl leading-snug italic">
+            &ldquo;{story.philosophy}&rdquo;
+          </p>
+        </div>
+
+        {/* Formats & Care Instructions */}
+        <div className="grid md:grid-cols-2 gap-12 pt-6">
+          <div className="space-y-4">
+            <h3 className="font-display text-2xl text-primary">Available Metals</h3>
+            <div className="flex flex-wrap gap-3">
+              {story.makingFormats.map((fmt) => (
+                <span
+                  key={fmt}
+                  className="px-4 py-2 rounded-full border border-primary/30 bg-zb-cream-alt text-xs uppercase tracking-widest font-semibold text-primary"
+                >
+                  {fmt}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="font-display text-2xl text-primary">Caring for Your Piece</h3>
+            <ul className="space-y-2.5">
+              {story.careInstructions.map((care, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-xs text-foreground/80 font-sans leading-relaxed">
+                  <span className="h-1.5 w-1.5 rounded-full bg-zb-red mt-1.5 flex-shrink-0" />
+                  <span>{care}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════
    MAIN PAGE COMPONENT
 ═══════════════════════════════════════════ */
 export default function CollectionPage({
@@ -320,6 +405,9 @@ export default function CollectionPage({
         image={collection.heroImage}
       />
 
+      {/* Story & Craft Spotlight (if available) */}
+      {collection.story && <CollectionStorySection story={collection.story} />}
+
       {/* Alternating Product Showcases */}
       {collection.items.map((item, index) => (
         <ProductShowcase key={item.id} item={item} index={index} />
@@ -333,3 +421,4 @@ export default function CollectionPage({
     </Layout>
   );
 }
+

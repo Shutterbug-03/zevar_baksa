@@ -2,19 +2,19 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { X, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { X, Mail, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useUIStore } from "@/store/uiStore";
 
-type Mode = "login" | "signup" | "forgot";
+type Mode = "login" | "signup";
 
 export function LoginModal() {
   const { loginOpen, closeLogin } = useUIStore();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   // Close on Escape
   useEffect(() => {
@@ -33,7 +33,6 @@ export function LoginModal() {
       document.body.style.overflow = "";
       setMode("login");
       setEmail("");
-      setPassword("");
       setSuccess(false);
     }
     return () => { document.body.style.overflow = ""; };
@@ -41,15 +40,27 @@ export function LoginModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
     setLoading(true);
-    // Simulate async — replace with real auth (NextAuth, Supabase, etc.)
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    if (mode === "forgot") {
-      setSuccess(true);
-    } else {
-      // For now show a "coming soon" — wire real auth in Phase 2
-      setSuccess(true);
+    try {
+      const result = await signIn("email", {
+        email: email.trim(),
+        redirect: false,
+        callbackUrl: "/account",
+      });
+      if (result?.error) {
+        setError("Something went wrong. Please try again.");
+      } else {
+        setSuccess(true);
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,39 +98,42 @@ export function LoginModal() {
               </span>
             </div>
             <h2 className="font-display text-3xl text-foreground">
-              {mode === "login" && "Welcome Back"}
-              {mode === "signup" && "Join the Atelier"}
-              {mode === "forgot" && "Reset Password"}
+              {mode === "login" ? "Welcome Back" : "Join the Atelier"}
             </h2>
             <p className="mt-1.5 text-xs text-foreground/50 font-sans">
-              {mode === "login" && "Sign in to your heirloom account"}
-              {mode === "signup" && "Create your Zevar Baksa account"}
-              {mode === "forgot" && "We'll send a reset link to your email"}
+              {mode === "login" ? "Sign in to your heirloom account" : "Create your Zevar Baksa account"}
             </p>
           </div>
 
           {/* Form */}
           <div className="px-8 py-6">
             {success ? (
-              <div className="text-center py-6 space-y-3">
-                <div className="h-12 w-12 rounded-full bg-emerald-950/60 border border-emerald-500/30 flex items-center justify-center mx-auto">
-                  <Sparkles className="h-5 w-5 text-emerald-400" />
+              <div className="text-center py-6 space-y-4">
+                <div className="h-14 w-14 rounded-full bg-emerald-950/60 border border-emerald-500/30 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="h-6 w-6 text-emerald-400" />
                 </div>
-                <p className="text-sm font-sans text-foreground/80">
-                  {mode === "forgot"
-                    ? "Password reset link sent to your email."
-                    : "Customer accounts are coming soon. Use WhatsApp for order tracking."}
+                <div className="space-y-2">
+                  <p className="text-base font-display text-foreground">Check your inbox</p>
+                  <p className="text-xs text-foreground/50 font-sans leading-relaxed">
+                    We sent a magic sign-in link to{" "}
+                    <span className="text-primary">{email}</span>.<br />
+                    Click it to sign in — no password needed.
+                  </p>
+                </div>
+                <p className="text-[10px] text-foreground/30 font-sans">
+                  Check spam if you don't see it · Link expires in 24h
                 </p>
-                <Link
-                  href="/contact"
-                  onClick={closeLogin}
-                  className="inline-flex items-center gap-2 mt-2 text-[11px] uppercase tracking-[0.2em] font-sans text-primary hover:underline"
-                >
-                  Contact our Atelier <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Magic link info */}
+                <div className="flex items-start gap-3 bg-primary/5 border border-primary/15 rounded-xl p-3.5">
+                  <Sparkles className="h-4 w-4 text-primary/60 flex-shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-foreground/50 font-sans leading-relaxed">
+                    Passwordless sign-in. Enter your email and we'll send a magic link — no password needed.
+                  </p>
+                </div>
+
                 {/* Email */}
                 <div>
                   <label className="block text-[10px] uppercase tracking-[0.2em] font-sans font-semibold text-foreground/70 mb-1.5">
@@ -132,54 +146,16 @@ export function LoginModal() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      autoFocus
                       placeholder="your@email.com"
                       className="w-full pl-10 pr-4 py-3 rounded-lg border border-border bg-secondary/30 text-sm font-sans text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
                     />
                   </div>
                 </div>
 
-                {/* Password */}
-                {mode !== "forgot" && (
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] font-sans font-semibold text-foreground/70 mb-1.5">
-                      Password
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/30 stroke-[1.4]" />
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="••••••••"
-                        className="w-full pl-10 pr-10 py-3 rounded-lg border border-border bg-secondary/30 text-sm font-sans text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/20 transition-all"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/30 hover:text-foreground/60 transition-colors"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Forgot password link */}
-                {mode === "login" && (
-                  <div className="flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => setMode("forgot")}
-                      className="text-[10px] uppercase tracking-[0.15em] font-sans text-foreground/40 hover:text-primary transition-colors"
-                    >
-                      Forgot Password?
-                    </button>
-                  </div>
+                {/* Error */}
+                {error && (
+                  <p className="text-xs text-red-400 font-sans">{error}</p>
                 )}
 
                 {/* Submit */}
@@ -189,38 +165,31 @@ export function LoginModal() {
                   className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-[11px] uppercase tracking-[0.25em] font-sans font-semibold flex items-center justify-center gap-2 hover:bg-[#5C0A19] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 shadow-md"
                 >
                   {loading ? (
-                    <span className="animate-pulse">Processing...</span>
+                    <>
+                      <span className="h-4 w-4 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                      <span>Sending link...</span>
+                    </>
                   ) : (
                     <>
-                      {mode === "login" && "Sign In"}
-                      {mode === "signup" && "Create Account"}
-                      {mode === "forgot" && "Send Reset Link"}
+                      {mode === "login" ? "Send Magic Link" : "Create Account"}
                       <ArrowRight className="h-3.5 w-3.5" />
                     </>
                   )}
                 </button>
 
                 {/* Mode switcher */}
-                <div className="text-center pt-2">
+                <div className="text-center pt-1">
                   {mode === "login" ? (
                     <p className="text-xs text-foreground/40 font-sans">
                       New to Zevar Baksa?{" "}
-                      <button
-                        type="button"
-                        onClick={() => setMode("signup")}
-                        className="text-primary hover:underline"
-                      >
+                      <button type="button" onClick={() => setMode("signup")} className="text-primary hover:underline">
                         Create account
                       </button>
                     </p>
                   ) : (
                     <p className="text-xs text-foreground/40 font-sans">
                       Already have an account?{" "}
-                      <button
-                        type="button"
-                        onClick={() => setMode("login")}
-                        className="text-primary hover:underline"
-                      >
+                      <button type="button" onClick={() => setMode("login")} className="text-primary hover:underline">
                         Sign in
                       </button>
                     </p>

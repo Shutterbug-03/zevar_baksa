@@ -38,7 +38,7 @@ export const products: Product[] = [
       "/images/real-shot-4.jpg",
     ],
     category: "Bracelets",
-    collection: "Celestial Heritage",
+    collection: "Mina Bagh",
     description:
       "Forged from 22k gold with hand-set uncut Polki diamonds, the Ruhnoor Cuff is a modern heirloom that speaks of quiet power. Each cuff is individually cast by master artisans in our Jaipur atelier, featuring precise bezel settings that cradle natural gemstones catching light from every angle.",
     story:
@@ -67,7 +67,7 @@ export const products: Product[] = [
       "/images/real-shot-6.jpg",
     ],
     category: "Necklaces",
-    collection: "Celestial Heritage",
+    collection: "Mina Bagh",
     description:
       "Inspired by the traditional royal chokers of Rajasthan, the Iraaya wraps the neck in cascading Kundan work framed by seed pearls and deep green emerald drops. The flexible gold lattice ensures comfortable, contouring wear through hours of celebratory events.",
     story:
@@ -96,7 +96,7 @@ export const products: Product[] = [
       "/images/real-shot-8.jpg",
     ],
     category: "Earrings",
-    collection: "Celestial Heritage",
+    collection: "Mina Bagh",
     description:
       "These statement jhumkas sway with deliberate grace. The upper floral stud leads to a hand-enameled dome intricately decorated with ruby-pink Meenakari detailing, suspended above clusters of micro seed pearls.",
     story:
@@ -125,7 +125,7 @@ export const products: Product[] = [
       "/images/real-shot-2.jpg",
     ],
     category: "Bridal",
-    collection: "Celestial Heritage",
+    collection: "Mina Bagh",
     description:
       "The ultimate crown jewel — a masterwork bridal set crafted over 160 artisan hours. Features a layered multi-strand necklace, matching chandelier earrings, and an ornate maang tikka set with Zambian emerald cabochons and natural Polki diamonds.",
     story:
@@ -154,7 +154,7 @@ export const products: Product[] = [
       "/images/real-shot-8.jpg",
     ],
     category: "Earrings",
-    collection: "Celestial Heritage",
+    collection: "Mina Bagh",
     description:
       "Echoing the shape of the crescent moon, the Ruhvika Chandbali pairs sparkling uncut glass Kundan with delicate pearl fringe work. Elegant yet lightweight for festive soirees.",
     story:
@@ -183,7 +183,7 @@ export const products: Product[] = [
       "/images/real-shot-1.jpg",
     ],
     category: "Necklaces",
-    collection: "Celestial Heritage",
+    collection: "Mina Bagh",
     description:
       "A showstopping neckpiece composed of multi-strand gold beads culminating in a central motif encrusted with rubies and Polki diamonds. Comes with a matching pair of drop earrings.",
     story:

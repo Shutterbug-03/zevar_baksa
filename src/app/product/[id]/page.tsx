@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useState } from "react";
+import Script from "next/script";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -69,6 +70,25 @@ export default function ProductDetailPage({
 
   return (
     <Layout>
+      <Script id="structured-data-product" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": product.gallery,
+        "description": product.description,
+        "brand": {
+          "@type": "Brand",
+          "name": "Zevar Baksa"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": `https://zevarbaksa.com/product/${product.id}`,
+          "priceCurrency": "INR",
+          "price": product.price,
+          "availability": product.status === "Out of Stock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+          "itemCondition": "https://schema.org/NewCondition"
+        }
+      }) }} />
       <div className="bg-background min-h-screen pt-28 md:pt-36 pb-20 font-sans">
         <div className="mx-auto max-w-[1600px] px-6 md:px-12 lg:px-16">
           
