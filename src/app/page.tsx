@@ -221,58 +221,6 @@ export default function Home() {
       ════════════════════════════════════════════════════ */}
       <FaqSection />
 
-      {/* ════════════════════════════════════════════════════
-          6. NEWSLETTER — Royal Atelier Letter
-      ════════════════════════════════════════════════════ */}
-      <section className="relative w-full bg-gradient-to-r from-[#1A0307] via-[#33070E] to-[#1A0307] py-20 sm:py-24 md:py-28 overflow-hidden">
-        {/* Seamless Blend Gradients */}
-        <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-[#1A0307] via-[#1A0307]/70 to-transparent pointer-events-none z-10" />
-        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-b from-transparent via-[#1A0307]/80 to-[#1A0307] pointer-events-none z-10" />
-
-        <div className="relative z-20 mx-auto max-w-[1600px] px-5 sm:px-8 md:px-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 sm:gap-12">
-          {/* Left copy */}
-          <div className="flex-1 max-w-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] text-amber-300">✦</span>
-              <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-amber-300 font-semibold font-sans">
-                The Baksa Letter
-              </span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-[#FAF7F2] leading-tight drop-shadow-md">
-              Whispers from <em className="font-serif-brand italic font-normal text-amber-200">our atelier.</em>
-            </h2>
-            <p className="mt-3 sm:mt-4 text-xs sm:text-[14px] text-[#FAF7F2]/90 leading-[1.7] font-sans font-light drop-shadow-sm">
-              New releases, private previews, and the occasional love letter.
-              No noise, ever.
-            </p>
-          </div>
-
-          {/* Right form */}
-          <div className="flex-shrink-0 w-full max-w-md">
-            <form
-              className="flex items-center border-b-2 border-amber-300/50 focus-within:border-amber-300 transition-colors duration-300 pb-1"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                required
-                placeholder="your@email.com"
-                className="flex-1 bg-transparent py-3 sm:py-4 text-xs sm:text-[14px] outline-none text-[#FAF7F2] placeholder:text-[#FAF7F2]/40 font-sans"
-              />
-              <button
-                type="submit"
-                className="flex-shrink-0 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] sm:tracking-[0.3em] px-4 py-3 sm:py-4 text-amber-300 hover:text-amber-100 transition-colors duration-300 font-sans font-semibold cursor-pointer"
-              >
-                Subscribe →
-              </button>
-            </form>
-            <p className="mt-3 text-[9px] sm:text-[10px] text-[#FAF7F2]/60 font-sans tracking-[0.04em]">
-              We respect your privacy. Unsubscribe anytime.
-            </p>
-          </div>
-        </div>
-      </section>
-
     </Layout>
   );
 }

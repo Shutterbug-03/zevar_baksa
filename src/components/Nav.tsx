@@ -13,7 +13,7 @@ import { useHydrated } from "@/hooks/useHydrated";
 
 const mainLinks = [
   { label: "Shop All", to: "/shop" },
-  { label: "Mina Bagh Collection", to: "/collection/mina-bagh", isCollections: true },
+  { label: "Collections", to: "#", isCollections: true },
   { label: "Our Story", to: "/about" },
   { label: "Jaipur Atelier", to: "/contact" },
   { label: "Wishlist", to: "/wishlist" },
@@ -240,7 +240,7 @@ export function Nav() {
                     />
                   </button>
                   {collectionsExpanded && (
-                    <div className="mt-2 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-top-1">
+                    <div className="mt-3 flex flex-col items-center gap-2.5 animate-in fade-in slide-in-from-top-2 py-2 border-y border-amber-300/15 w-full max-w-sm">
                       {collections.map((c) => (
                         <Link
                           key={c.slug}
@@ -249,11 +249,22 @@ export function Nav() {
                             setMenuOpen(false);
                             setCollectionsExpanded(false);
                           }}
-                          className="font-display text-lg sm:text-xl uppercase tracking-[0.2em] text-amber-300 hover:text-amber-100 transition-colors py-1"
+                          className="group/col flex items-center gap-2 font-display text-lg sm:text-xl uppercase tracking-[0.2em] text-amber-300 hover:text-amber-100 transition-colors py-1"
                         >
-                          {c.name}
+                          <span className="text-[9px] text-amber-300/60 group-hover/col:text-amber-300">✦</span>
+                          <span>{c.name} Collection</span>
                         </Link>
                       ))}
+                      <Link
+                        href="/shop"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          setCollectionsExpanded(false);
+                        }}
+                        className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-amber-200/70 hover:text-amber-200 transition-colors pt-1 font-sans font-medium"
+                      >
+                        Explore All Heirlooms →
+                      </Link>
                     </div>
                   )}
                 </div>
