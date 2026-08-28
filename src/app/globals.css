@@ -61,37 +61,34 @@
 :root {
   --radius: 0.25rem;
 
-  /* Brand palette — Zevar Baksa */
-  --crimson: oklch(0.52 0.20 25);
-  /* Primary red from logo */
-  --crimson-deep: oklch(0.38 0.16 25);
-  /* Deeper red for hover/accents */
-  --gold: oklch(0.78 0.12 82);
-  /* Warm gold accent */
-  --ivory: oklch(0.97 0.01 85);
-  /* Warm cream background */
-  --ink: oklch(0.18 0.02 30);
-  /* Almost-black ink */
+  /* Strict Brand Palette — Zevar Baksa */
+  --crimson: #c82127;
+  --crimson-deep: #a5181d;
+  --cream: #fffaee;
+  --ivory: #fffaee;
+  --dark: #420002;
+  --ink: #420002;
+  --gold: #c82127;
 
-  --background: var(--ivory);
-  --foreground: var(--ink);
-  --card: oklch(0.99 0.005 85);
-  --card-foreground: var(--ink);
-  --popover: var(--ivory);
-  --popover-foreground: var(--ink);
-  --primary: var(--crimson);
-  --primary-foreground: var(--ivory);
-  --secondary: oklch(0.93 0.02 60);
-  --secondary-foreground: var(--ink);
-  --muted: oklch(0.94 0.01 70);
-  --muted-foreground: oklch(0.45 0.02 30);
-  --accent: var(--gold);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: var(--ivory);
-  --border: oklch(0.88 0.02 60);
-  --input: oklch(0.88 0.02 60);
-  --ring: var(--crimson);
+  --background: #fffaee;
+  --foreground: #420002;
+  --card: #ffffff;
+  --card-foreground: #420002;
+  --popover: #fffaee;
+  --popover-foreground: #420002;
+  --primary: #c82127;
+  --primary-foreground: #fffaee;
+  --secondary: #f4eee1;
+  --secondary-foreground: #420002;
+  --muted: #f4eee1;
+  --muted-foreground: rgba(66, 0, 2, 0.65);
+  --accent: #c82127;
+  --accent-foreground: #fffaee;
+  --destructive: #c82127;
+  --destructive-foreground: #fffaee;
+  --border: rgba(66, 0, 2, 0.12);
+  --input: rgba(66, 0, 2, 0.15);
+  --ring: #c82127;
 }
 
 @layer base {
