@@ -323,8 +323,8 @@ export function CoverflowCarousel({
                     }
                   }}
                   className={cn(
-                    "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-muted shadow-2xl will-change-transform cursor-pointer transition-shadow duration-300",
-                    isCurrent ? "ring-2 ring-amber-300/60 shadow-[0_20px_50px_rgba(0,0,0,0.6)]" : "hover:brightness-105",
+                    "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-[#f4eee1] shadow-xl will-change-transform cursor-pointer transition-shadow duration-300",
+                    isCurrent ? "ring-2 ring-[#c82127] shadow-[0_20px_50px_rgba(66,0,2,0.25)]" : "hover:brightness-105",
                     cardClassName,
                   )}
                   style={{ width: "var(--cf-card)" }}
@@ -337,17 +337,17 @@ export function CoverflowCarousel({
                     className="h-full w-full select-none object-cover transition-transform duration-700"
                   />
                   {slide.badge && (
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#3B0710]/90 text-amber-200 border border-amber-300/30 text-[9px] uppercase tracking-wider font-semibold backdrop-blur-md">
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#c82127] text-[#fffaee] text-[9px] uppercase tracking-wider font-semibold shadow-sm">
                       {slide.badge}
                     </div>
                   )}
                   {slide.price && (
-                    <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/75 text-[#FAF7F2] text-xs font-semibold backdrop-blur-md border border-white/20">
+                    <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-[#420002]/90 text-[#fffaee] text-xs font-semibold backdrop-blur-md border border-[#fffaee]/20">
                       {slide.price}
                     </div>
                   )}
-                  {/* Subtle inner gold vignette border */}
-                  <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/15" />
+                  {/* Subtle inner hairline border */}
+                  <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#420002]/10" />
                 </div>
               );
             })}
@@ -360,7 +360,7 @@ export function CoverflowCarousel({
               type="button"
               aria-label="Previous slide"
               onClick={() => nudge(-1)}
-              className="absolute left-1.5 sm:left-4 md:left-6 top-1/2 z-[200] -translate-y-1/2 h-8 w-8 sm:h-11 sm:w-11 flex items-center justify-center rounded-full bg-[#2B050B]/90 text-amber-200 border border-amber-300/30 backdrop-blur-md transition-all duration-300 hover:bg-[#5C0A19] active:scale-95 hover:scale-105 shadow-xl"
+              className="absolute left-1.5 sm:left-4 md:left-6 top-1/2 z-[200] -translate-y-1/2 h-8 w-8 sm:h-11 sm:w-11 flex items-center justify-center rounded-full bg-[#420002] text-[#fffaee] border border-[#fffaee]/20 transition-all duration-300 hover:bg-[#c82127] active:scale-95 hover:scale-105 shadow-xl cursor-pointer"
             >
               <ChevronLeft className="size-4 sm:size-5" />
             </button>
@@ -368,7 +368,7 @@ export function CoverflowCarousel({
               type="button"
               aria-label="Next slide"
               onClick={() => nudge(1)}
-              className="absolute right-1.5 sm:right-4 md:right-6 top-1/2 z-[200] -translate-y-1/2 h-8 w-8 sm:h-11 sm:w-11 flex items-center justify-center rounded-full bg-[#2B050B]/90 text-amber-200 border border-amber-300/30 backdrop-blur-md transition-all duration-300 hover:bg-[#5C0A19] active:scale-95 hover:scale-105 shadow-xl"
+              className="absolute right-1.5 sm:right-4 md:right-6 top-1/2 z-[200] -translate-y-1/2 h-8 w-8 sm:h-11 sm:w-11 flex items-center justify-center rounded-full bg-[#420002] text-[#fffaee] border border-[#fffaee]/20 transition-all duration-300 hover:bg-[#c82127] active:scale-95 hover:scale-105 shadow-xl cursor-pointer"
             >
               <ChevronRight className="size-4 sm:size-5" />
             </button>
@@ -381,20 +381,20 @@ export function CoverflowCarousel({
           key={selected}
           className="mt-4 flex flex-col items-center px-6 duration-300 animate-in fade-in slide-in-from-bottom-1 text-center"
         >
-          <p className="text-xl sm:text-2xl font-serif-brand font-semibold tracking-wide text-amber-200 drop-shadow-sm">
+          <p className="text-xl sm:text-2xl font-serif-brand font-semibold tracking-wide text-[#420002]">
             {active.title}
           </p>
           {active.subtitle && (
-            <p className="mt-1 text-xs sm:text-sm text-[#FAF7F2]/75 max-w-md">
+            <p className="mt-1 text-xs sm:text-sm text-[#420002]/70 max-w-md">
               {active.subtitle}
             </p>
           )}
           {active.meta && active.meta.length > 0 && (
-            <dl className="mt-4 w-full max-w-[320px] rounded-xl bg-[#2B050B]/80 border border-amber-300/20 backdrop-blur-md p-3 text-[12px] shadow-lg">
+            <dl className="mt-4 w-full max-w-[320px] rounded-xl bg-[#fffaee] border border-[#420002]/15 p-3 text-[12px] shadow-md">
               {active.meta.map((row) => (
-                <div key={row.label} className="flex justify-between py-0.5 border-b border-amber-300/10 last:border-0">
-                  <dt className="text-amber-100/60 font-sans">{row.label}</dt>
-                  <dd className="font-medium text-amber-200 font-sans">{row.value}</dd>
+                <div key={row.label} className="flex justify-between py-0.5 border-b border-[#420002]/10 last:border-0">
+                  <dt className="text-[#420002]/60 font-sans">{row.label}</dt>
+                  <dd className="font-medium text-[#420002] font-sans">{row.value}</dd>
                 </div>
               ))}
             </dl>
@@ -414,8 +414,8 @@ export function CoverflowCarousel({
               className={cn(
                 "h-2 rounded-full transition-all duration-300",
                 index === selected
-                  ? "w-8 bg-amber-300 shadow-[0_0_10px_rgba(252,211,77,0.8)]"
-                  : "w-2 bg-amber-100/30 hover:bg-amber-100/60",
+                  ? "w-8 bg-[#c82127] shadow-sm"
+                  : "w-2 bg-[#420002]/20 hover:bg-[#420002]/40",
               )}
             />
           ))}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCurrencyStore } from "@/store/currencyStore";
+import { useState, useEffect } from "react";
 
 import { useHydrated } from "@/hooks/useHydrated";
 
@@ -14,17 +15,53 @@ export function ProductCard({ product }: { product: Product }) {
   const hydrated = useHydrated();
   const wishlisted = hydrated ? isWishlisted(product.id) : false;
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isHovered && product.gallery && product.gallery.length > 1) {
+      interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % product.gallery.length);
+      }, 1400); // Very smooth, slightly slower pacing
+    } else {
+      setCurrentImageIndex(0);
+    }
+    return () => clearInterval(interval);
+  }, [isHovered, product.gallery]);
+
   return (
     <div className="group block relative">
       <Link href={`/product/${product.id}`}>
-        <div className="relative overflow-hidden bg-muted aspect-[4/5] rounded-lg">
-          <img
-            src={product.image}
-            alt={product.name}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-          />
-          <span className="absolute left-3 top-3 bg-background/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-foreground/80 rounded-sm shadow-sm font-body">
+        <div 
+          className="relative overflow-hidden aspect-[4/5] rounded-lg bg-[#0d0204]"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {product.gallery && product.gallery.length > 0 ? (
+            product.gallery.map((imgSrc, idx) => (
+              <img
+                key={imgSrc}
+                src={imgSrc}
+                alt={`${product.name} - view ${idx + 1}`}
+                loading={idx === 0 ? "eager" : "lazy"}
+                className="absolute inset-0 h-full w-full object-cover group-hover:scale-105"
+                style={{ 
+                  opacity: idx === currentImageIndex ? 1 : 0,
+                  zIndex: idx === currentImageIndex ? 10 : 0,
+                  transition: `opacity 700ms ease-in-out ${idx === currentImageIndex ? '0ms' : '700ms'}, transform 1500ms ease-out`
+                }}
+              />
+            ))
+          ) : (
+            <img
+              src={product.image}
+              alt={product.name}
+              loading="eager"
+              className="h-full w-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
+            />
+          )}
+          <span className="absolute left-3 top-3 bg-background/90 backdrop-blur px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-foreground/80 rounded-sm shadow-sm font-body z-20">
             {product.status}
           </span>
         </div>

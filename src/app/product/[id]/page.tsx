@@ -121,7 +121,7 @@ export default function ProductDetailPage({
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl)}
-                    className={`relative w-20 h-24 md:w-24 md:h-28 rounded-md overflow-hidden border transition-all duration-300 flex-shrink-0 ${
+                    className={`relative w-20 h-24 md:w-24 md:h-28 rounded-md overflow-hidden border transition-all duration-300 flex-shrink-0 bg-[#0d0204] ${
                       selectedImage === imgUrl
                         ? "border-primary ring-2 ring-primary/20 shadow-md scale-[1.02]"
                         : "border-border/60 hover:border-foreground/40 opacity-70 hover:opacity-100"
@@ -130,18 +130,18 @@ export default function ProductDetailPage({
                     <img
                       src={imgUrl}
                       alt={`${product.name} view ${idx + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-0.5"
                     />
                   </button>
                 ))}
               </div>
 
               {/* Main Featured Image Frame */}
-              <div className="relative flex-1 aspect-[4/5] bg-secondary/40 rounded-xl overflow-hidden border border-border/50 shadow-lg group">
+              <div className="relative flex-1 aspect-[4/3] sm:aspect-[4/5] bg-[#0d0204] rounded-xl overflow-hidden border border-[#420002]/20 shadow-xl group flex items-center justify-center">
                 <img
                   src={selectedImage}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                 />
 
                 {/* Availability Badge */}
@@ -176,7 +176,13 @@ export default function ProductDetailPage({
               
               {/* Category & Collection Tag */}
               <div>
-                <div className="flex items-center gap-2 mb-2.5">
+                {/* Category, Collection & Product Code */}
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  {product.specs.code && (
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#420002] text-[#fffaee] text-[9px] uppercase tracking-[0.25em] font-bold font-sans">
+                      {product.specs.code}
+                    </span>
+                  )}
                   <span className="text-[11px] uppercase tracking-[0.32em] text-primary font-medium font-sans">
                     {product.category}
                   </span>
@@ -356,28 +362,58 @@ export default function ProductDetailPage({
 
                   {openTab === "specs" && (
                     <div className="p-4 pt-2 border-t border-border/40 text-[13px] text-foreground/80 space-y-2.5 font-sans">
+                      {product.specs.code && (
+                        <div className="flex justify-between border-b border-border/30 pb-2">
+                          <span className="text-foreground/50 font-medium">Product Code</span>
+                          <span className="font-semibold text-primary text-right">{product.specs.code}</span>
+                        </div>
+                      )}
                       <div className="flex justify-between border-b border-border/30 pb-2">
                         <span className="text-foreground/50 font-medium">Precious Metal</span>
                         <span className="font-semibold text-right">{product.specs.metal}</span>
                       </div>
                       <div className="flex justify-between border-b border-border/30 pb-2">
-                        <span className="text-foreground/50 font-medium">Gemstones</span>
-                        <span className="font-semibold text-right max-w-[220px]">{product.specs.gemstones}</span>
+                        <span className="text-foreground/50 font-medium">Gemstones & Detail</span>
+                        <span className="font-semibold text-right max-w-[240px]">{product.specs.gemstones}</span>
                       </div>
                       <div className="flex justify-between border-b border-border/30 pb-2">
                         <span className="text-foreground/50 font-medium">Craft Technique</span>
                         <span className="font-semibold text-right">{product.specs.craftsmanship}</span>
                       </div>
+                      {product.specs.setting && (
+                        <div className="flex justify-between border-b border-border/30 pb-2">
+                          <span className="text-foreground/50 font-medium">Collet & Setting</span>
+                          <span className="font-semibold text-right">{product.specs.setting}</span>
+                        </div>
+                      )}
+                      {product.specs.strand && (
+                        <div className="flex justify-between border-b border-border/30 pb-2">
+                          <span className="text-foreground/50 font-medium">Necklace Strand</span>
+                          <span className="font-semibold text-right">{product.specs.strand}</span>
+                        </div>
+                      )}
+                      {product.specs.design && (
+                        <div className="flex justify-between border-b border-border/30 pb-2">
+                          <span className="text-foreground/50 font-medium">Motif & Design</span>
+                          <span className="font-semibold text-right">{product.specs.design}</span>
+                        </div>
+                      )}
                       {product.specs.weight && (
                         <div className="flex justify-between border-b border-border/30 pb-2">
-                          <span className="text-foreground/50 font-medium">Gross Weight</span>
+                          <span className="text-foreground/50 font-medium">Weight (gram)</span>
                           <span className="font-semibold text-right">{product.specs.weight}</span>
                         </div>
                       )}
                       {product.specs.dimensions && (
                         <div className="flex justify-between border-b border-border/30 pb-2">
-                          <span className="text-foreground/50 font-medium">Dimensions</span>
+                          <span className="text-foreground/50 font-medium">Pendant Size</span>
                           <span className="font-semibold text-right">{product.specs.dimensions}</span>
+                        </div>
+                      )}
+                      {product.specs.finish && (
+                        <div className="flex justify-between border-b border-border/30 pb-2">
+                          <span className="text-foreground/50 font-medium">Atelier Finish</span>
+                          <span className="font-semibold text-right">{product.specs.finish}</span>
                         </div>
                       )}
                       <div className="flex justify-between pt-1">

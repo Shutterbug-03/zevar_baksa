@@ -2,9 +2,9 @@
 
 import * as React from "react";
 
-// Continuous wavy gold SVG divider line
+// Continuous wavy divider line
 const WavyBorder = () => (
-  <div className="w-full overflow-hidden h-[7px] relative flex justify-start items-center opacity-60 select-none pointer-events-none">
+  <div className="w-full overflow-hidden h-[7px] relative flex justify-start items-center opacity-40 select-none pointer-events-none">
     <div className="flex w-max flex-shrink-0 animate-[ribbon-wavy_20s_linear_infinite]">
       {Array(60)
         .fill(0)
@@ -12,7 +12,7 @@ const WavyBorder = () => (
           <svg
             key={i}
             viewBox="0 0 40 8"
-            className="w-[40px] h-[8px] fill-none stroke-amber-300 stroke-[1.3] flex-shrink-0"
+            className="w-[40px] h-[8px] fill-none stroke-[#fffaee] stroke-[1.3] flex-shrink-0"
           >
             <path d="M0,4 C5,0 15,0 20,4 C25,8 35,8 40,4" />
           </svg>
@@ -21,14 +21,14 @@ const WavyBorder = () => (
   </div>
 );
 
-// Monogram brand seal stamp with gold border and amber glow
+// Monogram brand seal stamp
 const Stamp = () => (
-  <div className="relative flex items-center justify-center w-11 h-11 sm:w-13 sm:h-13 border border-amber-300/40 rounded-full p-2 bg-[#2B050B]/95 flex-shrink-0 shadow-[0_0_15px_rgba(252,211,77,0.3)] backdrop-blur-md">
-    <div className="absolute inset-0.5 border border-amber-300/20 rounded-full" />
+  <div className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 border border-[#fffaee]/30 rounded-full p-2 bg-[#420002] flex-shrink-0 shadow-md">
+    <div className="absolute inset-0.5 border border-[#fffaee]/15 rounded-full" />
     <img
       src="/logos/submark.png"
       alt="Zevar Baksa Seal"
-      className="h-5 sm:h-6 w-auto object-contain brightness-0 invert opacity-95"
+      className="h-4 sm:h-5 w-auto object-contain brightness-0 invert opacity-95"
     />
   </div>
 );
@@ -37,7 +37,7 @@ export function MarqueeRibbon({ text = "Mina Bagh • New Releases" }: { text?: 
   const marqueeItems = Array(6).fill(text);
 
   return (
-    <div className="relative w-full bg-gradient-to-r from-[#1A0307] via-[#33070E] to-[#1A0307] py-2.5 sm:py-3.5 border-y border-amber-300/30 overflow-hidden shadow-[0_4px_25px_rgba(0,0,0,0.6)] select-none">
+    <div className="relative w-full bg-[#c82127] py-2.5 sm:py-3.5 border-y border-[#420002]/20 overflow-hidden shadow-sm select-none">
       <style jsx>{`
         @keyframes marquee-continuous {
           0% {
@@ -68,7 +68,7 @@ export function MarqueeRibbon({ text = "Mina Bagh • New Releases" }: { text?: 
             {marqueeItems.map((item, idx) => (
               <div
                 key={`set-1-${idx}`}
-                className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 whitespace-nowrap text-xl sm:text-2xl md:text-3xl font-display uppercase tracking-[0.25em] text-amber-200 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] flex-shrink-0"
+                className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 whitespace-nowrap text-xl sm:text-2xl md:text-3xl font-display uppercase tracking-[0.25em] text-[#fffaee] flex-shrink-0"
               >
                 <span>{item}</span>
                 <Stamp />
@@ -79,7 +79,7 @@ export function MarqueeRibbon({ text = "Mina Bagh • New Releases" }: { text?: 
             {marqueeItems.map((item, idx) => (
               <div
                 key={`set-2-${idx}`}
-                className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 whitespace-nowrap text-xl sm:text-2xl md:text-3xl font-display uppercase tracking-[0.25em] text-amber-200 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] flex-shrink-0"
+                className="flex items-center gap-6 sm:gap-8 pr-6 sm:pr-8 whitespace-nowrap text-xl sm:text-2xl md:text-3xl font-display uppercase tracking-[0.25em] text-[#fffaee] flex-shrink-0"
                 aria-hidden="true"
               >
                 <span>{item}</span>
