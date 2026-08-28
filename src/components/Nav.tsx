@@ -30,7 +30,6 @@ const secondaryLinks = [
 
 export function Nav() {
   const pathname = usePathname();
-  const isDarkHero = false; // Minimal clean light base
 
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -91,13 +90,13 @@ export function Nav() {
       >
         <nav className="mx-auto flex max-w-[1600px] items-center h-[4.8rem] md:h-[5.2rem] px-5 sm:px-8 md:px-14 justify-between">
 
-          {/* Left: Minimal Hamburger Button */}
+          {/* Left: Hamburger Icon Button */}
           <div className="flex-1 flex justify-start items-center">
             {menuOpen ? (
               <button
                 aria-label="Close menu"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center justify-center h-10 w-10 rounded-full border border-[#420002]/20 bg-[#fffaee] text-[#420002] hover:bg-[#c82127] hover:text-[#fffaee] hover:border-[#c82127] transition-all duration-300 active:scale-95"
+                className="flex items-center justify-center h-10 w-10 rounded-full border border-[#420002]/20 bg-[#fffaee] text-[#420002] hover:bg-[#c82127] hover:text-[#fffaee] hover:border-[#c82127] transition-all duration-300 active:scale-95 cursor-pointer"
               >
                 <X className="h-4 w-4 stroke-[1.5]" />
               </button>
@@ -196,7 +195,7 @@ export function Nav() {
         </nav>
       </header>
 
-      {/* FULL SCREEN LUXURY MINIMAL OVERLAY MENU */}
+      {/* FULL SCREEN LUXURY OVERLAY MENU */}
       <div
         className={`fixed inset-0 z-40 bg-[#fffaee] flex flex-col justify-between items-center overflow-y-auto px-6 pt-28 pb-12 transition-all duration-500 ease-in-out font-sans ${
           menuOpen

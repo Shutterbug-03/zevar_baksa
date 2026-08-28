@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 interface CategoryItem {
   id: string;
+  number: string;
   label: string;
   subtitle: string;
   hallmark: string;
@@ -16,6 +17,7 @@ interface CategoryItem {
 const categories: CategoryItem[] = [
   {
     id: "cat-1",
+    number: "01",
     label: "Royal Rings",
     subtitle: "Solitaires & Jaipur Bands",
     hallmark: "BIS 925 • 22K Vermeil",
@@ -24,6 +26,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-2",
+    number: "02",
     label: "Heritage Earrings",
     subtitle: "Chandbalis & Studs",
     hallmark: "Fired Meenakari Enamel",
@@ -32,6 +35,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-3",
+    number: "03",
     label: "Statement Necklaces",
     subtitle: "Chokers & Royal Haars",
     hallmark: "Solid 925 Silver Base",
@@ -40,6 +44,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-4",
+    number: "04",
     label: "Kadas & Bracelets",
     subtitle: "Carved Filigree Cuffs",
     hallmark: "Ergonomic Comfort Fit",
@@ -48,6 +53,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-5",
+    number: "05",
     label: "Bridal Chokers",
     subtitle: "Festive & Wedding Trousseau",
     hallmark: "750°C Kiln Fired Enamel",
@@ -56,6 +62,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-6",
+    number: "06",
     label: "Meenakari Jhumkas",
     subtitle: "Jaipur Palace Heritage",
     hallmark: "Artisan Hand-Shaped",
@@ -64,6 +71,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-7",
+    number: "07",
     label: "Bridal Trousseau",
     subtitle: "Complete Heirloom Sets",
     hallmark: "Collector Limited Run",
@@ -72,6 +80,7 @@ const categories: CategoryItem[] = [
   },
   {
     id: "cat-8",
+    number: "08",
     label: "Statement Cuffs",
     subtitle: "Sculpted Silver Masterpieces",
     hallmark: "Nickel-Free & Hypoallergenic",
@@ -98,7 +107,7 @@ export function ShopByCategory() {
 
   return (
     <section className="relative w-full bg-[#fffaee] py-20 sm:py-28 overflow-hidden flex flex-col justify-center font-sans border-b border-[#420002]/10">
-      <div className="relative z-20 mx-auto w-full max-w-[1500px] px-6 sm:px-10 md:px-16">
+      <div className="relative z-20 mx-auto w-full max-w-[1540px] px-6 sm:px-10 md:px-16">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#420002]/10">
@@ -108,6 +117,7 @@ export function ShopByCategory() {
               <span className="text-[9.5px] uppercase tracking-[0.3em] text-[#c82127] font-semibold font-sans">
                 Curated Collections
               </span>
+              <span className="text-[10px] text-[#c82127]">✦</span>
             </div>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#420002] leading-none">
               Shop by Category
@@ -116,14 +126,14 @@ export function ShopByCategory() {
 
           <Link
             href="/shop"
-            className="group inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-[#c82127] hover:text-[#420002] transition-colors self-start md:self-auto py-2"
+            className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#c82127] hover:text-[#420002] transition-colors self-start md:self-auto py-2"
           >
             <span>Explore Entire Archive</span>
             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
 
-        {/* Minimal Directory Tabs */}
+        {/* Minimal Luxury Directory Tabs */}
         <div className="flex items-center gap-4 sm:gap-8 overflow-x-auto py-5 sm:py-6 no-scrollbar select-none border-b border-[#420002]/10">
           {filterTabs.map((tab) => {
             const isActive = activeTab === tab.key;
@@ -152,7 +162,7 @@ export function ShopByCategory() {
             <Link
               key={cat.id}
               href="/shop"
-              className="group relative flex flex-col rounded-2xl overflow-hidden border border-[#420002]/15 bg-[#fffaee] shadow-sm transition-all duration-500 hover:border-[#c82127] hover:shadow-md hover:-translate-y-1"
+              className="group relative flex flex-col rounded-2xl overflow-hidden border border-[#420002]/15 bg-[#ffffff] shadow-sm transition-all duration-500 hover:border-[#c82127] hover:shadow-[0_15px_35px_-5px_rgba(66,0,2,0.12)] hover:-translate-y-1.5"
             >
               {/* Image Container */}
               <div className="relative aspect-[3/4] overflow-hidden bg-[#f4eee1]">
@@ -163,8 +173,15 @@ export function ShopByCategory() {
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
                 
-                {/* Clean Bottom Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#420002]/90 via-[#420002]/20 to-transparent pointer-events-none" />
+                {/* Clean Multi-tier Shading */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#420002]/85 via-[#420002]/15 to-transparent pointer-events-none" />
+
+                {/* Top Number Badge */}
+                <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#fffaee]/90 backdrop-blur-md border border-[#420002]/10 text-[9px] font-sans font-semibold text-[#420002]">
+                    {cat.number}
+                  </span>
+                </div>
 
                 {/* Bottom Card Copy */}
                 <div className="absolute bottom-0 inset-x-0 p-4 sm:p-5 flex items-end justify-between">
@@ -177,7 +194,7 @@ export function ShopByCategory() {
                     </h3>
                   </div>
 
-                  <span className="flex items-center justify-center h-8 w-8 rounded-full bg-[#c82127] text-[#fffaee] shadow-sm transition-all duration-300 group-hover:bg-[#a5181d] flex-shrink-0">
+                  <span className="flex items-center justify-center h-8 w-8 rounded-full bg-[#c82127] text-[#fffaee] shadow-sm transition-all duration-300 group-hover:bg-[#a5181d] group-hover:scale-110 flex-shrink-0">
                     <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
