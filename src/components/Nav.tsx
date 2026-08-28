@@ -114,16 +114,18 @@ export function Nav() {
             )}
           </div>
 
-          {/* Center: Brand Wordmark / Submark */}
+          {/* Center: Brand Monogram Submark */}
           <Link
             href="/"
             onClick={() => setMenuOpen(false)}
             className="flex justify-center items-center group py-1"
           >
             <div className="relative flex items-center justify-center">
-              <span className="font-serif-brand text-2xl sm:text-3xl tracking-tight text-[#c82127] font-normal hover:opacity-90 transition-opacity">
-                Zevar Baksa
-              </span>
+              <img
+                src="/logos/submark.png"
+                alt="Zevar Baksa Monogram"
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
             </div>
           </Link>
 
