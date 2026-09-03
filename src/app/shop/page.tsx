@@ -2,17 +2,52 @@
 
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/products";
-import { useState } from "react";
+import { useProductStore } from "@/store/productStore";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 const categories = ["All", "Necklaces", "Earrings", "Bracelets", "Bridal"];
 
-export default function Shop() {
+function ProductSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <div className="aspect-[3/4] rounded-2xl bg-[#420002]/10 mb-3" />
+      <div className="h-3 w-3/4 rounded-full bg-[#420002]/8 mb-1.5" />
+      <div className="h-3 w-1/2 rounded-full bg-[#420002]/8" />
+    </div>
+  );
+}
+
+function ShopContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const { products, status, fetchProducts } = useProductStore();
+
   const [cat, setCat] = useState("All");
+
+  // Trigger API fetch on mount (idempotent — no-ops if already loaded)
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    if (categoryParam) {
+      const match = categories.find(
+        (c) => c.toLowerCase() === categoryParam.toLowerCase()
+      );
+      if (match) {
+        setCat(match);
+      } else if (categoryParam.toLowerCase() === "pendants") {
+        setCat("Necklaces");
+      }
+    }
+  }, [categoryParam]);
+
   const filtered = cat === "All" ? products : products.filter((p) => p.category === cat);
+  const isLoading = status === "loading";
 
   return (
-    <Layout>
+    <>
       {/* Header Banner */}
       <section className="pt-32 md:pt-40 pb-12 md:pb-16 bg-[#fffaee] border-b border-[#420002]/10">
         <div className="mx-auto max-w-[1600px] px-6 md:px-12 text-center md:text-left">
@@ -55,17 +90,27 @@ export default function Shop() {
       <section className="bg-[#fffaee] min-h-[60vh] mx-auto w-full px-6 md:px-12 py-14 md:py-20 border-b border-[#420002]/10">
         <div className="mx-auto max-w-[1600px]">
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
-            {filtered.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
+            {isLoading
+              ? Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)
+              : filtered.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
-          {filtered.length === 0 && (
+          {!isLoading && filtered.length === 0 && (
             <p className="text-center py-24 text-[#420002]/60 font-sans text-sm">
               Nothing here yet — check back soon.
             </p>
           )}
         </div>
       </section>
+    </>
+  );
+}
+
+export default function Shop() {
+  return (
+    <Layout>
+      <Suspense fallback={<div className="min-h-screen bg-[#fffaee]" />}>
+        <ShopContent />
+      </Suspense>
     </Layout>
   );
 }

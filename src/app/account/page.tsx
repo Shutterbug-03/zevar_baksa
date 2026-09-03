@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -21,7 +21,8 @@ import { Layout } from "@/components/Layout";
 import { supabaseAnon, type Order } from "@/lib/supabase";
 
 export default function AccountPage() {
-  const { data: session, status } = useSession();
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,14 +30,14 @@ export default function AccountPage() {
 
   // Redirect if not authenticated (middleware handles this, but belt + suspenders)
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (isLoaded && !user) {
       router.push("/");
     }
-  }, [status, router]);
+  }, [isLoaded, user, router]);
 
   // Fetch orders for this customer
   useEffect(() => {
-    const email = session?.user?.email;
+    const email = user?.primaryEmailAddress?.emailAddress;
     if (!email) return;
 
     const fetchOrders = async () => {
@@ -59,9 +60,9 @@ export default function AccountPage() {
     };
 
     fetchOrders();
-  }, [session?.user?.email]);
+  }, [user?.primaryEmailAddress?.emailAddress]);
 
-  if (status === "loading") {
+  if (!isLoaded) {
     return (
       <Layout>
         <div className="min-h-screen flex items-center justify-center">
@@ -71,9 +72,9 @@ export default function AccountPage() {
     );
   }
 
-  if (!session) return null;
+  if (!user) return null;
 
-  const email = session.user?.email ?? "";
+  const email = user.primaryEmailAddress?.emailAddress ?? "";
   const initials = email.slice(0, 2).toUpperCase();
 
   return (
@@ -109,7 +110,7 @@ export default function AccountPage() {
               <p className="text-sm font-sans text-foreground truncate">{email}</p>
             </div>
             <button
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => signOut({ redirectUrl: "/" })}
               className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 text-[10px] uppercase tracking-[0.2em] font-sans text-foreground/50 hover:text-red-400 hover:border-red-500/30 transition-all duration-200"
             >
               <LogOut className="h-3.5 w-3.5" />

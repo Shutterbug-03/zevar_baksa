@@ -19,6 +19,7 @@ type CartStore = {
   closeCart: () => void;
   totalItems: () => number;
   totalPrice: () => number;
+  setItems: (items: CartItem[]) => void;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -72,6 +73,7 @@ export const useCartStore = create<CartStore>()(
       totalItems: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
       totalPrice: () =>
         get().items.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
+      setItems: (items) => set({ items }),
     }),
     {
       name: "zevar-cart", // persists in localStorage

@@ -19,7 +19,7 @@ export default function Home() {
         
         {/* Full-Bleed Cover Background Image — smoothly dissolved into canvas with zero dividing line */}
         <img
-          src="/images/hero-cover.png"
+          src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/hero-cover.png"
           alt="Zevar Baksa Hero Editorial Jewellery"
           style={{
             maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%)",
@@ -107,7 +107,7 @@ export default function Home() {
                 {/* Main Photo: Handcrafted Silver Enamel Necklace Masterpiece */}
                 <div className="relative z-10 w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-[#420002]/15 bg-[#f4eee1] group">
                   <img
-                    src="/images/about-editorial.jpg"
+                    src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg"
                     alt="Zevar Baksa Handcrafted Silver Necklace Panel Enamel Work"
                     className="h-full w-full object-cover object-center transition-transform duration-1000 group-hover:scale-105"
                   />
@@ -118,7 +118,7 @@ export default function Home() {
                 {/* Floating Artisan Monogram Seal Badge */}
                 <div className="absolute -top-3 -right-3 sm:-top-5 sm:-right-5 z-30 flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-full border border-[#420002]/15 bg-[#fffaee] shadow-xl">
                   <img
-                    src="/logos/submark.png"
+                    src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png"
                     alt="Zevar Baksa Artisan Seal"
                     className="h-9 sm:h-11 w-auto object-contain"
                   />

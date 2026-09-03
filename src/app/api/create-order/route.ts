@@ -11,8 +11,25 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { getRazorpay, generateReceipt } from "@/lib/razorpay";
 import { supabaseAdmin, type OrderItem } from "@/lib/supabase";
+import { rateLimit } from "@/lib/rateLimit";
 
 export async function POST(req: NextRequest) {
+  // ── Rate limit: 5 orders / 60 s per IP ──────────────────────────────────
+  const rl = rateLimit(req, { limit: 5, windowMs: 60_000 });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before trying again." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rl.resetAt - Date.now()) / 1000)),
+          "X-RateLimit-Limit": "5",
+          "X-RateLimit-Remaining": "0",
+        },
+      }
+    );
+  }
+
   try {
     const body = await req.json();
     const { amount, items, customerEmail, customerName, customerPhone, address, paymentMethod } = body;

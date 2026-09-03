@@ -1,47 +1,71 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Search, ShoppingBag, X, ChevronDown, Heart } from "lucide-react";
+import { Search, ShoppingBag, X, ChevronDown, Heart, User } from "lucide-react";
 import { collections } from "@/data/collections";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useUIStore } from "@/store/uiStore";
 import { useCurrencyStore, ALL_CURRENCIES, FLAGS, type Currency } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
+import { useAuth } from "@clerk/nextjs";
 
-const mainLinks = [
-  { label: "Shop All", to: "/shop" },
+const mainLinks: { label: string; to: string; isCollections?: boolean; isShop?: boolean }[] = [
+  { label: "Shop All", to: "/shop", isShop: true },
   { label: "Collections", to: "#", isCollections: true },
   { label: "Our Story", to: "/about" },
-  { label: "Jaipur Atelier", to: "/contact" },
   { label: "Wishlist", to: "/wishlist" },
 ];
 
-const secondaryLinks = [
-  { label: "Log in", action: "login" as const },
-  { label: "Search Heirloom", action: "search" as const },
+const shopCategories = [
+  { label: "Pendants & Necklaces", to: "/shop?category=Necklaces" },
+  { label: "Earrings & Jhumkas", to: "/shop?category=Earrings" },
+  { label: "Rings & Solitaires", to: "/shop?category=Rings" },
+  { label: "Bangles & Bracelets", to: "/shop?category=Bracelets" },
+  { label: "Bridal Trousseau", to: "/shop?category=Bridal" },
+];
+
+const secondaryLinks: { label: string; to?: string; action?: "login" | "search" }[] = [
   { label: "Jewellery Care & Material", to: "/about" },
-  { label: "Shipping Policy", to: "/about" },
-  { label: "Returns & Exchange", to: "/about" },
+  { label: "Shipping Policy", to: "/shipping-policy" },
+  { label: "Returns & Exchange", to: "/exchange-policy" },
+  { label: "Privacy Policy", to: "/privacy-policy" },
+  { label: "Terms & Conditions", to: "/terms-conditions" },
   { label: "Contact Atelier", to: "/contact" },
 ];
 
 export function Nav() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [collectionsExpanded, setCollectionsExpanded] = useState(false);
+  const [shopExpanded, setShopExpanded] = useState(false);
+
+  const handleNavigate = (href: string) => {
+    if (pathname === href) {
+      setMenuOpen(false);
+      return;
+    }
+    setMenuOpen(false);
+    setShopExpanded(false);
+    setCollectionsExpanded(false);
+    setTimeout(() => {
+      router.push(href);
+    }, 320);
+  };
 
   // Stores
   const { openCart, totalItems } = useCartStore();
   const { count: wishlistCount } = useWishlistStore();
   const { openSearch, openLogin } = useUIStore();
   const { currency, setCurrency } = useCurrencyStore();
+  const { isSignedIn, isLoaded: authLoaded } = useAuth();
 
   const hydrated = useHydrated();
 
@@ -131,7 +155,7 @@ export function Nav() {
           >
             <div className="relative flex items-center justify-center">
               <img
-                src="/logos/submark.png"
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png"
                 alt="Zevar Baksa Monogram"
                 className={`h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
                   isTransparentDarkHero ? "brightness-0 invert drop-shadow-md" : ""
@@ -186,6 +210,25 @@ export function Nav() {
               <Search className="h-4 w-4 sm:h-[18px] sm:w-[18px] stroke-[1.5]" />
             </button>
 
+            {/* Account / Login */}
+            <button
+              aria-label="Account"
+              onClick={() => {
+                if (authLoaded && isSignedIn) {
+                  router.push("/account");
+                } else {
+                  openLogin();
+                }
+              }}
+              className={`p-2 rounded-full transition-all duration-300 relative cursor-pointer active:scale-95 ${
+                isTransparentDarkHero
+                  ? "hover:text-[#c82127] hover:bg-white/15"
+                  : "hover:text-[#c82127] hover:bg-[#420002]/5"
+              }`}
+            >
+              <User className="h-4 w-4 sm:h-[18px] sm:w-[18px] stroke-[1.5]" />
+            </button>
+
             {/* Wishlist */}
             <Link
               href="/wishlist"
@@ -227,10 +270,10 @@ export function Nav() {
 
       {/* ── FULL SCREEN LUXURY OVERLAY MENU ── */}
       <div
-        className={`fixed inset-0 z-40 bg-[#fffaee] flex flex-col justify-between items-center overflow-y-auto px-6 pt-28 pb-12 transition-all duration-500 ease-in-out font-sans ${
+        className={`fixed inset-0 z-40 bg-[#fffaee] flex flex-col justify-between items-center overflow-y-auto px-6 pt-28 pb-12 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${
           menuOpen
-            ? "opacity-100 pointer-events-auto translate-y-0"
-            : "opacity-0 pointer-events-none -translate-y-4"
+            ? "opacity-100 pointer-events-auto translate-y-0 scale-100"
+            : "opacity-0 pointer-events-none -translate-y-3 scale-[0.99]"
         }`}
       >
         {/* Main centered navigation list */}
@@ -244,61 +287,128 @@ export function Nav() {
           </div>
 
           {mainLinks.map((link) => {
-            if (link.isCollections) {
+            if (link.isShop) {
               return (
                 <div key={link.label} className="w-full flex flex-col items-center">
                   <button
-                    onClick={() => setCollectionsExpanded(!collectionsExpanded)}
+                    onClick={() => {
+                      const next = !shopExpanded;
+                      setShopExpanded(next);
+                      if (next) setCollectionsExpanded(false);
+                    }}
                     className="group flex items-center justify-center gap-2 font-display text-2xl sm:text-3xl uppercase tracking-[0.2em] text-[#420002] hover:text-[#c82127] transition-colors py-1 cursor-pointer"
                   >
                     <span>{link.label}</span>
                     <ChevronDown
-                      className={`h-5 w-5 stroke-[1.5] transition-transform duration-300 ${
-                        collectionsExpanded ? "rotate-180 text-[#c82127]" : "text-[#420002]/40"
+                      className={`h-5 w-5 stroke-[1.5] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        shopExpanded ? "rotate-180 text-[#c82127]" : "text-[#420002]/40 group-hover:text-[#c82127]"
                       }`}
                     />
                   </button>
-                  {collectionsExpanded && (
-                    <div className="mt-3 flex flex-col items-center gap-2.5 animate-in fade-in slide-in-from-top-2 py-3 border-y border-[#420002]/10 w-full max-w-sm">
-                      {collections.map((c) => (
-                        <Link
-                          key={c.slug}
-                          href={`/collection/${c.slug}`}
-                          onClick={() => {
-                            setMenuOpen(false);
-                            setCollectionsExpanded(false);
+                  
+                  {/* Butter-Smooth Grid Accordion Container */}
+                  <div
+                    className={`grid w-full max-w-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
+                      shopExpanded
+                        ? "grid-rows-[1fr] opacity-100 mt-3 pt-3 pb-3 border-y border-[#420002]/10"
+                        : "grid-rows-[0fr] opacity-0 mt-0 pt-0 pb-0 border-y border-transparent pointer-events-none"
+                    }`}
+                  >
+                    <div className="min-h-0 flex flex-col items-center gap-2.5 overflow-hidden">
+                      {shopCategories.map((cat, idx) => (
+                        <button
+                          key={cat.label}
+                          onClick={() => handleNavigate(cat.to)}
+                          style={{
+                            transitionDelay: shopExpanded ? `${idx * 40}ms` : "0ms",
                           }}
-                          className="group/col flex items-center gap-2 font-display text-lg sm:text-xl uppercase tracking-[0.2em] text-[#c82127] hover:text-[#420002] transition-colors py-1"
+                          className={`group/cat flex items-center gap-2 font-display text-lg sm:text-xl uppercase tracking-[0.2em] text-[#c82127] hover:text-[#420002] transition-all duration-300 py-1 cursor-pointer ${
+                            shopExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                          }`}
                         >
-                          <span className="text-[9px] text-[#c82127]/60 group-hover/col:text-[#c82127]">✦</span>
-                          <span>{c.name} Collection</span>
-                        </Link>
+                          <span className="text-[9px] text-[#c82127]/60 group-hover/cat:text-[#c82127] transition-colors">✦</span>
+                          <span>{cat.label}</span>
+                        </button>
                       ))}
-                      <Link
-                        href="/shop"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          setCollectionsExpanded(false);
-                        }}
-                        className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-colors pt-1 font-sans font-medium"
+                      <button
+                        onClick={() => handleNavigate("/shop")}
+                        className={`text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-all duration-300 pt-1 font-sans font-medium cursor-pointer ${
+                          shopExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                        }`}
+                      >
+                        Explore All Vault Pieces →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            if (link.isCollections) {
+              return (
+                <div key={link.label} className="w-full flex flex-col items-center">
+                  <button
+                    onClick={() => {
+                      const next = !collectionsExpanded;
+                      setCollectionsExpanded(next);
+                      if (next) setShopExpanded(false);
+                    }}
+                    className="group flex items-center justify-center gap-2 font-display text-2xl sm:text-3xl uppercase tracking-[0.2em] text-[#420002] hover:text-[#c82127] transition-colors py-1 cursor-pointer"
+                  >
+                    <span>{link.label}</span>
+                    <ChevronDown
+                      className={`h-5 w-5 stroke-[1.5] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        collectionsExpanded ? "rotate-180 text-[#c82127]" : "text-[#420002]/40 group-hover:text-[#c82127]"
+                      }`}
+                    />
+                  </button>
+
+                  {/* Butter-Smooth Grid Accordion Container */}
+                  <div
+                    className={`grid w-full max-w-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
+                      collectionsExpanded
+                        ? "grid-rows-[1fr] opacity-100 mt-3 pt-3 pb-3 border-y border-[#420002]/10"
+                        : "grid-rows-[0fr] opacity-0 mt-0 pt-0 pb-0 border-y border-transparent pointer-events-none"
+                    }`}
+                  >
+                    <div className="min-h-0 flex flex-col items-center gap-2.5 overflow-hidden">
+                      {collections.map((c, idx) => (
+                        <button
+                          key={c.slug}
+                          onClick={() => handleNavigate(`/collection/${c.slug}`)}
+                          style={{
+                            transitionDelay: collectionsExpanded ? `${idx * 40}ms` : "0ms",
+                          }}
+                          className={`group/col flex items-center gap-2 font-display text-lg sm:text-xl uppercase tracking-[0.2em] text-[#c82127] hover:text-[#420002] transition-all duration-300 py-1 cursor-pointer ${
+                            collectionsExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                          }`}
+                        >
+                          <span className="text-[9px] text-[#c82127]/60 group-hover/col:text-[#c82127] transition-colors">✦</span>
+                          <span>{c.name} Collection</span>
+                        </button>
+                      ))}
+                      <button
+                        onClick={() => handleNavigate("/shop")}
+                        className={`text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-all duration-300 pt-1 font-sans font-medium cursor-pointer ${
+                          collectionsExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                        }`}
                       >
                         Explore All Heirlooms →
-                      </Link>
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             }
 
             return (
-              <Link
+              <button
                 key={link.label}
-                href={link.to!}
-                onClick={() => setMenuOpen(false)}
-                className="font-display text-2xl sm:text-3xl uppercase tracking-[0.2em] text-[#420002] hover:text-[#c82127] transition-colors py-1"
+                onClick={() => handleNavigate(link.to)}
+                className="font-display text-2xl sm:text-3xl uppercase tracking-[0.2em] text-[#420002] hover:text-[#c82127] transition-colors py-1 cursor-pointer"
               >
                 {link.label}
-              </Link>
+              </button>
             );
           })}
         </div>
@@ -319,7 +429,7 @@ export function Nav() {
                   key={link.label}
                   onClick={() => {
                     setMenuOpen(false);
-                    openLogin();
+                    router.push(`/login?redirect_url=${encodeURIComponent(pathname)}`);
                   }}
                   className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans text-[#420002]/70 hover:text-[#c82127] transition-colors text-center cursor-pointer"
                 >
@@ -342,27 +452,25 @@ export function Nav() {
               );
             }
             return (
-              <Link
+              <button
                 key={link.label}
-                href={link.to!}
-                onClick={() => setMenuOpen(false)}
-                className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans text-[#420002]/70 hover:text-[#c82127] transition-colors"
+                onClick={() => handleNavigate(link.to!)}
+                className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans text-[#420002]/70 hover:text-[#c82127] transition-colors cursor-pointer"
               >
                 {link.label}
-              </Link>
+              </button>
             );
           })}
         </div>
 
         {/* Atelier Concierge Link */}
         <div className="relative z-10 mt-8 pt-6 border-t border-[#420002]/10 w-full max-w-lg text-center">
-          <Link
-            href="/contact"
-            onClick={() => setMenuOpen(false)}
-            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-sans text-[#420002]/80 hover:text-[#c82127] transition-colors"
+          <button
+            onClick={() => handleNavigate("/contact")}
+            className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-sans text-[#420002]/80 hover:text-[#c82127] transition-colors cursor-pointer"
           >
             <span className="text-[#c82127]">✦</span> Contact Atelier Concierge
-          </Link>
+          </button>
         </div>
       </div>
     </>

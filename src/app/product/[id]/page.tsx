@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import Script from "next/script";
 import Link from "next/link";
 import {
@@ -20,11 +20,13 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
-import { products, getProductById } from "@/data/products";
+import { useProductStore } from "@/store/productStore";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
+import { useAuth } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
 
 
 
@@ -34,7 +36,14 @@ export default function ProductDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const product = getProductById(id) || products[0]; // fallback to first product if not found
+  const { products, getById, fetchProducts } = useProductStore();
+
+  // Trigger fetch on mount so the store is always populated
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const product = getById(id) ?? products[0]; // fallback to first product if not found
 
   // State for active image gallery
   const [selectedImage, setSelectedImage] = useState(product.image);
@@ -55,11 +64,19 @@ export default function ProductDetailPage({
   const hydrated = useHydrated();
   const wishlisted = hydrated ? isWishlisted(product.id) : false;
 
+  const { isSignedIn, isLoaded: authLoaded } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const toggleTab = (tab: string) => {
     setOpenTab(openTab === tab ? null : tab);
   };
 
   const handleAddToBag = () => {
+    if (authLoaded && !isSignedIn) {
+      router.push(`/login?redirect_url=${encodeURIComponent(pathname)}`);
+      return;
+    }
     addItem(product, selectedSize);
     setAddedToBag(true);
     setTimeout(() => setAddedToBag(false), 3500);
@@ -279,7 +296,13 @@ export default function ProductDetailPage({
 
                 {/* Wishlist Button */}
                 <button
-                  onClick={() => toggleWishlist(product)}
+                  onClick={() => {
+                    if (authLoaded && !isSignedIn) {
+                      router.push(`/login?redirect_url=${encodeURIComponent(pathname)}`);
+                      return;
+                    }
+                    toggleWishlist(product);
+                  }}
                   className={`w-full py-3 px-6 rounded-full border text-[11px] uppercase tracking-[0.22em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5 ${
                     wishlisted
                       ? "border-primary/60 bg-primary/5 text-primary"

@@ -6,43 +6,43 @@ import { ZoomParallax, type ParallaxImage } from "@/components/ui/zoom-parallax"
 const collageImages: ParallaxImage[] = [
   {
     // 1. Center Zoom Hero (Model Shoot Portrait)
-    src: "/images/shoots/DSC07714.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07714.JPG",
     alt: "Zevar Baksa Model Wearing Signature Gold Haar",
     tag: "Signature Heirloom",
   },
   {
     // 2. Top-Right (Full Bridal Model Shoot)
-    src: "/images/shoots/DSC07812.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07812.JPG",
     alt: "Bridal Couture Model Shoot",
     tag: "Bridal Trousseau",
   },
   {
     // 3. Mid-Left (Product Close-Up)
-    src: "/images/shoots/DSC07871.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07871.JPG",
     alt: "Royal Meenakari Chandbali Earring",
     tag: "Meenakari Chandbali",
   },
   {
     // 4. Mid-Right (Model Portrait Close-Up)
-    src: "/images/shoots/DSC07817.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07817.JPG",
     alt: "Model Wearing Royal Haar Set",
     tag: "Royal Haar",
   },
   {
     // 5. Bottom-Left (Product Close-Up)
-    src: "/images/shoots/DSC07753.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07753.JPG",
     alt: "Fired Enamel Royal Choker Haar",
     tag: "Kiln Fired Choker",
   },
   {
     // 6. Bottom-Right (Editorial Model Shoot)
-    src: "/images/about-editorial.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg",
     alt: "Editorial Couture Model Wearing Meenakari",
     tag: "Jaipur Atelier",
   },
   {
     // 7. Accent Top-Left (Product Close-Up)
-    src: "/images/shoots/DSC07736.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07736.JPG",
     alt: "Filigree Kada Bracelet Close-Up",
     tag: "Filigree Kada",
   },

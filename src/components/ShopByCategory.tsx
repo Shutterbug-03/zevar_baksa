@@ -19,7 +19,7 @@ const categories: CategoryItem[] = [
     label: "Royal Rings",
     subtitle: "Solitaires & Jaipur Bands",
     hallmark: "BIS 925 • 22K Vermeil",
-    img: "/images/real-shot-1.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg",
     tag: "hands",
   },
   {
@@ -27,7 +27,7 @@ const categories: CategoryItem[] = [
     label: "Heritage Earrings",
     subtitle: "Chandbalis & Studs",
     hallmark: "Fired Meenakari Enamel",
-    img: "/images/real-shot-2.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-2.jpg",
     tag: "earrings",
   },
   {
@@ -35,7 +35,7 @@ const categories: CategoryItem[] = [
     label: "Statement Necklaces",
     subtitle: "Chokers & Royal Haars",
     hallmark: "Solid 925 Silver Base",
-    img: "/images/real-shot-3.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-3.jpg",
     tag: "neckwear",
   },
   {
@@ -43,7 +43,7 @@ const categories: CategoryItem[] = [
     label: "Kadas & Bracelets",
     subtitle: "Carved Filigree Cuffs",
     hallmark: "Ergonomic Comfort Fit",
-    img: "/images/real-shot-4.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-4.jpg",
     tag: "hands",
   },
   {
@@ -51,7 +51,7 @@ const categories: CategoryItem[] = [
     label: "Bridal Chokers",
     subtitle: "Festive & Wedding Trousseau",
     hallmark: "750°C Kiln Fired Enamel",
-    img: "/images/real-shot-5.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-5.jpg",
     tag: "bridal",
   },
   {
@@ -59,7 +59,7 @@ const categories: CategoryItem[] = [
     label: "Meenakari Jhumkas",
     subtitle: "Jaipur Palace Heritage",
     hallmark: "Artisan Hand-Shaped",
-    img: "/images/real-shot-6.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-6.jpg",
     tag: "earrings",
   },
   {
@@ -67,7 +67,7 @@ const categories: CategoryItem[] = [
     label: "Bridal Trousseau",
     subtitle: "Complete Heirloom Sets",
     hallmark: "Collector Limited Run",
-    img: "/images/real-shot-7.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-7.jpg",
     tag: "bridal",
   },
   {
@@ -75,7 +75,7 @@ const categories: CategoryItem[] = [
     label: "Statement Cuffs",
     subtitle: "Sculpted Silver Masterpieces",
     hallmark: "Nickel-Free & Hypoallergenic",
-    img: "/images/real-shot-8.jpg",
+    img: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-8.jpg",
     tag: "hands",
   },
 ];

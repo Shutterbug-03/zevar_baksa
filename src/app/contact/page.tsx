@@ -15,9 +15,9 @@ export default function Contact() {
 
       <section className="mx-auto max-w-[1400px] px-6 md:px-12 pb-24 grid md:grid-cols-2 gap-14">
         <div className="space-y-10">
-          <ContactRow icon={<MapPin />} label="Atelier" value={"Shop 45, Johri Bazar\nJaipur, Rajasthan\n302003, India"} />
+          <ContactRow icon={<MapPin />} label="Atelier" value={"B-21, Bhan Nagar, Queens Road\nVaishali Nagar, Jaipur\nRajasthan 302021, India"} />
           <ContactRow icon={<Phone />} label="Call us" value="+91 98111 22334" />
-          <ContactRow icon={<Mail />} label="Write" value="hello@zevarbaksa.com" />
+          <ContactRow icon={<Mail />} label="Write" value="info@zevarbaksa.com" />
           <ContactRow icon={<Instagram />} label="Follow" value="@zevarbaksa" />
         </div>
 

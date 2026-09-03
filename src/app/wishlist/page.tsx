@@ -7,12 +7,18 @@ import { useWishlistStore } from "@/store/wishlistStore";
 import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
+import { useAuth } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function WishlistPage() {
   const { items, removeItem } = useWishlistStore();
   const { addItem } = useCartStore();
   const { format } = useCurrencyStore();
   const hydrated = useHydrated();
+
+  const { isSignedIn, isLoaded: authLoaded } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const wishlistItems = hydrated ? items : [];
 
@@ -97,7 +103,13 @@ export default function WishlistPage() {
 
                 {/* Add to cart */}
                 <button
-                  onClick={() => addItem(product)}
+                  onClick={() => {
+                    if (authLoaded && !isSignedIn) {
+                      router.push(`/login?redirect_url=${encodeURIComponent(pathname)}`);
+                      return;
+                    }
+                    addItem(product);
+                  }}
                   disabled={product.status === "Out of Stock"}
                   className="mt-3 w-full py-2.5 rounded-full border border-primary/30 text-primary text-[10px] uppercase tracking-[0.2em] font-sans font-semibold hover:bg-primary hover:text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
                 >

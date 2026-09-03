@@ -212,10 +212,10 @@ export function FaqSection() {
               <div className="mt-5 pt-4 border-t border-[#fffaee]/15 flex items-center justify-between text-[11px] font-sans text-[#fffaee]/80">
                 <span>Jaipur Atelier Desk:</span>
                 <a
-                  href="mailto:hello@zevarbaksa.com"
+                  href="mailto:info@zevarbaksa.com"
                   className="font-medium text-[#fffaee] hover:underline underline-offset-2"
                 >
-                  hello@zevarbaksa.com
+                  info@zevarbaksa.com
                 </a>
               </div>
 

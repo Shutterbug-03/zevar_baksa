@@ -6,12 +6,17 @@ import { Heart } from "lucide-react";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useState, useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useHydrated } from "@/hooks/useHydrated";
 
 export function ProductCard({ product }: { product: Product }) {
   const { toggle, isWishlisted } = useWishlistStore();
   const { format } = useCurrencyStore();
+  const { isSignedIn, isLoaded: authLoaded } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
   const hydrated = useHydrated();
   const wishlisted = hydrated ? isWishlisted(product.id) : false;
 
@@ -71,10 +76,14 @@ export function ProductCard({ product }: { product: Product }) {
       <button
         onClick={(e) => {
           e.preventDefault();
+          if (authLoaded && !isSignedIn) {
+            router.push(`/login?redirect_url=${encodeURIComponent(pathname)}`);
+            return;
+          }
           toggle(product);
         }}
         aria-label={wishlisted ? "Remove from wishlist" : "Save to wishlist"}
-        className={`absolute top-3 right-3 h-8 w-8 rounded-full flex items-center justify-center backdrop-blur-md shadow-md transition-all duration-300 ${
+        className={`absolute top-3 right-3 h-8 w-8 rounded-full flex items-center justify-center backdrop-blur-md shadow-md transition-all duration-300 z-30 ${
           wishlisted
             ? "bg-primary/90 text-primary-foreground"
             : "bg-background/80 text-foreground/50 hover:text-primary hover:bg-background"
@@ -83,19 +92,21 @@ export function ProductCard({ product }: { product: Product }) {
         <Heart className={`h-3.5 w-3.5 ${wishlisted ? "fill-current" : ""}`} />
       </button>
 
-      <Link href={`/product/${product.id}`}>
-        <div className="mt-4 flex items-baseline justify-between gap-4">
+      <div className="mt-4 flex items-start justify-between gap-4">
+        <Link href={`/product/${product.id}`} className="flex-1">
           <h3 className="font-serif text-xl md:text-2xl leading-none text-foreground group-hover:text-primary transition-colors">
             {product.name}
           </h3>
-          <span className="text-sm font-body text-foreground/75 font-medium flex-shrink-0">
+          <p className="mt-1.5 text-[10px] uppercase tracking-[0.24em] font-body text-muted-foreground">
+            {product.category}
+          </p>
+        </Link>
+        <div className="flex flex-col items-end gap-2.5 flex-shrink-0">
+          <span className="text-sm font-body text-foreground/75 font-medium">
             {hydrated ? format(product.price) : `₹${product.price.toLocaleString("en-IN")}`}
           </span>
         </div>
-        <p className="mt-1 text-[10px] uppercase tracking-[0.24em] font-body text-muted-foreground">
-          {product.category}
-        </p>
-      </Link>
+      </div>
     </div>
   );
 }

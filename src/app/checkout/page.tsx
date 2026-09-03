@@ -636,7 +636,8 @@ function ConfirmStep({
   placing: boolean;
 }) {
   const { items, totalPrice } = useCartStore();
-  const { format } = useCurrencyStore();
+  const { format, currency } = useCurrencyStore();
+  const totalINR = totalPrice(); // cart prices are always stored in INR
 
   const methodLabels: Record<PaymentMethod, string> = {
     upi: "UPI Payment",
@@ -735,13 +736,21 @@ function ConfirmStep({
             </div>
           ))}
         </div>
-        <div className="px-5 py-4 border-t border-border/40 flex justify-between items-center">
-          <span className="text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-foreground">
-            Total Payable
-          </span>
-          <span className="font-display text-2xl text-primary">
-            {format(totalPrice())}
-          </span>
+        <div className="px-5 py-4 border-t border-border/40">
+          <div className="flex justify-between items-center">
+            <span className="text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-foreground">
+              Total Payable
+            </span>
+            <span className="font-display text-2xl text-primary">
+              {format(totalINR)}
+            </span>
+          </div>
+          {/* Show INR equivalent when a foreign currency is displayed — Razorpay always charges INR */}
+          {currency !== "INR" && (
+            <p className="text-[10px] text-foreground/40 font-sans mt-1.5 text-right">
+              Charged in INR: ₹{Math.round(totalINR).toLocaleString("en-IN")} — Razorpay processes payments in Indian Rupees
+            </p>
+          )}
         </div>
       </div>
 

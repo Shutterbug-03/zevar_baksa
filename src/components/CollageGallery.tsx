@@ -14,35 +14,35 @@ interface CollageCard {
 
 const row1: CollageCard[] = [
   {
-    src: "/images/real-shot-1.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg",
     alt: "Meenakari Royal Choker Detail",
     title: "Mina Bagh Choker",
     category: "Choker Haar",
     aspect: "w-[160px] sm:w-[200px] md:w-[230px] aspect-[4/3]",
   },
   {
-    src: "/images/editorial-1.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/editorial-1.jpg",
     alt: "Royal Bridal Model Editorial",
     title: "Imperial Trousseau",
     category: "Bridal Suite",
     aspect: "w-[150px] sm:w-[190px] md:w-[220px] aspect-[3/4]",
   },
   {
-    src: "/images/shoots/DSC07871.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07871.JPG",
     alt: "Handcrafted Meenakari Chandbali",
     title: "Meenakari Chandbali",
     category: "Earrings",
     aspect: "w-[140px] sm:w-[180px] md:w-[200px] aspect-square",
   },
   {
-    src: "/images/real-shot-4.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-4.jpg",
     alt: "Editorial Model in Kundan Set",
     title: "Jaipur Jhumka",
     category: "Earrings",
     aspect: "w-[150px] sm:w-[190px] md:w-[220px] aspect-[3/4]",
   },
   {
-    src: "/images/shoots/DSC07736.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07736.JPG",
     alt: "Jaipur Filigree Kada Bracelet",
     title: "Filigree Kada",
     category: "Bangles",
@@ -52,35 +52,35 @@ const row1: CollageCard[] = [
 
 const row2: CollageCard[] = [
   {
-    src: "/images/shoots/DSC07753.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07753.JPG",
     alt: "Kiln Fired Floral Enamel Choker",
     title: "Gulab Bagh Choker",
     category: "Meenakari",
     aspect: "w-[160px] sm:w-[200px] md:w-[230px] aspect-[4/3]",
   },
   {
-    src: "/images/about-editorial.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg",
     alt: "Johri Bazar Atelier Model",
     title: "Johri Bazar Muse",
     category: "Atelier Couture",
     aspect: "w-[160px] sm:w-[200px] md:w-[240px] aspect-[3/4]",
   },
   {
-    src: "/images/real-shot-2.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-2.jpg",
     alt: "Model Wearing Jaipur Chandbali",
     title: "Royal Chandbali & Haar",
     category: "Neckwear",
     aspect: "w-[150px] sm:w-[190px] md:w-[220px] aspect-[3/4]",
   },
   {
-    src: "/images/real-shot-7.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-7.jpg",
     alt: "Model in Starlight Heritage Haar",
     title: "Starlight Heritage Haar",
     category: "Haar",
     aspect: "w-[150px] sm:w-[190px] md:w-[220px] aspect-[3/4]",
   },
   {
-    src: "/images/shoots/DSC07812.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07812.JPG",
     alt: "Grand Bridal Suite Complete Set",
     title: "Royal Bridal Suite",
     category: "Bridal Suite",
@@ -90,35 +90,35 @@ const row2: CollageCard[] = [
 
 const row3: CollageCard[] = [
   {
-    src: "/images/craft.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/craft.jpg",
     alt: "Master Karigar Handcrafting Silver",
     title: "Jaipur Atelier Roots",
     category: "Artisan Craft",
     aspect: "w-[160px] sm:w-[200px] md:w-[230px] aspect-[4/3]",
   },
   {
-    src: "/images/shoots/DSC07817.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07817.JPG",
     alt: "Bridal Model Neckpiece Close-Up",
     title: "Devotion Haar",
     category: "Haar",
     aspect: "w-[150px] sm:w-[190px] md:w-[220px] aspect-[3/4]",
   },
   {
-    src: "/images/real-shot-3.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-3.jpg",
     alt: "Jaipur Enamel Palette and Stones",
     title: "Raw Mineral Enamel",
     category: "Atelier Roots",
     aspect: "w-[140px] sm:w-[180px] md:w-[200px] aspect-square",
   },
   {
-    src: "/images/real-shot-8.jpg",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-8.jpg",
     alt: "Model in Traditional Rajasthani Poshak & Jewels",
     title: "Royal Poshak Muse",
     category: "Editorial",
     aspect: "w-[150px] sm:w-[190px] md:w-[220px] aspect-[3/4]",
   },
   {
-    src: "/images/shoots/DSC07714.JPG",
+    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07714.JPG",
     alt: "Signature Model Shoot in Gold Haar",
     title: "Mina Bagh Royal Haar",
     category: "Signature",

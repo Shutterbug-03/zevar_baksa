@@ -9,6 +9,7 @@ type WishlistStore = {
   toggle: (product: Product) => void;
   isWishlisted: (productId: string) => boolean;
   count: () => number;
+  setItems: (items: Product[]) => void;
 };
 
 export const useWishlistStore = create<WishlistStore>()(
@@ -39,6 +40,7 @@ export const useWishlistStore = create<WishlistStore>()(
         get().items.some((p) => p.id === productId),
 
       count: () => get().items.length,
+      setItems: (items) => set({ items }),
     }),
     {
       name: "zevar-wishlist",

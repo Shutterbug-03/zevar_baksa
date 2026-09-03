@@ -10,4 +10,4 @@ export const resend = new Resend(
   process.env.RESEND_API_KEY ?? "re_PLACEHOLDER_RESEND_KEY"
 );
 
-export const FROM_EMAIL = process.env.STORE_EMAIL ?? "Zevar Baksa <hello@zevarbaksa.com>";
+export const FROM_EMAIL = process.env.STORE_EMAIL ?? "Zevar Baksa <info@zevarbaksa.com>";

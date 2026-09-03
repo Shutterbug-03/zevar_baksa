@@ -1,17 +1,24 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { collections } from "@/data/collections";
-
+import { useProductStore } from "@/store/productStore";
+import { ProductCard } from "@/components/ProductCard";
 export default function CollectionPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
+  const { products, fetchProducts } = useProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
   const collection = collections.find((c) => c.slug === slug);
 
   if (!collection) {
@@ -125,40 +132,12 @@ export default function CollectionPage({
             </span>
           </div>
 
-          {/* Minimal 4-Column Card Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8">
-            {collection.items.map((item) => (
-              <Link
-                key={item.id}
-                href={`/product/${item.id}`}
-                className="group flex flex-col space-y-3"
-              >
-                {/* Image Frame */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#f4eee1] border border-[#420002]/10">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Info */}
-                <div className="space-y-1">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="font-serif-brand text-base sm:text-lg text-[#420002] group-hover:text-[#c82127] transition-colors leading-snug">
-                      {item.name}
-                    </h3>
-                    <span className="font-sans text-xs sm:text-sm text-[#420002] font-medium flex-shrink-0">
-                      {item.price}
-                    </span>
-                  </div>
-                  <p className="text-[10.5px] uppercase tracking-[0.2em] text-[#420002]/50 font-sans">
-                    {item.tagline}
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {collection.items.map((item) => {
+              const fullProduct = products.find((p) => p.id === item.id);
+              if (!fullProduct) return null;
+              return <ProductCard key={fullProduct.id} product={fullProduct} />;
+            })}
           </div>
 
         </div>

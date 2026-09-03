@@ -4,9 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
-import { products } from "@/data/products";
+import { useProductStore } from "@/store/productStore";
 
 export function NewReleasesCarousel() {
+  const { products } = useProductStore();
+
   const slides = React.useMemo(() => {
     return products.map((product) => ({
       src: product.image,
@@ -15,7 +17,7 @@ export function NewReleasesCarousel() {
       subtitle: product.subtitle,
       href: `/product/${product.id}`,
     }));
-  }, []);
+  }, [products]);
 
   return (
     <section className="relative w-full min-h-[80vh] sm:min-h-[85vh] md:min-h-screen overflow-hidden pt-6 sm:pt-10 pb-16 sm:pb-20 md:pb-24 bg-[#fffaee] flex flex-col justify-center">

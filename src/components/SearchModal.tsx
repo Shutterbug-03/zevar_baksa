@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { X, Search, ArrowRight } from "lucide-react";
 import { useUIStore } from "@/store/uiStore";
-import { products } from "@/data/products";
+import { useProductStore } from "@/store/productStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 
 export function SearchModal() {
@@ -12,6 +12,7 @@ export function SearchModal() {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { format } = useCurrencyStore();
+  const { products } = useProductStore();
 
   // Filter products by query
   const results = query.trim().length >= 2

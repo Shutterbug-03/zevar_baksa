@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthProvider";
+import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { CloudSync } from "@/components/CloudSync";
 import Script from "next/script";
 
 const inter = Inter({
@@ -84,7 +85,10 @@ export default function RootLayout({
             "query-input": "required name=search_term_string"
           }
         }) }} />
-        <AuthProvider>{children}</AuthProvider>
+        <ClerkProvider>
+          {children}
+          <CloudSync />
+        </ClerkProvider>
       </body>
     </html>
   );

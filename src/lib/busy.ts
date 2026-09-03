@@ -180,7 +180,7 @@ export function mapBusyToProduct(item: BusyItem): Product {
   else if (/bridal|wedding/i.test(rawCat)) category = "Bridal";
   else if (/necklace|choker|collar|pendant/i.test(rawCat)) category = "Necklaces";
 
-  const img = item.imageUrl || `/images/products/${item.itemCode}.jpg`;
+  const img = item.imageUrl || `https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/${item.itemCode}.jpg`;
   const gallery = item.galleryUrls && item.galleryUrls.length > 0 ? item.galleryUrls : [img];
 
   return {
