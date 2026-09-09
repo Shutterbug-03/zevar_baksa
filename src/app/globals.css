@@ -192,3 +192,23 @@
   color: transparent;
   animation: shimmer 6s linear infinite;
 }
+
+@keyframes shimmer-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}

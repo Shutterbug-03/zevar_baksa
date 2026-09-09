@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { CloudSync } from "@/components/CloudSync";
+import { LuxuryLoadingScreen } from "@/components/LuxuryLoadingScreen";
+import { Suspense } from "react";
 import Script from "next/script";
 
 const inter = Inter({
@@ -87,6 +89,9 @@ export default function RootLayout({
         }) }} />
         <ClerkProvider>
           {children}
+          <Suspense fallback={null}>
+            <LuxuryLoadingScreen />
+          </Suspense>
           <CloudSync />
         </ClerkProvider>
       </body>

@@ -23,7 +23,17 @@ function ShopContent() {
   const categoryParam = searchParams.get("category");
   const { products, status, fetchProducts } = useProductStore();
 
-  const [cat, setCat] = useState("All");
+  const resolveCategory = (param: string | null) => {
+    if (!param) return "All";
+    const match = categories.find(
+      (c) => c.toLowerCase() === param.toLowerCase()
+    );
+    if (match) return match;
+    if (param.toLowerCase() === "pendants") return "Necklaces";
+    return "All";
+  };
+
+  const [cat, setCat] = useState<string>(() => resolveCategory(categoryParam));
 
   // Trigger API fetch on mount (idempotent — no-ops if already loaded)
   useEffect(() => {
@@ -31,16 +41,7 @@ function ShopContent() {
   }, [fetchProducts]);
 
   useEffect(() => {
-    if (categoryParam) {
-      const match = categories.find(
-        (c) => c.toLowerCase() === categoryParam.toLowerCase()
-      );
-      if (match) {
-        setCat(match);
-      } else if (categoryParam.toLowerCase() === "pendants") {
-        setCat("Necklaces");
-      }
-    }
+    setCat(resolveCategory(categoryParam));
   }, [categoryParam]);
 
   const filtered = cat === "All" ? products : products.filter((p) => p.category === cat);

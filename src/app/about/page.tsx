@@ -33,40 +33,121 @@ const philosophy = [
 export default function About() {
   return (
     <Layout>
-      {/* 1. HERO — Quiet Luxury Masthead */}
-      <section className="pt-40 sm:pt-48 pb-20 mx-auto max-w-[1300px] px-6 sm:px-10 md:px-16">
+      {/* 1. HERO — Brand Story Editorial */}
+      <section className="pt-36 sm:pt-44 pb-16 mx-auto max-w-[1300px] px-6 sm:px-10 md:px-16">
         <div className="max-w-4xl">
-          <p className="text-[11px] uppercase tracking-[0.35em] text-[#c82127] font-medium mb-6">
-            Jaipur, Rajasthan · The Atelier Story
-          </p>
-          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl leading-[0.92] text-[#420002] tracking-tight">
-            Crafted with intention. <br />
-            <span className="font-light italic text-[#c82127]">Made to be kept.</span>
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <span className="text-[10px] text-[#c82127]">✦</span>
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-[#c82127] font-semibold font-sans">
+              About Zevar Baksa • The Brand Story
+            </span>
+            <span className="text-[10px] text-[#c82127]">✦</span>
+          </div>
+
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[54px] leading-[1.18] text-[#420002] tracking-normal mb-6 max-w-3xl">
+            <span className="block font-normal">Not Made to Be Waited On.</span>
+            <span className="font-serif-brand italic font-normal text-[#c82127] block mt-1 sm:mt-1.5">
+              Made to Be Worn.
+            </span>
           </h1>
+
+          {/* Delicate Ornamental Accent */}
+          <div className="flex items-center gap-3 my-6 sm:my-8">
+            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#c82127]/60" />
+            <div className="h-[2px] w-14 bg-gradient-to-r from-[#420002] via-[#c82127] to-[#420002] rounded-full" />
+            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[#c82127]/60" />
+          </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-[#420002]/15 grid md:grid-cols-12 gap-8 items-baseline">
-          <p className="md:col-span-4 text-xs uppercase tracking-[0.25em] text-[#420002]/60 font-sans">
-            Our Foundation
-          </p>
-          <p className="md:col-span-8 font-serif text-2xl sm:text-3xl md:text-4xl text-[#420002]/90 leading-snug font-light">
-            Every collection starts from an idea, a place, or a craft worth exploring — rooted in Jaipur and shaped to be cherished for generations.
-          </p>
+        {/* Editorial Brand Story Narrative Grid */}
+        <div className="mt-8 sm:mt-10 pt-8 border-t border-[#420002]/15 grid md:grid-cols-12 gap-8 lg:gap-14 items-start">
+          <div className="md:col-span-4 space-y-4">
+            <p className="text-xs uppercase tracking-[0.25em] text-[#c82127] font-sans font-semibold">
+              Our Origins
+            </p>
+            <p className="font-serif text-2xl sm:text-3xl text-[#420002] leading-snug font-light">
+              It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own.
+            </p>
+            <p className="text-xs text-[#420002]/60 font-sans tracking-wide uppercase">
+              That instinct never really left.
+            </p>
+          </div>
+
+          <div className="md:col-span-8 space-y-5 sm:space-y-6 text-sm sm:text-base text-[#420002]/85 font-sans font-light leading-relaxed">
+            <p>
+              <strong className="font-semibold text-[#420002]">Zevar Baksa is where it landed.</strong> <em className="font-serif-brand italic text-[#c82127]">Zevar</em> means jewellery, <em className="font-serif-brand italic text-[#c82127]">Baksa</em> means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
+            </p>
+            <p>
+              Jaipur runs on the hands of its artisans, and that&apos;s where we come from. Zevar Baksa exists to give them the credit they rarely receive; every piece designed from scratch, shaped in collaboration with the artisan and designer behind it, their name carried with the collection, not left behind at the workshop door.
+            </p>
+            <p>
+              Our aim is reinterpretation; taking culture, nature, and tradition and giving them a contemporary edge. Every collection, and every metal we choose for it, carries a reason; a purpose, a meaning, nothing picked at random.
+            </p>
+            <p>
+              That same intention runs through our logos. English marks our modern collections, Hindi marks the traditional ones; written in our founder&apos;s mother&apos;s hand, a personal thread stitched into the brand; and a submark that&apos;s simply us, distilled.
+            </p>
+            <div className="pt-2">
+              <p className="font-serif-brand italic text-xl sm:text-2xl text-[#c82127] font-normal border-l-2 border-[#c82127] pl-4 sm:pl-5 py-1">
+                &ldquo;Zevar Baksa isn&apos;t made to be waited on. It&apos;s made to be worn.&rdquo;
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 2. FULL-WIDTH EDITORIAL CANVAS */}
-      <section className="mx-auto max-w-[1500px] px-6 sm:px-10 md:px-16 pb-28">
-        <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-sm">
-          <img 
-            src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/editorial-1.jpg" 
-            alt="Zevar Baksa Atelier in Jaipur" 
-            className="h-full w-full object-cover object-center grayscale-[15%] hover:grayscale-0 transition-all duration-1000" 
-          />
-        </div>
-        <div className="mt-4 flex justify-between items-center text-[10px] uppercase tracking-[0.25em] text-[#420002]/50 font-sans">
-          <span>Johri Bazar &amp; Pink City Heritage</span>
-          <span>Atelier Archive</span>
+      {/* 2. VISUAL ARCHIVE BENTO (3 Top, 2 Wide Bottom — Alternating Model, Earrings, & Necklace) */}
+      <section className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-8 pb-16 sm:pb-20">
+        <div className="space-y-3.5 sm:space-y-4">
+          {/* Top Layer — 3 Images: Model -> Earrings -> Necklace */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+            {/* 1. Model Shot (Unused) */}
+            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+              <img 
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-7.jpg" 
+                alt="Model in Starlight Heritage Haar" 
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+              />
+            </div>
+
+            {/* 2. Earrings Shot */}
+            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+              <img 
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07871.JPG" 
+                alt="Handcrafted Meenakari Chandbali Earrings" 
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+              />
+            </div>
+
+            {/* 3. Necklace Shot (Unused) */}
+            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+              <img 
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg" 
+                alt="Mina Bagh Royal Choker Kiln-Fired Enamel Detail" 
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+              />
+            </div>
+          </div>
+
+          {/* Bottom Layer — 2 Wide Images: Model -> Bridal Necklace Suite */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+            {/* 4. Model Shot (Unused) */}
+            <div className="group relative aspect-[16/9] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+              <img 
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07741.JPG" 
+                alt="Jaipur Royal Heirloom Jewellery Model Shoot" 
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+              />
+            </div>
+
+            {/* 5. Necklace Close-Up Shot (Unused) */}
+            <div className="group relative aspect-[16/9] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+              <img 
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07817.JPG" 
+                alt="Grand Devotion Bridal Neckpiece Close-Up Shoot" 
+                className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -248,29 +329,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Mark 2: Hindi Wordmark */}
-          <div className="space-y-6">
-            <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
-              <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/secondary-logo-hindi.png" 
-                alt="ज़ेवर बक्सा Hindi Wordmark" 
-                className="max-h-16 w-auto object-contain" 
-              />
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#c82127] font-medium mb-1.5">
-                Heritage Collections
-              </p>
-              <h3 className="font-display text-2xl text-[#420002] mb-3">
-                Hindi Wordmark (ज़ेवर बक्सा)
-              </h3>
-              <p className="text-sm text-[#420002]/75 font-sans font-light leading-relaxed">
-                Reserved for traditional and heritage-rooted collections. Written in Tanishka&apos;s mother&apos;s handwriting, it carries a personal, generational thread that the English mark doesn&apos;t, so it&apos;s used deliberately, not interchangeably with the English wordmark.
-              </p>
-            </div>
-          </div>
-
-          {/* Mark 3: Submark */}
+          {/* Mark 2: Submark (ZB Monogram) */}
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
@@ -288,6 +347,28 @@ export default function About() {
               </h3>
               <p className="text-sm text-[#420002]/75 font-sans font-light leading-relaxed">
                 The compact mark, built for small-format placements where a full wordmark won&apos;t sit well: favicon, social profile photo, jewellery tags, embossed pouches, and anywhere space is tight.
+              </p>
+            </div>
+          </div>
+
+          {/* Mark 3: Hindi Wordmark */}
+          <div className="space-y-6">
+            <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
+              <img 
+                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/secondary-logo-hindi.png" 
+                alt="ज़ेवर बक्सा Hindi Wordmark" 
+                className="max-h-16 w-auto object-contain" 
+              />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#c82127] font-medium mb-1.5">
+                Heritage Collections
+              </p>
+              <h3 className="font-display text-2xl text-[#420002] mb-3">
+                Hindi Wordmark (ज़ेवर बक्सा)
+              </h3>
+              <p className="text-sm text-[#420002]/75 font-sans font-light leading-relaxed">
+                Reserved for traditional and heritage-rooted collections. Written in Tanishka&apos;s mother&apos;s handwriting, it carries a personal, generational thread that the English mark doesn&apos;t, so it&apos;s used deliberately, not interchangeably with the English wordmark.
               </p>
             </div>
           </div>

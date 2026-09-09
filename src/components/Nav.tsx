@@ -47,25 +47,44 @@ export function Nav() {
   const [collectionsExpanded, setCollectionsExpanded] = useState(false);
   const [shopExpanded, setShopExpanded] = useState(false);
 
-  const handleNavigate = (href: string) => {
+  const { openCart, totalItems } = useCartStore();
+  const { count: wishlistCount } = useWishlistStore();
+  const { openSearch, openLogin, startPageLoading } = useUIStore();
+  const { currency, setCurrency } = useCurrencyStore();
+  const { isSignedIn, isLoaded: authLoaded } = useAuth();
+
+  const handleNavigate = (href: string, label?: string) => {
     if (pathname === href) {
       setMenuOpen(false);
       return;
     }
-    setMenuOpen(false);
-    setShopExpanded(false);
-    setCollectionsExpanded(false);
-    setTimeout(() => {
-      router.push(href);
-    }, 320);
-  };
 
-  // Stores
-  const { openCart, totalItems } = useCartStore();
-  const { count: wishlistCount } = useWishlistStore();
-  const { openSearch, openLogin } = useUIStore();
-  const { currency, setCurrency } = useCurrencyStore();
-  const { isSignedIn, isLoaded: authLoaded } = useAuth();
+    let msg = "Entering The Vault...";
+    if (label) {
+      msg = `Curating ${label}...`;
+    } else if (href.includes("Necklaces") || href.includes("pendant")) {
+      msg = "Curating Pendants & Necklaces...";
+    } else if (href.includes("Earrings")) {
+      msg = "Curating Handcrafted Earrings...";
+    } else if (href.includes("/collection/")) {
+      msg = "Opening Jaipur Collection Archive...";
+    } else if (href === "/shop") {
+      msg = "Unlocking All Masterpieces...";
+    }
+
+    // Activate the royal luxury loading screen immediately so current/landing page is NEVER visible
+    startPageLoading(msg);
+
+    // Push route immediately
+    router.push(href);
+
+    // Close menu in background while covered by the full-screen loader
+    setTimeout(() => {
+      setMenuOpen(false);
+      setShopExpanded(false);
+      setCollectionsExpanded(false);
+    }, 150);
+  };
 
   const hydrated = useHydrated();
 
@@ -278,13 +297,6 @@ export function Nav() {
       >
         {/* Main centered navigation list */}
         <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-6 w-full max-w-xl text-center font-sans mt-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] text-[#c82127]">✦</span>
-            <span className="text-[9px] uppercase tracking-[0.35em] text-[#c82127] font-semibold font-sans">
-              Jaipur Atelier • Fine Jewellery
-            </span>
-            <span className="text-[10px] text-[#c82127]">✦</span>
-          </div>
 
           {mainLinks.map((link) => {
             if (link.isShop) {
@@ -318,7 +330,7 @@ export function Nav() {
                       {shopCategories.map((cat, idx) => (
                         <button
                           key={cat.label}
-                          onClick={() => handleNavigate(cat.to)}
+                          onClick={() => handleNavigate(cat.to, cat.label)}
                           style={{
                             transitionDelay: shopExpanded ? `${idx * 40}ms` : "0ms",
                           }}
@@ -331,7 +343,7 @@ export function Nav() {
                         </button>
                       ))}
                       <button
-                        onClick={() => handleNavigate("/shop")}
+                        onClick={() => handleNavigate("/shop", "All Vault Creations")}
                         className={`text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-all duration-300 pt-1 font-sans font-medium cursor-pointer ${
                           shopExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
                         }`}
@@ -375,7 +387,7 @@ export function Nav() {
                       {collections.map((c, idx) => (
                         <button
                           key={c.slug}
-                          onClick={() => handleNavigate(`/collection/${c.slug}`)}
+                          onClick={() => handleNavigate(`/collection/${c.slug}`, `${c.name} Collection`)}
                           style={{
                             transitionDelay: collectionsExpanded ? `${idx * 40}ms` : "0ms",
                           }}
@@ -388,7 +400,7 @@ export function Nav() {
                         </button>
                       ))}
                       <button
-                        onClick={() => handleNavigate("/shop")}
+                        onClick={() => handleNavigate("/shop", "All Heirlooms")}
                         className={`text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-all duration-300 pt-1 font-sans font-medium cursor-pointer ${
                           collectionsExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
                         }`}
@@ -404,7 +416,7 @@ export function Nav() {
             return (
               <button
                 key={link.label}
-                onClick={() => handleNavigate(link.to)}
+                onClick={() => handleNavigate(link.to, link.label)}
                 className="font-display text-2xl sm:text-3xl uppercase tracking-[0.2em] text-[#420002] hover:text-[#c82127] transition-colors py-1 cursor-pointer"
               >
                 {link.label}
@@ -454,7 +466,7 @@ export function Nav() {
             return (
               <button
                 key={link.label}
-                onClick={() => handleNavigate(link.to!)}
+                onClick={() => handleNavigate(link.to!, link.label)}
                 className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] font-sans text-[#420002]/70 hover:text-[#c82127] transition-colors cursor-pointer"
               >
                 {link.label}
@@ -466,7 +478,7 @@ export function Nav() {
         {/* Atelier Concierge Link */}
         <div className="relative z-10 mt-8 pt-6 border-t border-[#420002]/10 w-full max-w-lg text-center">
           <button
-            onClick={() => handleNavigate("/contact")}
+            onClick={() => handleNavigate("/contact", "Atelier Concierge")}
             className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] font-sans text-[#420002]/80 hover:text-[#c82127] transition-colors cursor-pointer"
           >
             <span className="text-[#c82127]">✦</span> Contact Atelier Concierge
