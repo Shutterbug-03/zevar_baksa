@@ -251,9 +251,23 @@ export function CoverflowCarousel({
     };
 
     measure();
+
+    // Safety fallback: if the synchronous measure ran before the browser
+    // finished layout (offsetWidth === 0), repaint on the next animation frame.
+    let rafFallback: number | null = null;
+    if (!widthRef.current) {
+      rafFallback = requestAnimationFrame(() => {
+        measure();
+        rafFallback = null;
+      });
+    }
+
     const observer = new ResizeObserver(measure);
     observer.observe(frame);
-    return () => observer.disconnect();
+    return () => {
+      if (rafFallback !== null) cancelAnimationFrame(rafFallback);
+      observer.disconnect();
+    };
   }, [paint]);
 
   React.useEffect(
@@ -334,6 +348,10 @@ export function CoverflowCarousel({
                     src={slide.src}
                     alt={slide.alt}
                     draggable={false}
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
                     className="h-full w-full select-none object-cover transition-transform duration-700"
                   />
                   {slide.badge && (

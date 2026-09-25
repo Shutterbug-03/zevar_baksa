@@ -46,7 +46,7 @@ export function Footer() {
             title="Explore Archive"
             links={[
               { label: "All Jewellery", to: "/shop" },
-              { label: "Mina Bagh Collection", to: "/collection/mina-bagh" },
+              { label: "Meena Bagh Collection", to: "/collection/meena-bagh" },
               { label: "Celestial Heritage", to: "/collection/celestial-heritage" },
               { label: "New Releases", to: "/shop" },
               { label: "Bridal Trousseau", to: "/shop" },

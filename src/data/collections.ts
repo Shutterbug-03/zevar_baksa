@@ -28,10 +28,10 @@ export interface Collection {
 
 export const collections: Collection[] = [
   {
-    slug: "mina-bagh",
-    name: "Mina Bagh",
+    slug: "meena-bagh",
+    name: "Meena Bagh",
     subtitle: "The Devotion of Permanent Colour — Meenakari & Gold",
-    heroTitle: "Mina Bagh",
+    heroTitle: "Meena Bagh",
     heroSubtitle:
       "Meenakari is the art of placing colour onto metal and making it permanent. Fired at 750°C, each piece is a collaboration between centuries of Jaipur tradition and modern design.",
     heroImage: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-2.jpg",

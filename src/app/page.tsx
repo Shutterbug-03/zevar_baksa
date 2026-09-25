@@ -41,29 +41,10 @@ export default function Home() {
             {/* Left Column — Exact Editorial Brand Story */}
             <div className="lg:col-span-7 flex flex-col items-start text-left">
               
-              {/* Bespoke Heritage Submark */}
-              <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                <span className="text-[10px] text-[#c82127]">✦</span>
-                <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-[#c82127] font-semibold font-sans">
-                  About Zevar Baksa • Brand Story
-                </span>
-                <span className="text-[10px] text-[#c82127]">✦</span>
-              </div>
-
-              {/* Bold Editorial Headline */}
-              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#420002] leading-[1.15] max-w-xl">
-                Not Made to Be Waited On.<br />
-                <span className="font-serif-brand italic font-normal text-[#c82127]">
-                  Made to Be Worn.
-                </span>
+              {/* Brand Story Heading */}
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#c82127] leading-[1.15] max-w-xl mb-3 sm:mb-4">
+                BRAND STORY
               </h2>
-
-              {/* Delicate Ornamental Line */}
-              <div className="flex items-center gap-2.5 my-3 sm:my-4">
-                <div className="h-px w-8 bg-gradient-to-r from-transparent to-[#c82127]/60" />
-                <div className="h-[2px] w-12 bg-gradient-to-r from-[#420002] via-[#c82127] to-[#420002] rounded-full" />
-                <div className="h-px w-8 bg-gradient-to-l from-transparent to-[#c82127]/60" />
-              </div>
 
               {/* Exact Narrative Text Paragraphs — Compact & High Readability */}
               <div className="space-y-2.5 sm:space-y-3 text-[12px] sm:text-[13px] md:text-[13.5px] text-[#420002]/85 leading-[1.65] sm:leading-[1.7] font-sans font-light max-w-2xl">
@@ -71,7 +52,7 @@ export default function Home() {
                   It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own. That instinct never really left.
                 </p>
                 <p>
-                  <strong className="font-medium text-[#420002]">Zevar Baksa is where it landed.</strong> <em>Zevar</em> means jewellery, <em>Baksa</em> means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
+                  Zevar Baksa is where it landed. Zevar means jewellery, Baksa means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
                 </p>
                 <p>
                   Jaipur runs on the hands of its artisans, and that&apos;s where we come from. Zevar Baksa exists to give them the credit they rarely receive; every piece designed from scratch, shaped in collaboration with the artisan and designer behind it, their name carried with the collection, not left behind at the workshop door.
@@ -82,9 +63,7 @@ export default function Home() {
                 <p>
                   That same intention runs through our logos. English marks our modern collections, Hindi marks the traditional ones; written in our founder&apos;s mother&apos;s hand, a personal thread stitched into the brand; and a submark that&apos;s simply us, distilled.
                 </p>
-                <p className="font-serif-brand italic text-[#c82127] text-sm sm:text-base pt-0.5 font-normal">
-                  Zevar Baksa isn&apos;t made to be waited on. It&apos;s made to be worn.
-                </p>
+
               </div>
 
               {/* CTA Button */}
@@ -105,7 +84,7 @@ export default function Home() {
               <div className="relative w-full max-w-[460px]">
                 
                 {/* Main Photo: Handcrafted Silver Enamel Necklace Masterpiece */}
-                <div className="relative z-10 w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-[#420002]/15 bg-[#f4eee1] group">
+                <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl border border-[#420002]/15 bg-[#f4eee1] group">
                   <img
                     src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg"
                     alt="Zevar Baksa Handcrafted Silver Necklace Panel Enamel Work"
@@ -113,15 +92,6 @@ export default function Home() {
                   />
                   {/* Subtle Luxury Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#420002]/40 via-transparent to-transparent pointer-events-none" />
-                </div>
-
-                {/* Floating Artisan Monogram Seal Badge */}
-                <div className="absolute -top-3 -right-3 sm:-top-5 sm:-right-5 z-30 flex items-center justify-center h-16 w-16 sm:h-20 sm:w-20 rounded-full border border-[#420002]/15 bg-[#fffaee] shadow-xl">
-                  <img
-                    src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png"
-                    alt="Zevar Baksa Artisan Seal"
-                    className="h-9 sm:h-11 w-auto object-contain"
-                  />
                 </div>
 
               </div>
@@ -137,7 +107,7 @@ export default function Home() {
       <NewReleasesCarousel />
 
       {/* MARQUEE RIBBON */}
-      <MarqueeRibbon text="Mina Bagh • New Releases" />
+      <MarqueeRibbon text="Meena Bagh • New Releases" />
 
       {/* ════════════════════════════════════════════════════
           4. 3-LAYER COLLAGE GALLERY — Model & Product Shoots

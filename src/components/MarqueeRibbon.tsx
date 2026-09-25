@@ -33,7 +33,7 @@ const Stamp = () => (
   </div>
 );
 
-export function MarqueeRibbon({ text = "Mina Bagh • New Releases" }: { text?: string }) {
+export function MarqueeRibbon({ text = "Meena Bagh • New Releases" }: { text?: string }) {
   const marqueeItems = Array(6).fill(text);
 
   return (

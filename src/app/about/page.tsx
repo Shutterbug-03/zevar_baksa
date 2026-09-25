@@ -35,47 +35,24 @@ export default function About() {
     <Layout>
       {/* 1. HERO — Brand Story Editorial */}
       <section className="pt-36 sm:pt-44 pb-16 mx-auto max-w-[1300px] px-6 sm:px-10 md:px-16">
-        <div className="max-w-4xl">
-          <div className="flex items-center gap-2 mb-4 sm:mb-6">
-            <span className="text-[10px] text-[#c82127]">✦</span>
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-[#c82127] font-semibold font-sans">
-              About Zevar Baksa • The Brand Story
-            </span>
-            <span className="text-[10px] text-[#c82127]">✦</span>
+
+        {/* Two-column editorial: heading left | text right */}
+        <div className="flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24 border-t border-[#420002]/15 pt-10 sm:pt-12">
+
+          {/* Left — sticky heading */}
+          <div className="md:w-[280px] lg:w-[320px] shrink-0">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[54px] leading-[1.18] text-[#c82127] tracking-normal md:sticky md:top-28">
+              BRAND STORY
+            </h1>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[54px] leading-[1.18] text-[#420002] tracking-normal mb-6 max-w-3xl">
-            <span className="block font-normal">Not Made to Be Waited On.</span>
-            <span className="font-serif-brand italic font-normal text-[#c82127] block mt-1 sm:mt-1.5">
-              Made to Be Worn.
-            </span>
-          </h1>
-
-          {/* Delicate Ornamental Accent */}
-          <div className="flex items-center gap-3 my-6 sm:my-8">
-            <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#c82127]/60" />
-            <div className="h-[2px] w-14 bg-gradient-to-r from-[#420002] via-[#c82127] to-[#420002] rounded-full" />
-            <div className="h-px w-10 bg-gradient-to-l from-transparent to-[#c82127]/60" />
-          </div>
-        </div>
-
-        {/* Editorial Brand Story Narrative Grid */}
-        <div className="mt-8 sm:mt-10 pt-8 border-t border-[#420002]/15 grid md:grid-cols-12 gap-8 lg:gap-14 items-start">
-          <div className="md:col-span-4 space-y-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#c82127] font-sans font-semibold">
-              Our Origins
-            </p>
-            <p className="font-serif text-2xl sm:text-3xl text-[#420002] leading-snug font-light">
-              It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own.
-            </p>
-            <p className="text-xs text-[#420002]/60 font-sans tracking-wide uppercase">
-              That instinct never really left.
-            </p>
-          </div>
-
-          <div className="md:col-span-8 space-y-5 sm:space-y-6 text-sm sm:text-base text-[#420002]/85 font-sans font-light leading-relaxed">
+          {/* Right — flowing paragraphs */}
+          <div className="flex-1 space-y-5 sm:space-y-6 text-sm sm:text-[15px] text-[#420002]/85 font-sans font-light leading-[1.75]">
             <p>
-              <strong className="font-semibold text-[#420002]">Zevar Baksa is where it landed.</strong> <em className="font-serif-brand italic text-[#c82127]">Zevar</em> means jewellery, <em className="font-serif-brand italic text-[#c82127]">Baksa</em> means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
+              It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own. That instinct never really left.
+            </p>
+            <p>
+              Zevar Baksa is where it landed. Zevar means jewellery, Baksa means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
             </p>
             <p>
               Jaipur runs on the hands of its artisans, and that&apos;s where we come from. Zevar Baksa exists to give them the credit they rarely receive; every piece designed from scratch, shaped in collaboration with the artisan and designer behind it, their name carried with the collection, not left behind at the workshop door.
@@ -86,12 +63,11 @@ export default function About() {
             <p>
               That same intention runs through our logos. English marks our modern collections, Hindi marks the traditional ones; written in our founder&apos;s mother&apos;s hand, a personal thread stitched into the brand; and a submark that&apos;s simply us, distilled.
             </p>
-            <div className="pt-2">
-              <p className="font-serif-brand italic text-xl sm:text-2xl text-[#c82127] font-normal border-l-2 border-[#c82127] pl-4 sm:pl-5 py-1">
-                &ldquo;Zevar Baksa isn&apos;t made to be waited on. It&apos;s made to be worn.&rdquo;
-              </p>
-            </div>
+            <p>
+              Zevar Baksa isn&apos;t made to be waited on. It&apos;s made to be worn.
+            </p>
           </div>
+
         </div>
       </section>
 
@@ -122,7 +98,7 @@ export default function About() {
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
                 src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg" 
-                alt="Mina Bagh Royal Choker Kiln-Fired Enamel Detail" 
+                alt="Meena Bagh Royal Choker Kiln-Fired Enamel Detail" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
             </div>
@@ -209,7 +185,7 @@ export default function About() {
                   Every piece starts on paper, designed in-house by our own team, not picked off a wholesaler&apos;s rack. Once a design is finalised, it moves to independent manufacturing units across Jaipur, artisans and karigars who bring decades of hands-on skill to each piece, working in materials suited to the collection: brass, silver, or gold.
                 </p>
                 <p>
-                  Some pieces pass through multiple hands before they&apos;re finished, a designer, a goldsmith, an enamellist, a polisher, each adding what the last could not. Nothing is rushed. A collection like <strong className="font-serif italic font-normal text-[#420002]">Mina Bagh</strong>, for instance, involves enamel fired onto metal at close to 750°C, a process that simply cannot be shortcut.
+                  Some pieces pass through multiple hands before they&apos;re finished, a designer, a goldsmith, an enamellist, a polisher, each adding what the last could not. Nothing is rushed. A collection like <strong className="font-serif italic font-normal text-[#420002]">Meena Bagh</strong>, for instance, involves enamel fired onto metal at close to 750°C, a process that simply cannot be shortcut.
                 </p>
                 <p>
                   This is also why our pieces are made in limited runs. We&apos;re not manufacturing at scale, we&apos;re working directly with independent artisans who put real time into every piece, and we&apos;d rather stay small and intentional than compromise that.

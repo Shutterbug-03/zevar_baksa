@@ -7,7 +7,11 @@ import { CoverflowCarousel } from "@/components/ui/coverflow-carousel";
 import { useProductStore } from "@/store/productStore";
 
 export function NewReleasesCarousel() {
-  const { products } = useProductStore();
+  const { products, fetchProducts } = useProductStore();
+
+  React.useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const slides = React.useMemo(() => {
     return products.map((product) => ({
@@ -37,7 +41,7 @@ export function NewReleasesCarousel() {
           </div>
 
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#420002] leading-tight">
-            Collection Designed for Every Occasion
+            MEENA BAGH
           </h2>
         </div>
 

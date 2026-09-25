@@ -30,7 +30,7 @@ export type Product = {
 
 export const products: Product[] = [
   // ═════════════════════════════════════════════════════════════════
-  // MINA BAGH COLLECTION — AUTHENTIC JAIPUR PENDANTS (P1 – P9)
+  // MEENA BAGH COLLECTION — AUTHENTIC JAIPUR PENDANTS (P1 – P9)
   // ═════════════════════════════════════════════════════════════════
   {
     id: "p1",
@@ -46,7 +46,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p1-4.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A delicate bird-shaped pendant, handcrafted in 925 silver and brought to life with intricate enamel detailing and traditional Kundan work set in 24K gold. Rich green and blue tones frame the petite Kundan accent, creating a playful piece rooted in Indian craftsmanship.",
     story:
@@ -79,7 +79,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p2-5.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A sculptural bird-shaped pendant handcrafted entirely in 24K gold, adorned with vibrant emeralds, rubies and luminous polki. Suspended from a delicate pearl strand, the piece pairs the richness of traditional Indian jewellery craftsmanship with a playful, distinctive silhouette.",
     story:
@@ -111,7 +111,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p3-4.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A delicate bird-shaped pendant handcrafted in 24K gold, featuring intricate detailing and a traditional Kundan polki setting. Suspended from a fine pearl strand, the piece pairs the warmth of pure gold with the subtle brilliance of polki, creating an elegant expression of traditional Indian craftsmanship.",
     story:
@@ -145,7 +145,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p4-7.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A delicate bird-shaped pendant handcrafted in 925 silver, detailed with rich green enamel and traditional 24K gold work framing a vibrant ruby. Strung on a fine pearl strand with playful orange accents, the piece brings together colour, character and traditional Indian craftsmanship in a light, contemporary form.",
     story:
@@ -178,7 +178,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p5-4.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A sculptural bird-shaped pendant handcrafted in 925 sterling silver, detailed with intricate hand-engraved motifs and vibrant emerald and blue sapphire stones set in traditional 24K gold Kundan work. With its graceful form and rich jewel-toned accents, the piece brings a contemporary character to traditional Indian craftsmanship.",
     story:
@@ -209,7 +209,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p6-3.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A delicate pendant handcrafted in 24K gold, featuring traditional Kundan polki work accented with soft pink and green detailing. Finished with a rich emerald drop and suspended from a fine pearl strand, the piece brings together vibrant colour, delicate proportions and timeless Indian craftsmanship.",
     story:
@@ -240,7 +240,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p7-3.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A statement pendant handcrafted in 24K gold, featuring an intricate floral composition in rich green and pink detailing. At its centre, traditional Kundan polki work adds a subtle brilliance, while the delicate pearl strand balances the ornate design with a soft, timeless finish.",
     story:
@@ -272,7 +272,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p8-4.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A statement circular pendant featuring an intricately detailed floral motif, crafted in silver over a copper base. The warm metallic detailing unfolds against a soft white background, giving the traditional botanical pattern an elegant, antique-inspired character.",
     story:
@@ -303,7 +303,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/p9-3.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "An oval pendant handcrafted in silver, featuring a striking bird motif brought to life through vibrant green and blue enamel work. Set against a deep black background, the flowing form and vivid colours give the piece a bold, artistic character while celebrating traditional enamel craftsmanship.",
     story:
@@ -323,7 +323,7 @@ export const products: Product[] = [
   },
 
   // ═════════════════════════════════════════════════════════════════
-  // MINA BAGH COLLECTION — AUTHENTIC JAIPUR EARRINGS (E1 – E11)
+  // MEENA BAGH COLLECTION — AUTHENTIC JAIPUR EARRINGS (E1 – E11)
   // ═════════════════════════════════════════════════════════════════
   {
     id: "e1",
@@ -337,7 +337,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e1-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round drop earrings crafted in silver, featuring delicately hand-painted birds against a soft pink enamel background. Fine brushwork and gentle colour detailing give each piece a charming, miniature-art quality, finished in an elegant handcrafted silhouette.",
     story:
@@ -369,7 +369,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e2-4.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round drop earrings crafted in silver, featuring intricately hand-painted miniature figures against a rich deep-red background. Inspired by traditional Indian miniature art, the fine detailing and expressive imagery turn each earring into a tiny work of wearable art.",
     story:
@@ -399,7 +399,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e3-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round earrings crafted in silver, featuring an ornate hand-painted floral motif in warm gold tones against a soft blue enamel background. Inspired by traditional decorative art, the intricate botanical detailing gives the pair an elegant, timeless character.",
     story:
@@ -429,7 +429,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e4-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of oval earrings crafted in silver, featuring delicate hand-painted enamel work. Set against a soft green background, vibrant birds and blooming florals are individually painted in fine detail, giving the pair a whimsical, artful character rooted in traditional craftsmanship.",
     story:
@@ -460,7 +460,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e5-3.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round drop earrings crafted in silver, featuring delicately hand-painted pink florals against a deep black enamel background. The layered petals and fine detailing create a striking contrast, giving the pair a romantic yet bold character with the charm of miniature wearable art.",
     story:
@@ -490,7 +490,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e6-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round earrings crafted in silver, featuring a softly detailed floral motif in warm pink and yellow tones against a rich blue enamel background. The delicate petal work and vibrant contrast give the pair a playful, feminine character inspired by traditional enamel artistry.",
     story:
@@ -520,7 +520,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e7-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round earrings crafted in silver, featuring an intricate floral-inspired pattern highlighted with vivid blue enamel. The engraved geometric detailing and cool-toned contrast create a contemporary interpretation of traditional enamel craftsmanship.",
     story:
@@ -551,7 +551,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e8-3.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round earrings crafted in silver, featuring an intricate bird and floral motif in warm gold tones against a rich cobalt blue enamel background. Delicate detailing and the striking contrast of gold and blue give the pair an elegant, old-world character inspired by traditional decorative art.",
     story:
@@ -581,7 +581,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e9-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of contemporary drop earrings crafted in silver, featuring a vibrant abstract composition in enamel. Bold shades of blue, green, orange and deep red are framed by delicate silver lines, giving the pair a playful, modern character while retaining the beauty of traditional enamel craftsmanship.",
     story:
@@ -611,7 +611,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e10-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of sculptural drop earrings crafted in silver, featuring flowing enamel panels in soft pink and deep black. The graceful, fan-like silhouette and clean linear detailing give the pair a distinctly contemporary character while preserving the beauty of traditional enamel craftsmanship.",
     story:
@@ -641,7 +641,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e11-2.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A pair of round drop earrings crafted in silver, featuring a delicate white floral motif against a rich violet enamel background. The crisp botanical design and vivid contrast create a fresh, elegant expression of traditional enamel craftsmanship.",
     story:
@@ -677,7 +677,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-4.jpg",
     ],
     category: "Bracelets",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "Forged from 22k gold with hand-set uncut Polki diamonds, the Ruhnoor Cuff is a modern heirloom that speaks of quiet power. Each cuff is individually cast by master artisans in our Jaipur atelier, featuring precise bezel settings that cradle natural gemstones catching light from every angle.",
     story:
@@ -706,7 +706,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-6.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "Inspired by the traditional royal chokers of Rajasthan, the Iraaya wraps the neck in cascading Kundan work framed by seed pearls and deep green emerald drops. The flexible gold lattice ensures comfortable, contouring wear through hours of celebratory events.",
     story:
@@ -735,7 +735,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-8.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "These statement jhumkas sway with deliberate grace. The upper floral stud leads to a hand-enameled dome intricately decorated with ruby-pink Meenakari detailing, suspended above clusters of micro seed pearls.",
     story:
@@ -764,7 +764,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-2.jpg",
     ],
     category: "Bridal",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "The ultimate crown jewel — a masterwork bridal set crafted over 160 artisan hours. Features a layered multi-strand necklace, matching chandelier earrings, and an ornate maang tikka set with Zambian emerald cabochons and natural Polki diamonds.",
     story:
@@ -793,7 +793,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-8.jpg",
     ],
     category: "Earrings",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "Echoing the shape of the crescent moon, the Ruhvika Chandbali pairs sparkling uncut glass Kundan with delicate pearl fringe work. Elegant yet lightweight for festive soirees.",
     story:
@@ -822,7 +822,7 @@ export const products: Product[] = [
       "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg",
     ],
     category: "Necklaces",
-    collection: "Mina Bagh",
+    collection: "Meena Bagh",
     description:
       "A showstopping neckpiece composed of multi-strand gold beads culminating in a central motif encrusted with rubies and Polki diamonds. Comes with a matching pair of drop earrings.",
     story:
