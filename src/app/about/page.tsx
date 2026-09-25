@@ -34,40 +34,31 @@ export default function About() {
   return (
     <Layout>
       {/* 1. HERO — Brand Story Editorial */}
-      <section className="pt-36 sm:pt-44 pb-16 mx-auto max-w-[1300px] px-6 sm:px-10 md:px-16">
+      <section className="pt-44 pb-28 border-t border-[#420002]/10 mx-auto max-w-[1300px] px-6 sm:px-10 md:px-16">
+        
+        <h1 className="font-display text-4xl sm:text-5xl text-[#c82127] leading-tight mb-8 sm:mb-10 text-center">
+          BRAND STORY
+        </h1>
 
-        {/* Two-column editorial: heading left | text right */}
-        <div className="flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24 border-t border-[#420002]/15 pt-10 sm:pt-12">
-
-          {/* Left — sticky heading */}
-          <div className="md:w-[280px] lg:w-[320px] shrink-0">
-            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[54px] leading-[1.18] text-[#c82127] tracking-normal md:sticky md:top-28">
-              BRAND STORY
-            </h1>
-          </div>
-
-          {/* Right — flowing paragraphs */}
-          <div className="flex-1 space-y-5 sm:space-y-6 text-sm sm:text-[15px] text-[#420002]/85 font-sans font-light leading-[1.75]">
-            <p>
-              It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own. That instinct never really left.
-            </p>
-            <p>
-              Zevar Baksa is where it landed. Zevar means jewellery, Baksa means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
-            </p>
-            <p>
-              Jaipur runs on the hands of its artisans, and that&apos;s where we come from. Zevar Baksa exists to give them the credit they rarely receive; every piece designed from scratch, shaped in collaboration with the artisan and designer behind it, their name carried with the collection, not left behind at the workshop door.
-            </p>
-            <p>
-              Our aim is reinterpretation; taking culture, nature, and tradition and giving them a contemporary edge. Every collection, and every metal we choose for it, carries a reason; a purpose, a meaning, nothing picked at random.
-            </p>
-            <p>
-              That same intention runs through our logos. English marks our modern collections, Hindi marks the traditional ones; written in our founder&apos;s mother&apos;s hand, a personal thread stitched into the brand; and a submark that&apos;s simply us, distilled.
-            </p>
-            <p>
-              Zevar Baksa isn&apos;t made to be waited on. It&apos;s made to be worn.
-            </p>
-          </div>
-
+        <div className="space-y-6 text-base sm:text-lg text-[#420002]/80 font-sans font-light leading-relaxed w-full text-justify">
+          <p>
+            It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own. That instinct never really left.
+          </p>
+          <p>
+            Zevar Baksa is where it landed. Zevar means jewellery, Baksa means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
+          </p>
+          <p>
+            Jaipur runs on the hands of its artisans, and that&apos;s where we come from. Zevar Baksa exists to give them the credit they rarely receive; every piece designed from scratch, shaped in collaboration with the artisan and designer behind it, their name carried with the collection, not left behind at the workshop door.
+          </p>
+          <p>
+            Our aim is reinterpretation; taking culture, nature, and tradition and giving them a contemporary edge. Every collection, and every metal we choose for it, carries a reason; a purpose, a meaning, nothing picked at random.
+          </p>
+          <p>
+            That same intention runs through our logos. English marks our modern collections, Hindi marks the traditional ones; written in our founder&apos;s mother&apos;s hand, a personal thread stitched into the brand; and a submark that&apos;s simply us, distilled.
+          </p>
+          <p>
+            Zevar Baksa isn&apos;t made to be waited on. It&apos;s made to be worn.
+          </p>
         </div>
       </section>
 
@@ -77,7 +68,7 @@ export default function About() {
           {/* Top Layer — 3 Images: Model -> Earrings -> Necklace */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
             {/* 1. Model Shot (Unused) */}
-            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
                 src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-7.jpg" 
                 alt="Model in Starlight Heritage Haar" 
@@ -86,7 +77,7 @@ export default function About() {
             </div>
 
             {/* 2. Earrings Shot */}
-            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
                 src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07871.JPG" 
                 alt="Handcrafted Meenakari Chandbali Earrings" 
@@ -95,7 +86,7 @@ export default function About() {
             </div>
 
             {/* 3. Necklace Shot (Unused) */}
-            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+            <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
                 src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg" 
                 alt="Meena Bagh Royal Choker Kiln-Fired Enamel Detail" 
@@ -107,7 +98,7 @@ export default function About() {
           {/* Bottom Layer — 2 Wide Images: Model -> Bridal Necklace Suite */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
             {/* 4. Model Shot (Unused) */}
-            <div className="group relative aspect-[16/9] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+            <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
                 src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07741.JPG" 
                 alt="Jaipur Royal Heirloom Jewellery Model Shoot" 
@@ -116,7 +107,7 @@ export default function About() {
             </div>
 
             {/* 5. Necklace Close-Up Shot (Unused) */}
-            <div className="group relative aspect-[16/9] overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
+            <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
                 src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07817.JPG" 
                 alt="Grand Devotion Bridal Neckpiece Close-Up Shoot" 

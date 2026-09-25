@@ -65,11 +65,7 @@ export default function CollectionPage({
         {/* Hero Narrative Container */}
         <div className="relative z-20 flex flex-col items-center justify-end h-full pt-32 pb-14 sm:pb-18 md:pb-20 px-6 sm:px-10 md:px-14 text-center max-w-3xl mx-auto space-y-4">
           
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-amber-200/90 font-sans font-medium">
-            Jaipur Atelier Archive
-          </p>
-
-          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#fffaee] leading-[1.02] tracking-tight">
+          <h1 className="font-display uppercase text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[#fffaee] leading-[1.02] tracking-tight">
             {collection.heroTitle}
           </h1>
 
@@ -77,12 +73,12 @@ export default function CollectionPage({
           <div className="w-12 h-px bg-amber-200/60 my-1" />
 
           {/* Collection Narrative Story */}
-          <div className="space-y-2 max-w-2xl">
-            <p className="text-sm sm:text-base text-amber-100 font-sans font-light leading-relaxed">
+          <div className="space-y-4 max-w-2xl mt-4">
+            <p className="text-[11px] sm:text-[12px] lowercase tracking-[0.22em] text-[#fffaee]/80 font-sans leading-relaxed">
               {collection.heroSubtitle}
             </p>
             {story?.meenakariHistory && (
-              <p className="text-xs sm:text-[13.5px] text-[#fffaee]/80 font-sans font-light leading-relaxed">
+              <p className="text-[11px] sm:text-[12px] lowercase tracking-[0.22em] text-[#fffaee]/80 font-sans leading-relaxed">
                 {story.meenakariHistory}
               </p>
             )}
@@ -90,26 +86,30 @@ export default function CollectionPage({
 
           {/* Artisan & Founder Attributions */}
           {story && (
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs text-amber-100/90 font-sans pt-1">
-              <span>
-                <strong className="font-medium text-[#fffaee]">Deepak Sankit</strong> — Master Karigar & Designer
-              </span>
-              <span className="hidden sm:inline text-amber-300/60">•</span>
-              <span>
-                <strong className="font-medium text-[#fffaee]">Tanishka</strong> — Founder&apos;s Devotion
-              </span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-x-8 gap-y-3 pt-6 pb-2">
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-medium text-[#fffaee]">Deepak Sankit</span>
+                <span className="h-px w-4 bg-[#fffaee]/30"></span>
+                <span className="text-[10px] sm:text-[11px] lowercase tracking-[0.2em] italic font-serif-brand text-[#fffaee]/70">master karigar & designer</span>
+              </div>
+              <span className="hidden sm:inline text-[#fffaee]/20 text-[10px]">✦</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-medium text-[#fffaee]">Tanishka</span>
+                <span className="h-px w-4 bg-[#fffaee]/30"></span>
+                <span className="text-[10px] sm:text-[11px] lowercase tracking-[0.2em] italic font-serif-brand text-[#fffaee]/70">founder&apos;s devotion</span>
+              </div>
             </div>
           )}
 
           {/* Philosophy Line */}
           {story?.philosophy && (
-            <p className="font-serif-brand italic text-sm sm:text-base text-amber-200/90 max-w-lg pt-1">
+            <p className="text-[11px] sm:text-[12px] lowercase tracking-[0.22em] text-[#fffaee]/80 font-sans pt-4 max-w-lg">
               &ldquo;{story.philosophy}&rdquo;
             </p>
           )}
 
           {/* Hallmarks Line */}
-          <p className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.22em] text-amber-200/70 font-sans pt-1">
+          <p className="text-[9.5px] sm:text-[10px] uppercase tracking-[0.22em] text-amber-200/70 font-sans pt-4">
             750°C Kiln-Fired Enamel • Solid 925 & 22K Gold Vermeil • BIS Hallmarked Purity
           </p>
 

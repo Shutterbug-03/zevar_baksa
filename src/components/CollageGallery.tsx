@@ -70,7 +70,7 @@ export function CollageGallery() {
             {topLayer.map((card, idx) => (
               <div
                 key={`top-${idx}`}
-                className="group relative aspect-[4/3.8] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500"
+                className="group relative aspect-[4/3.8] w-full overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500"
               >
                 <img
                   src={card.src}
@@ -86,7 +86,7 @@ export function CollageGallery() {
             {bottomLayer.map((card, idx) => (
               <div
                 key={`bottom-${idx}`}
-                className="group relative aspect-[16/9.5] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-[#f4eee1] border border-[#420002]/15 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500"
+                className="group relative aspect-[16/9.5] w-full overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500"
               >
                 <img
                   src={card.src}

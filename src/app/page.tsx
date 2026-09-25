@@ -42,25 +42,25 @@ export default function Home() {
             <div className="lg:col-span-7 flex flex-col items-start text-left">
               
               {/* Brand Story Heading */}
-              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#c82127] leading-[1.15] max-w-xl mb-3 sm:mb-4">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-[#420002] leading-[1.15] max-w-xl mb-3 sm:mb-4">
                 BRAND STORY
               </h2>
 
               {/* Exact Narrative Text Paragraphs — Compact & High Readability */}
-              <div className="space-y-2.5 sm:space-y-3 text-[12px] sm:text-[13px] md:text-[13.5px] text-[#420002]/85 leading-[1.65] sm:leading-[1.7] font-sans font-light max-w-2xl">
+              <div className="space-y-3.5 sm:space-y-4 text-[12px] sm:text-[13px] md:text-[13.5px] text-[#420002] leading-[1.65] sm:leading-[1.7] font-sans font-light max-w-2xl">
                 <p>
                   It started with crayons on a bedroom floor; a girl watching her mother design jewellery, then trying to design her own. That instinct never really left.
                 </p>
                 <p>
                   Zevar Baksa is where it landed. Zevar means jewellery, Baksa means box; a jewellery box, a nod to everything jewellery can carry, and everything it can mean.
                 </p>
-                <p>
+                <p className="text-[#420002]/60 leading-[1.85] sm:leading-[1.95] tracking-wide">
                   Jaipur runs on the hands of its artisans, and that&apos;s where we come from. Zevar Baksa exists to give them the credit they rarely receive; every piece designed from scratch, shaped in collaboration with the artisan and designer behind it, their name carried with the collection, not left behind at the workshop door.
                 </p>
                 <p>
                   Our aim is reinterpretation; taking culture, nature, and tradition and giving them a contemporary edge. Every collection, and every metal we choose for it, carries a reason; a purpose, a meaning, nothing picked at random.
                 </p>
-                <p>
+                <p className="text-[#420002]/60 leading-[1.85] sm:leading-[1.95] tracking-wide">
                   That same intention runs through our logos. English marks our modern collections, Hindi marks the traditional ones; written in our founder&apos;s mother&apos;s hand, a personal thread stitched into the brand; and a submark that&apos;s simply us, distilled.
                 </p>
 
@@ -84,7 +84,7 @@ export default function Home() {
               <div className="relative w-full max-w-[460px]">
                 
                 {/* Main Photo: Handcrafted Silver Enamel Necklace Masterpiece */}
-                <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl border border-[#420002]/15 bg-[#f4eee1] group">
+                <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl rounded-lg bg-[#f4eee1] group">
                   <img
                     src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg"
                     alt="Zevar Baksa Handcrafted Silver Necklace Panel Enamel Work"
