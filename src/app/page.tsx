@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
@@ -9,23 +10,57 @@ import { CollageGallery } from "@/components/CollageGallery";
 import { FaqSection } from "@/components/FaqSection";
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Safari requires muted to be set imperatively before calling play()
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const tryPlay = () => {
+      video.play().catch(() => {
+        // Autoplay blocked (e.g. Safari low-power mode) — silently ignored
+      });
+    };
+
+    // Attempt immediately, then retry on canplay in case Safari defers
+    tryPlay();
+    video.addEventListener("canplay", tryPlay, { once: true });
+
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+    };
+  }, []);
+
   return (
     <Layout>
 
       {/* ════════════════════════════════════════════════════
-          1. HERO — Full Viewport Background Image with Transparent Header
+          1. HERO — Full Viewport Cinematic Video with Transparent Header
       ════════════════════════════════════════════════════ */}
       <section className="relative w-full h-[100svh] min-h-[640px] overflow-hidden bg-[#fffaee]">
         
-        {/* Full-Bleed Cover Background Image — smoothly dissolved into canvas with zero dividing line */}
-        <img
-          src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/hero-cover.png"
-          alt="Zevar Baksa Hero Editorial Jewellery"
+        {/* Full-Bleed Cinematic Background Video — dissolved smoothly into canvas */}
+        <video
+          ref={videoRef}
+          src="/hero-video.mp4"
+          poster="/hero-poster.jpg"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          controls={false}
+          disablePictureInPicture
+          {...{ "x-webkit-airplay": "deny" }}
           style={{
-            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 78%, rgba(0,0,0,0) 100%)",
+            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)",
           }}
-          className="absolute inset-0 w-full h-full object-cover object-[center_15%] pointer-events-none select-none"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
         />
       </section>
 
@@ -83,11 +118,11 @@ export default function Home() {
             <div className="lg:col-span-5 relative flex justify-center lg:justify-end mt-6 lg:mt-0">
               <div className="relative w-full max-w-[460px]">
                 
-                {/* Main Photo: Handcrafted Silver Enamel Necklace Masterpiece */}
+                {/* Main Photo: Brand Story Showcase */}
                 <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl rounded-lg bg-[#f4eee1] group">
                   <img
-                    src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg"
-                    alt="Zevar Baksa Handcrafted Silver Necklace Panel Enamel Work"
+                    src="/brand-story.jpg"
+                    alt="Zevar Baksa Brand Story Jewellery"
                     className="h-full w-full object-cover object-center transition-transform duration-1000 group-hover:scale-105"
                   />
                   {/* Subtle Luxury Gradient */}

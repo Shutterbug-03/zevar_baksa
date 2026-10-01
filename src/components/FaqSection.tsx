@@ -13,33 +13,62 @@ interface FaqItem {
 const faqs: FaqItem[] = [
   {
     id: "faq-1",
-    question: "What precious metals & enamel craft do you use?",
+    question: "What materials do you use in your jewellery?",
     answer:
-      "We craft exclusively in solid 925 sterling silver, 22K gold vermeil, and solid brass with authentic Jaipur Meenakari enamel fired at 750°C. All pieces are BIS hallmarked.",
+      "We craft in gold, silver, and brass, depending on the collection. Each product page tells you exactly what a piece is made of, so check the Collection Page for details.",
   },
   {
     id: "faq-2",
-    question: "Is your jewellery hypoallergenic & sensitive-skin safe?",
+    question: "Is your jewellery hypoallergenic / safe for sensitive skin?",
     answer:
-      "Yes — 100% nickel-free and hypoallergenic. Our precious metal alloys and gold vermeil coatings ensure comfortable daily wear.",
+      "Yes, all our jewellery is hypoallergenic and safe for sensitive skin. Gold and silver are naturally so, and our brass pieces carry high-quality gold and silver plating and an e-coating that's hypoallergenic as well. If you have particularly sensitive skin, we recommend checking the details section on each product page for the specific plating used.",
   },
   {
     id: "faq-3",
-    question: "How do I care for my heirloom pieces?",
+    question: "How do I care for my jewellery?",
     answer:
-      "Keep dry and store in your Zevar Baksa velvet box away from direct perfumes. A complimentary microfibre polishing cloth is included with every order.",
+      "Keep pieces dry, avoid contact with perfume and sweat, and store them in your Zevar Baksa box or pouch away from direct sunlight. All our metals carry the highest-quality plating we can offer. That said, silver jewellery will naturally oxidise over time. This is normal and part of how silver ages.",
   },
   {
     id: "faq-4",
-    question: "Do you restock sold-out editions?",
+    question: "Do you restock sold-out pieces?",
     answer:
-      "Our pieces are released in limited Jaipur karigar runs. Once an edition is claimed, it is retired to preserve collector rarity.",
+      "Our collections are released in limited runs, so once a piece sells out, it typically won't be restocked. If you'd like something similar, see our custom orders FAQ below.",
   },
   {
     id: "faq-5",
-    question: "What are your delivery timelines across India?",
+    question: "Do you take custom orders?",
     answer:
-      "Insured express courier delivers within 3–7 business days nationwide. Real-time SMS and WhatsApp tracking are provided upon dispatch.",
+      "Yes. If you love one of our pieces, we can customise it to a certain extent, for example the length of a chain or pearl necklace, or the size of the piece. For a completely custom piece in silver or gold, write to us and we'll happily talk it through. All customised pieces are made to order.",
+  },
+  {
+    id: "faq-6",
+    question: "Do you ship internationally?",
+    answer: "Right now we ship within India only.",
+  },
+  {
+    id: "faq-7",
+    question: "How long does an order take to ship?",
+    answer:
+      "Ready-to-ship pieces are dispatched within 5–7 business days, after they pass quality control. Made-to-order pieces, including customised ones, take 20–30 days to be ready for dispatch. We'll share the exact timeline with you once your order is placed.",
+  },
+  {
+    id: "faq-8",
+    question: "What is your return and exchange policy?",
+    answer:
+      "We accept returns or exchanges only if a piece arrives defective or damaged, has incorrect plating, or isn't the item you ordered. Full details are on our Return & Exchange page.",
+  },
+  {
+    id: "faq-9",
+    question: "How do I know my ring/bangle size?",
+    answer:
+      "Most of our rings and bangles are resizable. For pieces that aren't, you'll find a sizing chart on the product page.",
+  },
+  {
+    id: "faq-10",
+    question: "Are the artisans/designers behind each piece credited?",
+    answer:
+      "Yes. Every piece is designed in-house, then brought to life in collaboration with individual manufacturing units in Jaipur, and credited as part of the collection. We're working toward bringing manufacturing fully in-house, where our own karigar team will be credited by name for their work on every piece.",
   },
 ];
 
@@ -102,11 +131,11 @@ export function FaqSection() {
           </div>
         </div>
 
-        {/* 2-Column Equal-Height Split: FAQs Left, Concierge Box Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+        {/* 2-Column Split: FAQs Left, Sticky Concierge Box Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* Left Column: Compact Accordions (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between gap-2.5 font-sans">
+          <div className="lg:col-span-7 flex flex-col gap-2.5 font-sans">
             {faqs.map((faq) => {
               const isOpen = openId === faq.id;
               return (
@@ -134,7 +163,7 @@ export function FaqSection() {
 
                   <div
                     className={`transition-all duration-300 ease-in-out ${
-                      isOpen ? "max-h-48 opacity-100 pb-4 px-4 sm:px-5" : "max-h-0 opacity-0 overflow-hidden"
+                      isOpen ? "max-h-96 opacity-100 pb-4 px-4 sm:px-5" : "max-h-0 opacity-0 overflow-hidden"
                     }`}
                   >
                     <p className="text-[12.5px] sm:text-[13.5px] text-[#420002]/80 font-sans leading-relaxed border-t border-[#420002]/10 pt-3 font-light">
@@ -147,21 +176,15 @@ export function FaqSection() {
           </div>
 
           {/* Right Column: Direct Query Box (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col">
-            <div className="h-full rounded-2xl border border-[#420002]/15 bg-[#420002] p-5 sm:p-7 flex flex-col justify-between shadow-lg text-[#fffaee]">
+          <div className="lg:col-span-5 flex flex-col lg:sticky lg:top-24">
+            <div className="rounded-2xl border border-[#420002]/15 bg-[#420002] p-5 sm:p-7 flex flex-col justify-between shadow-lg text-[#fffaee]">
               
               <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[9px] uppercase tracking-[0.3em] text-[#fffaee]/80 font-semibold">
-                    Direct Atelier Assistance
-                  </span>
-                </div>
-                
                 <h3 className="font-display text-xl sm:text-2xl text-[#fffaee]">
                   Ask Our Karigars
                 </h3>
                 <p className="mt-1 text-xs text-[#fffaee]/80 font-sans leading-relaxed font-light">
-                  Have a bespoke requirement or sizing question? Send your query directly to our Jaipur atelier.
+                  Have a bespoke requirement or sizing question? Send your query directly to our Jaipur office.
                 </p>
 
                 {submitted ? (
@@ -210,7 +233,7 @@ export function FaqSection() {
 
               {/* Direct Concierge Contact Links */}
               <div className="mt-5 pt-4 border-t border-[#fffaee]/15 flex items-center justify-between text-[11px] font-sans text-[#fffaee]/80">
-                <span>Jaipur Atelier Desk:</span>
+                <span>Contact us at:</span>
                 <a
                   href="mailto:info@zevarbaksa.com"
                   className="font-medium text-[#fffaee] hover:underline underline-offset-2"

@@ -41,8 +41,9 @@ export default function ShippingPolicy() {
           <div className="space-y-4">
             <h2 className="font-display text-2xl text-primary">3. Order Processing and Dispatch</h2>
             <ul className="list-disc pl-5 space-y-3">
-              <li>Ready-stock items are dispatched within 3–5 business days of order confirmation.</li>
-              <li>Made-to-order items are handcrafted specifically for you and take 15–20 days to manufacture before dispatch, depending on the complexity of the design.</li>
+              <li>Every piece goes through a quality control check before it leaves us.</li>
+              <li>Ready-stock items are dispatched within 5–7 business days of order confirmation, once they have passed quality control.</li>
+              <li>Made-to-order items, including customised pieces, are handcrafted specifically for you and take 20–30 days to be ready for dispatch, depending on the complexity of the design. We will share the exact timeline for your piece once your order is placed.</li>
               <li>You will receive an email confirmation as soon as your order is placed, and another notification once your order has been dispatched, along with tracking information.</li>
               <li>We work with reputable, reliable courier partners to deliver your order safely. Delivery timelines after dispatch will vary depending on your location and will be visible via the tracking details shared with you.</li>
             </ul>
@@ -87,10 +88,10 @@ export default function ShippingPolicy() {
               <strong className="block text-primary font-serif-brand text-lg mb-2">ZevarBaksa LLP</strong>
               <span className="block">B-21, Bhan Nagar, Queens Road</span>
               <span className="block">Vaishali Nagar, Jaipur</span>
-              <span className="block">Rajasthan, 302021</span>
+              <span className="block">Rajasthan – 302021</span>
               <div className="mt-4">
                 <span className="block">Email: <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a></span>
-                <span className="block text-primary/60 text-xs mt-1">(WhatsApp number to be added)</span>
+                <span className="block text-primary/60 text-xs mt-1">WhatsApp: (to be added)</span>
               </div>
             </address>
           </div>

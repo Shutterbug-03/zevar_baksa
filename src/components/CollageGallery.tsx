@@ -8,51 +8,60 @@ interface BentoCard {
   src: string;
   alt: string;
   aspect: string;
+  position?: string;
 }
 
 const topLayer: BentoCard[] = [
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07871.JPG",
-    alt: "Handcrafted Meenakari Chandbali Shoot",
+    src: "/landing-grid/grid-1.jpg",
+    alt: "Handcrafted Three-Tier Hair Jewelry Chains",
     aspect: "aspect-[4/3.8]",
+    position: "object-[center_22%]",
   },
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07714.JPG",
-    alt: "Signature Royal Gold Haar Shoot",
+    src: "/landing-grid/grid-2.jpg",
+    alt: "Handcrafted Bird Motif Pendant Close-up",
     aspect: "aspect-[4/3.8]",
+    position: "object-[center_35%]",
   },
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-8.jpg",
-    alt: "Royal Poshak Muse Shoot",
+    src: "/landing-grid/grid-3.jpg",
+    alt: "Green Meenakari Floral Pendant on Pearl Strand",
     aspect: "aspect-[4/3.8]",
+    position: "object-center",
   },
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-4.jpg",
-    alt: "Editorial Kundan Set Shoot",
+    src: "/landing-grid/grid-4.jpg",
+    alt: "Purple Enamel Drop Earrings on Sacred Leaf",
     aspect: "aspect-[4/3.8]",
+    position: "object-center",
   },
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e2-1.jpg",
-    alt: "Handcrafted Miniature Art Drop Earrings on Deep Red Enamel",
+    src: "/landing-grid/grid-5.jpg",
+    alt: "Sterling Silver and Blue Enamel Royal Choker and Earrings",
     aspect: "aspect-[4/3.8]",
+    position: "object-[center_18%]",
   },
 ];
 
 const bottomLayer: BentoCard[] = [
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07812.JPG",
-    alt: "Grand Royal Bridal Suite Shoot",
+    src: "/landing-grid/grid-6.jpg",
+    alt: "Emerald Green Meenakari Statement Necklace",
     aspect: "aspect-[16/9.5]",
+    position: "object-[center_30%]",
   },
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07753.JPG",
-    alt: "Kiln-Fired Floral Enamel Choker Shoot",
+    src: "/landing-grid/grid-7.jpg",
+    alt: "Zevar Baksa Signature Crimson Trunk with Handcrafted Jewels",
     aspect: "aspect-[16/9.5]",
+    position: "object-center",
   },
   {
-    src: "https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/products/e1-1.jpg",
-    alt: "Handcrafted Bird Motif Drop Earrings on Pink Enamel",
+    src: "/landing-grid/grid-8.jpg",
+    alt: "Sterling Silver Turquoise Enamel Filigree Tassel Necklace",
     aspect: "aspect-[16/9.5]",
+    position: "object-[center_35%]",
   },
 ];
 
@@ -75,7 +84,7 @@ export function CollageGallery() {
                 <img
                   src={card.src}
                   alt={card.alt}
-                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className={`h-full w-full object-cover ${card.position || "object-center"} transition-transform duration-700 group-hover:scale-105`}
                 />
               </div>
             ))}
@@ -91,7 +100,7 @@ export function CollageGallery() {
                 <img
                   src={card.src}
                   alt={card.alt}
-                  className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className={`h-full w-full object-cover ${card.position || "object-center"} transition-transform duration-700 group-hover:scale-105`}
                 />
               </div>
             ))}

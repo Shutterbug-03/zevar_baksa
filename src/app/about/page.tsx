@@ -62,55 +62,55 @@ export default function About() {
         </div>
       </section>
 
-      {/* 2. VISUAL ARCHIVE BENTO (3 Top, 2 Wide Bottom — Alternating Model, Earrings, & Necklace) */}
+      {/* 2. VISUAL ARCHIVE BENTO (3 Top, 2 Wide Bottom — Authentic Jaipur Karigar Craft & Atelier Process) */}
       <section className="mx-auto max-w-[1200px] px-4 sm:px-6 md:px-8 pb-16 sm:pb-20">
         <div className="space-y-3.5 sm:space-y-4">
-          {/* Top Layer — 3 Images: Model -> Earrings -> Necklace */}
+          {/* Top Layer — 3 Images: Needle & Enamel -> Camel Meenakari -> Color Palette */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
-            {/* 1. Model Shot (Unused) */}
+            {/* 1. Needle & Enamel Application */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-7.jpg" 
-                alt="Model in Starlight Heritage Haar" 
+                src="/bento-1-needle.jpg" 
+                alt="Artisan applying vibrant enamel with precision needle" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
             </div>
 
-            {/* 2. Earrings Shot */}
+            {/* 2. Camel Meenakari Crafting */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07871.JPG" 
-                alt="Handcrafted Meenakari Chandbali Earrings" 
+                src="/bento-2-camel.jpg" 
+                alt="Artisan crafting gold and meenakari camel heirloom piece" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
             </div>
 
-            {/* 3. Necklace Shot (Unused) */}
+            {/* 3. Brass Pigment Palette */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/real-shot-1.jpg" 
-                alt="Meena Bagh Royal Choker Kiln-Fired Enamel Detail" 
+                src="/bento-3-palette.jpg" 
+                alt="Traditional brass palette with natural enamel color pigments" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
             </div>
           </div>
 
-          {/* Bottom Layer — 2 Wide Images: Model -> Bridal Necklace Suite */}
+          {/* Bottom Layer — 2 Wide Images: Flower Filigree Assembly -> Liquid Crucible Pouring */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
-            {/* 4. Model Shot (Unused) */}
+            {/* 4. Flower Filigree Assembly with Tweezers */}
             <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07741.JPG" 
-                alt="Jaipur Royal Heirloom Jewellery Model Shoot" 
+                src="/bento-4-tweezers.jpg" 
+                alt="Karigar handcrafting delicate jewellery flower motif with precision tweezers" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
             </div>
 
-            {/* 5. Necklace Close-Up Shot (Unused) */}
+            {/* 5. Liquid Crucible Pouring */}
             <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/shoots/DSC07817.JPG" 
-                alt="Grand Devotion Bridal Neckpiece Close-Up Shoot" 
+                src="/bento-5-pouring.jpg" 
+                alt="Hands pouring molten liquid from traditional crucible into vessel" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
             </div>
@@ -187,29 +187,23 @@ export default function About() {
               </div>
             </div>
 
-            <div className="lg:col-span-6 grid grid-cols-12 gap-4 items-center">
+            <div className="lg:col-span-6 grid grid-cols-12 gap-4 sm:gap-6 items-center">
               <div className="col-span-7">
-                <div className="aspect-[3/4] overflow-hidden rounded-sm">
+                <div className="aspect-[3/4] overflow-hidden rounded-md shadow-md bg-[#f4eee1] group">
                   <img 
-                    src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/craft.jpg" 
-                    alt="Master artisan firing enamel in Jaipur" 
-                    className="h-full w-full object-cover" 
+                    src="/IMG_8816.jpg" 
+                    alt="Master artisan at work in Jaipur" 
+                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
                   />
                 </div>
               </div>
-              <div className="col-span-5 space-y-4">
-                <div className="aspect-square overflow-hidden rounded-sm">
+              <div className="col-span-5">
+                <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-md shadow-md bg-[#f4eee1] group">
                   <img 
-                    src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/about-editorial.jpg" 
-                    alt="Detail of finished heirloom jewellery" 
-                    className="h-full w-full object-cover" 
+                    src="/DSC00076.JPG" 
+                    alt="Artisan handcrafting delicate jewellery motif with precision tweezers" 
+                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
                   />
-                </div>
-                <div className="p-6 bg-[#fffaee] border border-[#420002]/10 text-center">
-                  <p className="font-display text-3xl text-[#c82127] font-light">750°C</p>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[#420002]/70 mt-1 font-sans">
-                    Hand-Fired Enamel
-                  </p>
                 </div>
               </div>
             </div>
@@ -248,9 +242,6 @@ export default function About() {
               <p className="text-base sm:text-lg text-[#fffaee]/90 font-sans font-light leading-relaxed">
                 Our founder is from Jaipur. So are our artisans, our manufacturers, and Zevar Baksa itself, we&apos;re based here, working from the same city the craft comes from, not sourcing it from a distance.
               </p>
-              <p className="text-xs uppercase tracking-[0.25em] text-[#fffaee]/70 pt-4 font-sans">
-                Atelier Residence · Vaishali Nagar, Jaipur
-              </p>
             </div>
 
           </div>
@@ -278,15 +269,12 @@ export default function About() {
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/primary-logo.png" 
+                src="/logos/primary-logo.png" 
                 alt="Zevar Baksa English Wordmark" 
                 className="max-h-12 w-auto object-contain" 
               />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#c82127] font-medium mb-1.5">
-                Contemporary Collections
-              </p>
               <h3 className="font-display text-2xl text-[#420002] mb-3">
                 English Wordmark
               </h3>
@@ -300,15 +288,12 @@ export default function About() {
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png" 
+                src="/logos/submark.png" 
                 alt="Zevar Baksa Submark" 
                 className="max-h-16 w-auto object-contain" 
               />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#c82127] font-medium mb-1.5">
-                Compact Mark
-              </p>
               <h3 className="font-display text-2xl text-[#420002] mb-3">
                 Submark (ZB Monogram)
               </h3>
@@ -322,15 +307,12 @@ export default function About() {
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/secondary-logo-hindi.png" 
+                src="/logos/secondary-logo-hindi.png" 
                 alt="ज़ेवर बक्सा Hindi Wordmark" 
                 className="max-h-16 w-auto object-contain" 
               />
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#c82127] font-medium mb-1.5">
-                Heritage Collections
-              </p>
               <h3 className="font-display text-2xl text-[#420002] mb-3">
                 Hindi Wordmark (ज़ेवर बक्सा)
               </h3>
@@ -340,27 +322,6 @@ export default function About() {
             </div>
           </div>
 
-        </div>
-
-        {/* Usage notes rendered as refined editorial footnotes */}
-        <div className="mt-20 pt-10 border-t border-[#420002]/15">
-          <p className="text-xs uppercase tracking-[0.25em] text-[#420002]/60 font-sans mb-6">
-            Usage Notes for the Website
-          </p>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-4 text-xs text-[#420002]/75 font-sans font-light leading-relaxed">
-            <p>
-              • All three marks are red on cream by default (#C82127 on #FFFAEE), matching the brand&apos;s core palette.
-            </p>
-            <p>
-              • Keep clear space around each mark at least equal to the height of the &ldquo;Z&rdquo; or &ldquo;ज़&rdquo; so nothing crowds it.
-            </p>
-            <p>
-              • Don&apos;t recolor, stretch, or rotate any of the three, if a dark-background or reversed (cream-on-red) version is needed for a specific placement, that should be a deliberate export, not a live CSS filter.
-            </p>
-            <p>
-              • The Hindi and English wordmarks are not translations of each other in function, don&apos;t swap one in for the other based on convenience, the choice signals contemporary vs. traditional collection.
-            </p>
-          </div>
         </div>
 
       </section>

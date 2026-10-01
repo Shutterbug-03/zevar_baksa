@@ -20,15 +20,12 @@ const mainLinks: { label: string; to: string; isCollections?: boolean; isShop?: 
 ];
 
 const shopCategories = [
-  { label: "Pendants & Necklaces", to: "/shop?category=Necklaces" },
-  { label: "Earrings & Jhumkas", to: "/shop?category=Earrings" },
-  { label: "Rings & Solitaires", to: "/shop?category=Rings" },
-  { label: "Bangles & Bracelets", to: "/shop?category=Bracelets" },
-  { label: "Bridal Trousseau", to: "/shop?category=Bridal" },
+  { label: "Earrings", to: "/shop?category=Earrings" },
+  { label: "Pendants", to: "/shop?category=Pendants" },
+  { label: "Necklaces", to: "/shop?category=Necklaces" },
 ];
 
 const secondaryLinks: { label: string; to?: string; action?: "login" | "search" }[] = [
-  { label: "Jewellery Care & Material", to: "/about" },
   { label: "Shipping Policy", to: "/shipping-policy" },
   { label: "Returns & Exchange", to: "/exchange-policy" },
   { label: "Privacy Policy", to: "/privacy-policy" },
@@ -174,7 +171,7 @@ export function Nav() {
           >
             <div className="relative flex items-center justify-center">
               <img
-                src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png"
+                src="/logos/submark.png"
                 alt="Zevar Baksa Monogram"
                 className={`h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
                   isTransparentDarkHero ? "brightness-0 invert drop-shadow-md" : ""
@@ -342,14 +339,6 @@ export function Nav() {
                           <span>{cat.label}</span>
                         </button>
                       ))}
-                      <button
-                        onClick={() => handleNavigate("/shop", "All Vault Creations")}
-                        className={`text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-all duration-300 pt-1 font-sans font-medium cursor-pointer ${
-                          shopExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
-                        }`}
-                      >
-                        Explore All Vault Pieces →
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -387,7 +376,7 @@ export function Nav() {
                       {collections.map((c, idx) => (
                         <button
                           key={c.slug}
-                          onClick={() => handleNavigate(`/collection/${c.slug}`, `${c.name} Collection`)}
+                          onClick={() => handleNavigate(`/collection/${c.slug}`, c.name)}
                           style={{
                             transitionDelay: collectionsExpanded ? `${idx * 40}ms` : "0ms",
                           }}
@@ -396,16 +385,16 @@ export function Nav() {
                           }`}
                         >
                           <span className="text-[9px] text-[#c82127]/60 group-hover/col:text-[#c82127] transition-colors">✦</span>
-                          <span>{c.name} Collection</span>
+                          <span>{c.name}</span>
                         </button>
                       ))}
                       <button
-                        onClick={() => handleNavigate("/shop", "All Heirlooms")}
+                        onClick={() => handleNavigate("/shop", "All Creations")}
                         className={`text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#420002]/70 hover:text-[#c82127] transition-all duration-300 pt-1 font-sans font-medium cursor-pointer ${
                           collectionsExpanded ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
                         }`}
                       >
-                        Explore All Heirlooms →
+                        Explore All →
                       </button>
                     </div>
                   </div>

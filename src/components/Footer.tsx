@@ -23,7 +23,7 @@ export function Footer() {
               {/* Hindi Secondary Logo */}
               <div className="inline-block my-2">
                 <img
-                  src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/secondary-logo-hindi.png"
+                  src="/logos/secondary-logo-hindi.png"
                   alt="ज़ेवर बक्सा"
                   className="h-20 sm:h-24 md:h-28 w-auto brightness-0 invert drop-shadow-md"
                 />
@@ -36,36 +36,56 @@ export function Footer() {
               <div className="w-14 h-[1.5px] bg-[#fffaee]/40 my-4" />
 
               <p className="text-xs text-[#fffaee]/85 font-sans font-light leading-relaxed max-w-md">
-                Every Zevar Baksa heirloom is born in the historic lanes of Johri Bazar, shaped by master karigars preserving royal Meenakari enamel craft.
+                Every Zevar Baksa piece is born in the historic lanes of Pink City
               </p>
             </div>
           </div>
 
-          {/* Column 1: Explore Archive */}
-          <FooterCol
-            title="Explore Archive"
-            links={[
-              { label: "All Jewellery", to: "/shop" },
-              { label: "Meena Bagh Collection", to: "/collection/meena-bagh" },
-              { label: "Celestial Heritage", to: "/collection/celestial-heritage" },
-              { label: "New Releases", to: "/shop" },
-              { label: "Bridal Trousseau", to: "/shop" },
-              { label: "Our Jaipur Atelier", to: "/about" },
-            ]}
-          />
+          {/* Column: Explore Archive extended across both text link lists */}
+          <div className="md:col-span-4">
+            <h4 className="text-xs uppercase tracking-[0.3em] font-semibold text-[#fffaee] flex items-center gap-1.5 pb-2 border-b border-[#fffaee]/20">
+              <span>✦</span> Explore Archive
+            </h4>
+            
+            <div className="mt-5 grid grid-cols-2 gap-4 sm:gap-6">
+              <ul className="space-y-3 font-sans">
+                {[
+                  { label: "All Jewellery", to: "/shop" },
+                  { label: "Meena Bagh", to: "/collection/meena-bagh" },
+                  { label: "New Releases", to: "/shop" },
+                  { label: "About Us", to: "/about" },
+                ].map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      href={l.to}
+                      className="text-xs sm:text-[13px] text-[#fffaee]/85 hover:text-[#fffaee] hover:underline underline-offset-4 transition-all duration-300 inline-flex items-center gap-1.5"
+                    >
+                      <span>{l.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-          {/* Column 2: Atelier Care & Support */}
-          <FooterCol
-            title="Atelier Care"
-            links={[
-              { label: "Jewellery Care & Storage", to: "/about" },
-              { label: "Shipping Policy", to: "/shipping-policy" },
-              { label: "Returns & Exchange", to: "/exchange-policy" },
-              { label: "Privacy Policy", to: "/privacy-policy" },
-              { label: "Terms & Conditions", to: "/terms-conditions" },
-              { label: "Contact Us", to: "/contact" },
-            ]}
-          />
+              <ul className="space-y-3 font-sans">
+                {[
+                  { label: "Shipping Policy", to: "/shipping-policy" },
+                  { label: "Returns & Exchange", to: "/exchange-policy" },
+                  { label: "Privacy Policy", to: "/privacy-policy" },
+                  { label: "Terms & Conditions", to: "/terms-conditions" },
+                  { label: "Contact Us", to: "/contact" },
+                ].map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      href={l.to}
+                      className="text-xs sm:text-[13px] text-[#fffaee]/85 hover:text-[#fffaee] hover:underline underline-offset-4 transition-all duration-300 inline-flex items-center gap-1.5"
+                    >
+                      <span>{l.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
           {/* Column 3: Royal Residence & Socials */}
           <div className="md:col-span-3">
@@ -94,7 +114,7 @@ export function Footer() {
             </div>
 
             <div className="mt-8 pt-5 border-t border-[#fffaee]/20">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-[#fffaee]/90 font-semibold">Atelier Residence</p>
+              <p className="text-[10px] uppercase tracking-[0.25em] text-[#fffaee]/90 font-semibold">Office Address</p>
               <p className="mt-1.5 text-xs text-[#fffaee]/85 leading-relaxed font-light">
                 B-21, Bhan Nagar, Queens Road<br />
                 Vaishali Nagar, Jaipur, Rajasthan 302021
@@ -122,27 +142,5 @@ export function Footer() {
 
       </div>
     </footer>
-  );
-}
-
-function FooterCol({ title, links }: { title: string; links: { label: string; to: string }[] }) {
-  return (
-    <div className="md:col-span-2">
-      <h4 className="text-xs uppercase tracking-[0.3em] font-semibold text-[#fffaee] flex items-center gap-1.5 pb-2 border-b border-[#fffaee]/20">
-        <span>✦</span> {title}
-      </h4>
-      <ul className="mt-5 space-y-3 font-sans">
-        {links.map((l) => (
-          <li key={l.label}>
-            <Link
-              href={l.to}
-              className="text-xs sm:text-[13px] text-[#fffaee]/85 hover:text-[#fffaee] hover:underline underline-offset-4 transition-all duration-300 inline-flex items-center gap-1.5"
-            >
-              <span>{l.label}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }

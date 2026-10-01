@@ -170,7 +170,7 @@ export function LuxuryLoadingScreen() {
           />
           <div className="relative h-18 w-18 sm:h-20 sm:w-20 rounded-full bg-[#fffaee] border border-[#420002]/15 flex items-center justify-center p-3.5 shadow-sm">
             <img
-              src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png"
+              src="/logos/submark.png"
               alt="Zevar Baksa Monogram Emblem"
               className="h-full w-full object-contain drop-shadow-xs"
             />
@@ -200,11 +200,6 @@ export function LuxuryLoadingScreen() {
             style={{ animation: "shimmer-bar 1.3s infinite ease-in-out" }}
           />
         </div>
-
-        {/* Heritage Detail */}
-        <p className="text-[8.5px] sm:text-[9px] uppercase tracking-[0.32em] text-[#420002]/45 font-sans mt-5">
-          Jaipur Meenakari & Kundan Atelier
-        </p>
 
       </div>
     </div>

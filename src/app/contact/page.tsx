@@ -9,13 +9,13 @@ export default function Contact() {
       <section className="pt-40 pb-16 mx-auto max-w-[1400px] px-6 md:px-12">
         <p className="text-[11px] uppercase tracking-[0.32em] text-primary">Say hello</p>
         <h1 className="mt-6 font-display text-6xl md:text-9xl leading-[0.9]">
-          Come see us <em className="not-italic italic">in person.</em>
+          Contact <em className="not-italic italic">us.</em>
         </h1>
       </section>
 
       <section className="mx-auto max-w-[1400px] px-6 md:px-12 pb-24 grid md:grid-cols-2 gap-14">
         <div className="space-y-10">
-          <ContactRow icon={<MapPin />} label="Atelier" value={"B-21, Bhan Nagar, Queens Road\nVaishali Nagar, Jaipur\nRajasthan 302021, India"} />
+          <ContactRow icon={<MapPin />} label="Address" value={"B-21, Bhan Nagar, Queens Road\nVaishali Nagar, Jaipur\nRajasthan 302021, India"} />
           <ContactRow icon={<Phone />} label="Call us" value="+91 98111 22334" />
           <ContactRow icon={<Mail />} label="Write" value="info@zevarbaksa.com" />
           <ContactRow icon={<Instagram />} label="Follow" value="@zevarbaksa" />
@@ -24,7 +24,7 @@ export default function Contact() {
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           <Field label="Name" name="name" />
           <Field label="Email" name="email" type="email" />
-          <Field label="Interested in" name="topic" placeholder="Bridal · Bespoke · Ready to Ship" />
+          <Field label="Question/query" name="topic" placeholder="Custom · Ready to ship · etc" />
           <div>
             <label className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground">Message</label>
             <textarea rows={5} className="mt-2 w-full bg-transparent border-b border-input py-3 outline-none focus:border-primary transition resize-none" />

@@ -224,7 +224,7 @@ export default function LoginPage() {
             <span>Back to store</span>
           </Link>
           <Link href="/">
-            <img src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/logos/submark.png" alt="Zevar Baksa" className="h-8 w-auto object-contain" />
+            <img src="/logos/submark.png" alt="Zevar Baksa" className="h-8 w-auto object-contain" />
           </Link>
         </div>
 
@@ -457,7 +457,7 @@ export default function LoginPage() {
       {/* ── RIGHT PANEL: Editorial Image ─────────────────────────── */}
       <div className="hidden lg:block lg:w-[52%] xl:w-[55%] relative overflow-hidden bg-[#f4eee1]">
         <img
-          src="https://nwjynhhvswvyafawkhst.supabase.co/storage/v1/object/public/media/images/editorial-1.jpg"
+          src="/images/editorial-1.jpg"
           alt="Zevar Baksa Jewellery"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />

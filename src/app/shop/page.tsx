@@ -6,7 +6,7 @@ import { useProductStore } from "@/store/productStore";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-const categories = ["All", "Necklaces", "Earrings", "Bracelets", "Bridal"];
+const categories = ["All", "Earrings", "Pendants", "Necklaces"];
 
 function ProductSkeleton() {
   return (
@@ -29,11 +29,11 @@ function ShopContent() {
       (c) => c.toLowerCase() === param.toLowerCase()
     );
     if (match) return match;
-    if (param.toLowerCase() === "pendants") return "Necklaces";
     return "All";
   };
 
   const [cat, setCat] = useState<string>(() => resolveCategory(categoryParam));
+  const [filterOption, setFilterOption] = useState<string>("all");
   const [sortOrder, setSortOrder] = useState<string>("relevance");
 
   // Trigger API fetch on mount (idempotent — no-ops if already loaded)
@@ -45,7 +45,45 @@ function ShopContent() {
     setCat(resolveCategory(categoryParam));
   }, [categoryParam]);
 
-  let filtered = cat === "All" ? products : products.filter((p) => p.category === cat);
+  let filtered = products;
+
+  // Category Filter (Round buttons)
+  if (cat === "Earrings") {
+    filtered = filtered.filter((p) => p.category === "Earrings");
+  } else if (cat === "Pendants") {
+    filtered = filtered.filter(
+      (p) =>
+        p.category === "Necklaces" &&
+        (p.name.toLowerCase().includes("pendant") ||
+          (p.subtitle && p.subtitle.toLowerCase().includes("pendant")))
+    );
+  } else if (cat === "Necklaces") {
+    filtered = filtered.filter(
+      (p) =>
+        p.category === "Necklaces" &&
+        !p.name.toLowerCase().includes("pendant") &&
+        (!p.subtitle || !p.subtitle.toLowerCase().includes("pendant"))
+    );
+  }
+
+  // Secondary Filter (Filter dropdown next to round section)
+  if (filterOption === "ready") {
+    filtered = filtered.filter((p) => p.status === "Ready to Ship");
+  } else if (filterOption === "made-to-order") {
+    filtered = filtered.filter((p) => p.status === "Made to Order");
+  } else if (filterOption === "silver") {
+    filtered = filtered.filter(
+      (p) =>
+        (p.specs?.metal && p.specs.metal.toLowerCase().includes("silver")) ||
+        p.subtitle.toLowerCase().includes("silver")
+    );
+  } else if (filterOption === "gold") {
+    filtered = filtered.filter(
+      (p) =>
+        (p.specs?.metal && p.specs.metal.toLowerCase().includes("gold")) ||
+        p.subtitle.toLowerCase().includes("gold")
+    );
+  }
   
   if (sortOrder === "price-asc") {
     filtered = [...filtered].sort((a, b) => a.price - b.price);
@@ -72,13 +110,13 @@ function ShopContent() {
             Shop <span className="font-serif-brand italic font-normal text-[#c82127]">All Masterpieces.</span>
           </h1>
 
-          <p className="mt-3 text-xs sm:text-sm text-[#420002]/70 font-sans font-light max-w-lg">
-            Solid 925 silver, 22K gold vermeil, and 750°C permanent Meenakari enamel, hallmarked with BIS purity.
+          <p className="mt-3 text-[10.5px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#420002]/75 font-sans font-medium max-w-2xl leading-relaxed">
+            750°C KILN-FIRED ENAMEL • SOLID 925 & 22K GOLD VERMEIL • BIS HALLMARKED PURITY
           </p>
 
           {/* Filter Pills and Sort */}
           <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex flex-wrap gap-2.5 justify-center md:justify-start">
+            <div className="flex flex-wrap items-center gap-2.5 justify-center md:justify-start">
               {categories.map((c) => (
                 <button
                   key={c}
@@ -92,6 +130,28 @@ function ShopContent() {
                   {c}
                 </button>
               ))}
+
+              {/* Filter Dropdown Next to Round Buttons */}
+              <div className="relative">
+                <select
+                  value={filterOption}
+                  onChange={(e) => setFilterOption(e.target.value)}
+                  className="bg-[#ffffff] text-[#420002]/85 border border-[#420002]/20 hover:border-[#c82127] rounded-full px-4 py-2 text-xs uppercase tracking-[0.12em] font-body font-semibold outline-none focus:border-[#c82127] cursor-pointer appearance-none transition-colors shadow-xs"
+                  style={{
+                    backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23420002%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 0.85rem top 50%",
+                    backgroundSize: "0.6rem auto",
+                    paddingRight: "2.25rem"
+                  }}
+                >
+                  <option value="all">Filter: All Pieces</option>
+                  <option value="ready">Ready to Ship</option>
+                  <option value="made-to-order">Made to Order</option>
+                  <option value="silver">Solid 925 Silver</option>
+                  <option value="gold">Gold & Kundan</option>
+                </select>
+              </div>
             </div>
 
             <div className="flex justify-center md:justify-end w-full md:w-auto">
