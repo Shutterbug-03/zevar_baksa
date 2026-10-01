@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw media dumps in root directory (Next.js only serves /public)
+/*.mp4
+/*.JPG
+/*.jpg
+/*.heic
+/*.HEIC
