@@ -21,6 +21,8 @@ export type Product = {
   image: string;
   gallery: string[];
   category: "Necklaces" | "Earrings" | "Bracelets" | "Bridal";
+  /** Finer-grained type used by the shop filter; set from the BUSY item group (e.g. "Pendants"). */
+  type?: "Pendant";
   collection?: string;
   description: string;
   story: string;

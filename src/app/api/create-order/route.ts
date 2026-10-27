@@ -8,9 +8,7 @@
  * catalog (lib/catalog.ts). `amount` is only a sanity check — if it differs
  * from the server total we reject so the customer is never charged a surprise.
  *
- * COD adds codConfig.fee to the total and is capped at codConfig.maxOrder.
- * COD orders skip Razorpay entirely: the order is saved as "cod_pending" and
- * BUSY + emails fire right here, so the response has `cod: true`.
+ * Online payment only (UPI / card / net banking via Razorpay); no cash on delivery.
  *
  * Body: { amount, items: [{product_id, quantity, size_preference}], customerEmail,
  *         customerName, customerPhone, address, paymentMethod }
@@ -22,8 +20,6 @@ import { getRazorpay, generateReceipt } from "@/lib/razorpay";
 import { auth } from "@clerk/nextjs/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { priceCart, OutOfStockError } from "@/lib/catalog";
-import { notifyOrderPlaced } from "@/lib/fulfillOrder";
-import { codConfig } from "@/data/siteConfig";
 import { rateLimit } from "@/lib/rateLimit";
 import { normalizeIndianPhone, isValidPincode, isValidEmail } from "@/lib/validation";
 
@@ -89,16 +85,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isCod = paymentMethod === "cod";
-    if (isCod && totalINR > codConfig.maxOrder) {
-      return NextResponse.json(
-        { error: `Cash on Delivery is available for orders up to ₹${codConfig.maxOrder.toLocaleString("en-IN")}. Please choose an online payment method.` },
-        { status: 400 }
-      );
+    if (paymentMethod !== undefined && !["upi", "card", "netbanking"].includes(paymentMethod)) {
+      return NextResponse.json({ error: "Please choose an online payment method." }, { status: 400 });
     }
-    const codFee = isCod ? codConfig.fee : 0;
-    const chargeINR = totalINR + codFee; // what the customer actually pays
-    const amountInPaise = chargeINR * 100; // Razorpay uses paise
+
+    const amountInPaise = totalINR * 100; // Razorpay uses paise
     const receipt = generateReceipt();
 
     // ── Detect placeholder keys ──────────────────────────────────────────────
@@ -120,14 +111,12 @@ export async function POST(req: NextRequest) {
 
     let razorpayOrderId: string;
 
-    if (isCod) {
-      razorpayOrderId = `order_cod_${crypto.randomBytes(10).toString("hex")}`;
-    } else if (isPlaceholder) {
+    if (isPlaceholder) {
       // Dev / placeholder mode — generate a fake order ID
       razorpayOrderId = `order_test_${crypto.randomBytes(10).toString("hex")}`;
       console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
       console.log("🧪 RAZORPAY: Placeholder mode — no real order created");
-      console.log(`💰 Amount: ₹${chargeINR} (${amountInPaise} paise)`);
+      console.log(`💰 Amount: ₹${totalINR} (${amountInPaise} paise)`);
       console.log(`📦 Fake Order ID: ${razorpayOrderId}`);
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
     } else {
@@ -153,7 +142,7 @@ export async function POST(req: NextRequest) {
         razorpay_order_id: razorpayOrderId,
         amount: amountInPaise,
         currency: "INR",
-        status: paymentMethod === "cod" ? "cod_pending" : "pending",
+        status: "pending",
         customer_email: customerEmail.trim().toLowerCase(),
         customer_name: customerName ?? "",
         customer_phone: phone,
@@ -173,20 +162,6 @@ export async function POST(req: NextRequest) {
       }
     } else {
       console.log("ℹ️  Supabase: Placeholder mode — order not saved to DB");
-    }
-
-    if (isCod) {
-      await notifyOrderPlaced(razorpayOrderId, "COD", {
-        email: customerEmail.trim().toLowerCase(),
-        name: customerName ?? "",
-        phone,
-        address,
-        items: pricedItems,
-        amountINR: chargeINR,
-        codFee,
-        paymentMethod: "cod",
-      });
-      return NextResponse.json({ cod: true, order_id: razorpayOrderId });
     }
 
     return NextResponse.json({

@@ -1,26 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { timingSafeEqual } from "node:crypto";
+import { checkAdmin } from "@/lib/adminAuth";
 import { isBusyConfigured, createSalesOrder, getBusySalesOrders } from "@/lib/busy";
 
-/**
- * ADMIN-ONLY. Lists BUSY sale vouchers (customer PII) and creates vouchers, so it
- * requires the shared secret in env ADMIN_API_SECRET, sent as `x-admin-secret`.
- * Fails closed: 503 if the secret isn't configured, 401 if it doesn't match.
- * Nothing in the storefront calls this route.
- */
-function checkAdmin(req: NextRequest): NextResponse | null {
-  const secret = process.env.ADMIN_API_SECRET;
-  if (!secret) {
-    return NextResponse.json({ error: "Admin API not configured" }, { status: 503 });
-  }
-  const given = Buffer.from(req.headers.get("x-admin-secret") ?? "");
-  const expected = Buffer.from(secret);
-  // timingSafeEqual throws on length mismatch, so reject that case first.
-  if (given.length !== expected.length || !timingSafeEqual(given, expected)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  return null;
-}
+// ADMIN-ONLY (see lib/adminAuth.ts): lists BUSY vouchers (customer PII) and creates vouchers.
+// Nothing in the storefront calls this route.
 
 export async function POST(req: NextRequest) {
   const denied = checkAdmin(req);

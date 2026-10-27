@@ -16,6 +16,7 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
+  Truck,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import type { Order } from "@/lib/supabase";
@@ -165,8 +166,11 @@ export default function AccountPage() {
                   const statusConfig: Record<string, { label: string; color: string; icon: React.ElementType }> = {
                     paid: { label: "Paid", color: "text-emerald-400 bg-emerald-950/60 border-emerald-500/30", icon: CheckCircle2 },
                     pending: { label: "Pending", color: "text-amber-400 bg-amber-950/60 border-amber-500/30", icon: Clock },
-                    cod_pending: { label: "COD — Awaiting Delivery", color: "text-amber-400 bg-amber-950/60 border-amber-500/30", icon: Clock },
                     failed: { label: "Failed", color: "text-red-400 bg-red-950/60 border-red-500/30", icon: AlertCircle },
+                    shipped: { label: "Shipped", color: "text-sky-400 bg-sky-950/60 border-sky-500/30", icon: Truck },
+                    delivered: { label: "Delivered", color: "text-emerald-400 bg-emerald-950/60 border-emerald-500/30", icon: CheckCircle2 },
+                    refunded: { label: "Refunded", color: "text-foreground/60 bg-secondary/60 border-border", icon: AlertCircle },
+                    cancelled: { label: "Cancelled", color: "text-foreground/60 bg-secondary/60 border-border", icon: AlertCircle },
                   };
                   const s = statusConfig[order.status] ?? statusConfig.pending;
                   const StatusIcon = s.icon;
@@ -229,6 +233,18 @@ export default function AccountPage() {
                                   </p>
                                 </div>
                               ))}
+                            </div>
+                          )}
+
+                          {/* Tracking */}
+                          {order.tracking_number && (
+                            <div className="pt-4 border-t border-border/30 flex justify-between items-center text-[11px] font-sans uppercase tracking-[0.15em]">
+                              <span className="text-foreground/40">{order.courier ?? "Courier"} · {order.tracking_number}</span>
+                              {order.tracking_url && (
+                                <a href={order.tracking_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                  Track
+                                </a>
+                              )}
                             </div>
                           )}
 

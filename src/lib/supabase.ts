@@ -27,7 +27,9 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey, {
 
 // ─── Database Types ───────────────────────────────────────────────────────────
 
-export type OrderStatus = "pending" | "paid" | "failed" | "cod_pending";
+export type OrderStatus =
+  | "pending" | "paid" | "failed"
+  | "shipped" | "delivered" | "refunded" | "cancelled";
 
 export type Order = {
   id: string;
@@ -43,6 +45,13 @@ export type Order = {
   items: OrderItem[];
   payment_method: string;
   clerk_user_id?: string | null;
+  courier?: string | null;
+  tracking_number?: string | null;
+  tracking_url?: string | null;
+  shipped_at?: string | null;
+  invoice_number?: string | null;
+  refunded_amount?: number | null;  // in paise
+  refunded_at?: string | null;
   created_at: string;
 };
 

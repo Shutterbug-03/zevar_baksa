@@ -3,10 +3,17 @@
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { useProductStore } from "@/store/productStore";
+import type { Product } from "@/data/products";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 const categories = ["All", "Earrings", "Pendants", "Necklaces"];
+
+// A pendant is a Necklaces-category piece flagged by its BUSY group (`type`) or named as one.
+const isPendant = (p: Product) =>
+  p.type === "Pendant" ||
+  p.name.toLowerCase().includes("pendant") ||
+  !!p.subtitle?.toLowerCase().includes("pendant");
 
 function ProductSkeleton() {
   return (
@@ -54,19 +61,9 @@ function ShopContent() {
   if (cat === "Earrings") {
     filtered = filtered.filter((p) => p.category === "Earrings");
   } else if (cat === "Pendants") {
-    filtered = filtered.filter(
-      (p) =>
-        p.category === "Necklaces" &&
-        (p.name.toLowerCase().includes("pendant") ||
-          (p.subtitle && p.subtitle.toLowerCase().includes("pendant")))
-    );
+    filtered = filtered.filter((p) => p.category === "Necklaces" && isPendant(p));
   } else if (cat === "Necklaces") {
-    filtered = filtered.filter(
-      (p) =>
-        p.category === "Necklaces" &&
-        !p.name.toLowerCase().includes("pendant") &&
-        (!p.subtitle || !p.subtitle.toLowerCase().includes("pendant"))
-    );
+    filtered = filtered.filter((p) => p.category === "Necklaces" && !isPendant(p));
   }
 
   // Secondary Filter (Filter dropdown next to round section)

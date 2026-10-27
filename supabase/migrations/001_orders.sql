@@ -16,14 +16,14 @@ create table if not exists orders (
   amount              integer not null,      -- in paise (₹1 = 100 paise)
   currency            text default 'INR',
   status              text default 'pending' check (
-                        status in ('pending','paid','failed','cod_pending','refunded')
+                        status in ('pending','paid','failed','refunded')
                       ),
   customer_email      text not null,
   customer_name       text default '',
   customer_phone      text default '',
   address             jsonb default '{}',    -- { address1, city, state, pincode, country }
   items               jsonb default '[]',    -- [{ product_id, name, price, quantity, ... }]
-  payment_method      text default 'upi',   -- upi | card | netbanking | cod
+  payment_method      text default 'upi',   -- upi | card | netbanking
   created_at          timestamptz default now(),
   updated_at          timestamptz default now()
 );

@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { normalizeIndianPhone, isValidPincode } from "@/lib/validation";
-import { codConfig } from "@/data/siteConfig";
 import {
   ArrowLeft,
   ArrowRight,
@@ -46,7 +45,7 @@ type AddressForm = {
   country: string;
 };
 
-type PaymentMethod = "upi" | "card" | "netbanking" | "cod";
+type PaymentMethod = "upi" | "card" | "netbanking";
 
 /* ────────────────────────────────────────────────────────
    STEP INDICATOR
@@ -105,7 +104,7 @@ function StepIndicator({ step }: { step: Step }) {
 /* ────────────────────────────────────────────────────────
    ORDER SUMMARY SIDEBAR
 ──────────────────────────────────────────────────────── */
-function OrderSummary({ collapsed = false, codFee = 0 }: { collapsed?: boolean; codFee?: number }) {
+function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
   const { items, totalPrice, totalItems } = useCartStore();
   const { format } = useCurrencyStore();
   const [open, setOpen] = useState(!collapsed);
@@ -187,12 +186,6 @@ function OrderSummary({ collapsed = false, codFee = 0 }: { collapsed?: boolean; 
             <span>Insured Shipping</span>
             <span className="text-emerald-500 font-medium">Complimentary</span>
           </div>
-          {codFee > 0 && (
-            <div className="flex justify-between text-xs font-sans text-foreground/60">
-              <span>Cash on Delivery fee</span>
-              <span>{hydrated ? format(codFee) : `₹${codFee.toLocaleString("en-IN")}`}</span>
-            </div>
-          )}
           <div className="flex justify-between text-xs font-sans text-foreground/60">
             <span>GST (inclusive)</span>
             <span>{hydrated ? format(tax) : `₹${tax.toLocaleString("en-IN")}`}</span>
@@ -202,7 +195,7 @@ function OrderSummary({ collapsed = false, codFee = 0 }: { collapsed?: boolean; 
               Total
             </span>
             <span className="font-display text-xl text-primary">
-              {hydrated ? format(priceTotal + codFee) : `₹${(priceTotal + codFee).toLocaleString("en-IN")}`}
+              {hydrated ? format(priceTotal) : `₹${priceTotal.toLocaleString("en-IN")}`}
             </span>
           </div>
         </div>
@@ -471,10 +464,6 @@ function PaymentStep({
   onNext: () => void;
   onBack: () => void;
 }) {
-  const { totalPrice } = useCartStore();
-  const { format } = useCurrencyStore();
-  const codAvailable = totalPrice() <= codConfig.maxOrder;
-
   const methods: {
     key: PaymentMethod;
     icon: React.ElementType;
@@ -501,15 +490,6 @@ function PaymentStep({
       label: "Net Banking",
       desc: "All major Indian banks supported",
     },
-    {
-      key: "cod",
-      icon: Package,
-      label: "Cash on Delivery",
-      desc: codAvailable
-        ? "Pay when your piece arrives at your doorstep"
-        : `Available for orders up to ₹${codConfig.maxOrder.toLocaleString("en-IN")} — please pay online for this order`,
-      badge: `₹${codConfig.fee.toLocaleString("en-IN")} COD fee`,
-    },
   ];
 
   return (
@@ -528,9 +508,8 @@ function PaymentStep({
         {methods.map(({ key, icon: Icon, label, desc, badge }) => (
           <button
             key={key}
-            disabled={key === "cod" && !codAvailable}
             onClick={() => setMethod(key)}
-            className={`w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed ${
+            className={`w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all duration-200 ${
               method === key
                 ? "border-primary bg-primary/5 ring-2 ring-primary/15"
                 : "border-border/60 hover:border-foreground/30 bg-background"
@@ -657,27 +636,24 @@ function PaymentStep({
 function ConfirmStep({
   address,
   paymentMethod,
-  codFee,
   onBack,
   onPlace,
   placing,
 }: {
   address: AddressForm;
   paymentMethod: PaymentMethod;
-  codFee: number;
   onBack: () => void;
   onPlace: () => void;
   placing: boolean;
 }) {
   const { items, totalPrice } = useCartStore();
   const { format, currency } = useCurrencyStore();
-  const totalINR = totalPrice() + codFee; // cart prices are always stored in INR
+  const totalINR = totalPrice(); // cart prices are always stored in INR
 
   const methodLabels: Record<PaymentMethod, string> = {
     upi: "UPI Payment",
     card: "Credit / Debit Card",
     netbanking: "Net Banking",
-    cod: "Cash on Delivery",
   };
 
   return (
@@ -771,12 +747,6 @@ function ConfirmStep({
           ))}
         </div>
         <div className="px-5 py-4 border-t border-border/40">
-          {codFee > 0 && (
-            <div className="flex justify-between items-center text-xs font-sans text-foreground/60 mb-3">
-              <span>Cash on Delivery fee</span>
-              <span>{format(codFee)}</span>
-            </div>
-          )}
           <div className="flex justify-between items-center">
             <span className="text-[11px] uppercase tracking-[0.2em] font-sans font-semibold text-foreground">
               Total Payable
@@ -959,13 +929,7 @@ export default function CheckoutPage() {
     country: "India",
   });
 
-  const [selectedMethod, setPaymentMethod] = useState<PaymentMethod>("upi");
-
-  // COD is only offered up to the cap; fall back to UPI if the cart grew past it.
-  const cartSubtotal = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
-  const paymentMethod: PaymentMethod =
-    selectedMethod === "cod" && cartSubtotal > codConfig.maxOrder ? "upi" : selectedMethod;
-  const codFee = paymentMethod === "cod" ? codConfig.fee : 0;
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("upi");
 
   // Load Razorpay SDK script once on mount
   useEffect(() => {
@@ -1018,15 +982,6 @@ export default function CheckoutPage() {
       }
 
       const orderData = await createRes.json();
-
-      // COD — server already saved the order and sent notifications
-      if (orderData.cod) {
-        clearCart();
-        setOrderRef(orderData.order_id);
-        setPlaced(true);
-        setPlacing(false);
-        return;
-      }
 
       // Placeholder / dev mode — skip real modal, simulate success
       const isPlaceholder = orderData.key?.includes("PLACEHOLDER");
@@ -1198,7 +1153,6 @@ export default function CheckoutPage() {
                 <ConfirmStep
                   address={address}
                   paymentMethod={paymentMethod}
-                  codFee={codFee}
                   onBack={() => setStep("payment")}
                   onPlace={handlePlaceOrder}
                   placing={placing}
@@ -1208,7 +1162,7 @@ export default function CheckoutPage() {
 
             {/* RIGHT — Order summary (sticky) */}
             <div className="lg:sticky lg:top-32 space-y-4">
-              <OrderSummary codFee={codFee} />
+              <OrderSummary />
 
               {/* Security badges */}
               <div className="flex items-center justify-center gap-4 py-3 opacity-60">

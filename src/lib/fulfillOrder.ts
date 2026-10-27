@@ -9,7 +9,7 @@
  *
  * Order details (address, phone, items, amount) are read from Supabase — the
  * row written by /api/create-order — not trusted from the request.
- * Also exports notifyOrderPlaced(), reused by create-order for COD orders.
+ * Also exports notifyOrderPlaced() (Busy + emails).
  */
 
 import { supabaseAdmin, type OrderItem } from "@/lib/supabase";
@@ -23,8 +23,6 @@ export type OrderSnapshot = {
   address: Record<string, string>;
   items: OrderItem[];
   amountINR: number;
-  /** COD handling fee included in amountINR (0 / absent for online payments). */
-  codFee?: number;
   paymentMethod: string;
 };
 
@@ -120,8 +118,7 @@ export async function fulfillPaidOrder({
 
 
 /**
- * BUSY voucher + customer and admin emails for a newly placed order (paid online,
- * or COD with paymentId "COD"). Each step is isolated — none can fail the order.
+ * BUSY voucher + customer and admin emails for a newly placed order for a paid order. Each step is isolated — none can fail the order.
  */
 export async function notifyOrderPlaced(
   razorpayOrderId: string,
@@ -225,15 +222,14 @@ async function sendCustomerEmail(orderId: string, paymentId: string, o: OrderSna
       <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
         <p style="margin:0;font-size:10px;text-transform:uppercase;letter-spacing:0.3em;color:#555;font-family:Arial,sans-serif;">Order Reference</p>
         <p style="margin:4px 0 0;font-size:18px;color:#d4a853;font-family:Georgia,serif;">#ZB-${ref}</p>
-        <p style="margin:4px 0 0;font-size:11px;color:#444;font-family:Arial,sans-serif;">${o.paymentMethod === "cod" ? "Cash on Delivery" : `Payment ID: ${escapeHtml(paymentId)}`}</p>
+        <p style="margin:4px 0 0;font-size:11px;color:#444;font-family:Arial,sans-serif;">Payment ID: ${escapeHtml(paymentId)}</p>
       </div>
 
       <div style="margin-bottom:24px;">
         <p style="margin:0 0 12px;font-size:10px;text-transform:uppercase;letter-spacing:0.3em;color:#555;font-family:Arial,sans-serif;">Your Pieces</p>
         ${itemsHtml(o.items)}
-${o.codFee ? `<div style="padding-top:12px;display:flex;justify-content:space-between;"><p style="margin:0;font-size:12px;color:#888;font-family:Arial,sans-serif;">Cash on Delivery fee</p><p style="margin:0;font-size:12px;color:#888;font-family:Arial,sans-serif;">₹${o.codFee.toLocaleString("en-IN")}</p></div>` : ""}
         <div style="padding-top:14px;display:flex;justify-content:space-between;">
-          <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.2em;color:#888;font-family:Arial,sans-serif;">${o.paymentMethod === "cod" ? "Payable on Delivery (incl. all taxes)" : "Total Paid (incl. all taxes)"}</p>
+          <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.2em;color:#888;font-family:Arial,sans-serif;">Total Paid (incl. all taxes)</p>
           <p style="margin:0;font-size:18px;color:#d4a853;font-family:Georgia,serif;">₹${o.amountINR.toLocaleString("en-IN")}</p>
         </div>
       </div>
@@ -272,7 +268,6 @@ async function sendAdminEmail(
   busyVoucherNo: string | null
 ) {
   const ref = shortId(orderId);
-  const isCod = o.paymentMethod === "cod";
   const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
   if (isResendPlaceholder()) {
@@ -294,15 +289,15 @@ async function sendAdminEmail(
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: o.email || undefined,
-      subject: `${busyVoucherNo ? "" : "[ENTER IN BUSY] "}New ${isCod ? "COD" : "paid"} order #ZB-${ref} — ${inr(o.amountINR)}`,
+      subject: `${busyVoucherNo ? "" : "[ENTER IN BUSY] "}New paid order #ZB-${ref} — ${inr(o.amountINR)}`,
       html: `
 <div style="font-family:Arial,sans-serif;font-size:14px;color:#222;max-width:600px;">
   ${busyBlock}
-  <h2 style="margin:0 0 12px;">New ${isCod ? "COD (collect on delivery)" : "paid"} order #ZB-${ref}</h2>
+  <h2 style="margin:0 0 12px;">New paid order #ZB-${ref}</h2>
   <p style="margin:0 0 4px;"><b>Total:</b> ${inr(o.amountINR)} (${escapeHtml(o.paymentMethod)})</p>
   <p style="margin:0 0 4px;"><b>Order ref:</b> #ZB-${ref}</p>
   <p style="margin:0 0 4px;"><b>Razorpay order:</b> ${escapeHtml(orderId)}</p>
-  <p style="margin:0 0 16px;"><b>Payment:</b> ${isCod ? "COD (cash on delivery — not yet paid)" : `Payment ID ${escapeHtml(paymentId)}`}</p>
+  <p style="margin:0 0 16px;"><b>Payment:</b> Payment ID ${escapeHtml(paymentId)}</p>
 
   <h3 style="margin:0 0 6px;">Customer (BUSY party)</h3>
   <p style="margin:0 0 4px;"><b>Name:</b> ${escapeHtml(o.name)}</p>
@@ -331,8 +326,7 @@ async function sendAdminEmail(
       )
       .join("")}
   </table>
-  ${o.codFee ? `<p style="margin:8px 0 0;">Cash on Delivery fee: ${inr(o.codFee)} (included in total — <b>collect ${inr(o.amountINR)}</b> on delivery)</p>` : ""}
-  <p style="margin:8px 0 0;"><b>Order total (incl. all taxes${o.codFee ? " and COD fee" : ""}):</b> ${inr(o.amountINR)}</p>
+  <p style="margin:8px 0 0;"><b>Order total (incl. all taxes):</b> ${inr(o.amountINR)}</p>
 </div>`,
     });
   } catch (err) {

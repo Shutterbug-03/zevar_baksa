@@ -22,7 +22,7 @@ export async function GET() {
   const user = await currentUser();
   const email = user?.primaryEmailAddress?.emailAddress?.trim().toLowerCase();
 
-  const columns = "id, razorpay_order_id, amount, currency, status, items, payment_method, created_at";
+  const columns = "id, razorpay_order_id, amount, currency, status, items, payment_method, created_at, courier, tracking_number, tracking_url";
 
   // Orders placed while signed in (any checkout email) + orders placed as a guest
   // with the login email. ilike = case-insensitive; escape wildcards so it's literal.

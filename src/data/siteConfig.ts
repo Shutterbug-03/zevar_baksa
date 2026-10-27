@@ -17,16 +17,6 @@ export const siteConfig = {
   },
 };
 
-/**
- * Cash on delivery. Fee is added to the order total; orders whose item subtotal
- * is above maxOrder must pay online (COD on high-ticket jewellery = fraud/RTO risk).
- * NEXT_PUBLIC_ so the checkout UI and the server enforce the same numbers.
- */
-export const codConfig = {
-  fee: Number(process.env.NEXT_PUBLIC_COD_FEE ?? 499),
-  maxOrder: Number(process.env.NEXT_PUBLIC_COD_MAX_ORDER ?? 50000),
-};
-
 export const whatsappLink = (text?: string) =>
   siteConfig.whatsapp
     ? `https://wa.me/${siteConfig.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`
