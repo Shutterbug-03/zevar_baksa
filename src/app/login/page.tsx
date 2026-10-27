@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   AlertCircle,
 } from "lucide-react";
+import { asErr } from "@/lib/clerkError";
 
 type Mode = "login" | "signup";
 
@@ -64,10 +65,10 @@ export default function LoginPage() {
         });
         if (error) throw error;
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Google sign in error:", err);
       setError(
-        err?.message ?? err?.longMessage ?? "Google sign-in failed. Please try again."
+        asErr(err).message ?? asErr(err).longMessage ?? "Google sign-in failed. Please try again."
       );
       setOauthLoading(false);
     }
@@ -81,19 +82,19 @@ export default function LoginPage() {
       password,
     });
     if (error) {
-      const code = (error as any)?.code ?? "";
+      const code = asErr(error).code ?? "";
       if (code === "form_identifier_not_found") {
         throw new Error("No account found with this email. Please create an account first.");
       } else if (code === "form_password_incorrect") {
         throw new Error("Incorrect password. Please verify and try again.");
       }
-      throw new Error((error as any)?.longMessage ?? (error as any)?.message ?? "Sign-in failed.");
+      throw new Error(asErr(error).longMessage ?? asErr(error).message ?? "Sign-in failed.");
     }
     const finalizeResult = await signIn.finalize();
     if (finalizeResult?.error) {
       throw new Error(
-        (finalizeResult.error as any)?.longMessage ??
-          (finalizeResult.error as any)?.message ??
+        asErr(finalizeResult.error).longMessage ??
+          asErr(finalizeResult.error).message ??
           "Could not complete sign-in."
       );
     }
@@ -117,19 +118,19 @@ export default function LoginPage() {
       lastName,
     });
     if (error) {
-      const code = (error as any)?.code ?? "";
+      const code = asErr(error).code ?? "";
       if (code === "form_identifier_exists") {
         throw new Error("An account with this email already exists. Please sign in instead.");
       }
-      throw new Error((error as any)?.longMessage ?? (error as any)?.message ?? "Sign-up failed.");
+      throw new Error(asErr(error).longMessage ?? asErr(error).message ?? "Sign-up failed.");
     }
 
     if (signUp.status === "complete") {
       const finalizeResult = await signUp.finalize();
       if (finalizeResult?.error) {
         throw new Error(
-          (finalizeResult.error as any)?.longMessage ??
-            (finalizeResult.error as any)?.message ??
+          asErr(finalizeResult.error).longMessage ??
+            asErr(finalizeResult.error).message ??
             "Could not complete sign-up."
         );
       }
@@ -140,8 +141,8 @@ export default function LoginPage() {
       const sendResult = await signUp.verifications.sendEmailCode();
       if (sendResult.error) {
         throw new Error(
-          (sendResult.error as any)?.longMessage ??
-            (sendResult.error as any)?.message ??
+          asErr(sendResult.error).longMessage ??
+            asErr(sendResult.error).message ??
             "Failed to send verification email."
         );
       }
@@ -166,22 +167,22 @@ export default function LoginPage() {
       });
       if (error) {
         throw new Error(
-          (error as any)?.longMessage ?? (error as any)?.message ?? "Invalid verification code."
+          asErr(error).longMessage ?? asErr(error).message ?? "Invalid verification code."
         );
       }
       const finalizeResult = await signUp.finalize();
       if (finalizeResult?.error) {
         throw new Error(
-          (finalizeResult.error as any)?.longMessage ??
-            (finalizeResult.error as any)?.message ??
+          asErr(finalizeResult.error).longMessage ??
+            asErr(finalizeResult.error).message ??
             "Could not create session."
         );
       }
       const params = new URLSearchParams(window.location.search);
       const redirectUrl = params.get("redirect_url") || "/account";
       router.push(redirectUrl);
-    } catch (err: any) {
-      setError(err?.message ?? "Verification failed. Please try again.");
+    } catch (err: unknown) {
+      setError(asErr(err).message ?? "Verification failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -201,8 +202,8 @@ export default function LoginPage() {
       } else {
         await handleSignUp();
       }
-    } catch (err: any) {
-      setError(err?.message ?? "Authentication failed. Please try again.");
+    } catch (err: unknown) {
+      setError(asErr(err).message ?? "Authentication failed. Please try again.");
     } finally {
       setSubmitting(false);
     }

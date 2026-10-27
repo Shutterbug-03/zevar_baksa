@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
   title: "Privacy Policy — Zevar Baksa",
@@ -79,7 +80,7 @@ export default function PrivacyPolicy() {
             <div className="space-y-3 pt-2">
               <h3 className="font-serif text-xl text-primary/80 font-medium">3.5 Information We Do Not Knowingly Collect</h3>
               <p>
-                Our Site is not directed at children under 18. We do not knowingly collect personal data from anyone under 18 without verifiable parental consent, in line with the DPDP Act's requirements for processing children's data. If you believe a child has provided us with personal data, please contact us at <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a> so we can take appropriate action.
+                Our Site is not directed at children under 18. We do not knowingly collect personal data from anyone under 18 without verifiable parental consent, in line with the DPDP Act&apos;s requirements for processing children&apos;s data. If you believe a child has provided us with personal data, please contact us at <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a> so we can take appropriate action.
               </p>
             </div>
           </div>
@@ -93,7 +94,7 @@ export default function PrivacyPolicy() {
               <li>Communicate with you about your orders, account, and customer service queries;</li>
               <li>Send you promotional and marketing communications — including new collection launches, offers, and updates — via email, SMS, and WhatsApp, where you have not opted out;</li>
               <li>Run and measure advertising, including retargeting ads on platforms such as Instagram, Facebook, and Google, to show you products relevant to your browsing on our Site;</li>
-              <li>Analyze and improve the Site's performance and your experience, using Google Analytics (see Section 5);</li>
+              <li>Analyze and improve the Site&apos;s performance and your experience, using Google Analytics (see Section 5);</li>
               <li>Detect, prevent, and investigate fraud or unlawful activity;</li>
               <li>Comply with applicable legal and regulatory requirements.</li>
             </ul>
@@ -115,7 +116,7 @@ export default function PrivacyPolicy() {
             <div className="space-y-3 pt-2">
               <h3 className="font-serif text-xl text-primary/80 font-medium">5.2 Google Analytics</h3>
               <p>
-                We use Google Analytics to understand how visitors interact with our Site — such as pages visited, time spent, and navigation patterns — so we can improve the Site's content and performance. Google Analytics collects information through cookies and similar technologies. You can learn more about how Google collects and processes this data at Google's own privacy policy, and you may opt out of Google Analytics tracking using the Google Analytics Opt-out Browser Add-on.
+                We use Google Analytics to understand how visitors interact with our Site — such as pages visited, time spent, and navigation patterns — so we can improve the Site&apos;s content and performance. Google Analytics collects information through cookies and similar technologies. You can learn more about how Google collects and processes this data at Google&apos;s own privacy policy, and you may opt out of Google Analytics tracking using the Google Analytics Opt-out Browser Add-on.
               </p>
             </div>
 
@@ -192,18 +193,19 @@ export default function PrivacyPolicy() {
             </p>
             <address className="not-italic space-y-1 mt-4 text-sm bg-muted/40 p-6 rounded-lg border border-primary/10">
               <strong className="block text-primary font-serif-brand text-lg mb-2">Grievance Officer</strong>
+              {siteConfig.grievanceOfficer.name && (
+                <span className="block font-medium">{siteConfig.grievanceOfficer.name}, {siteConfig.grievanceOfficer.designation}</span>
+              )}
               <span className="block font-medium">ZevarBaksa LLP</span>
               <span className="block">B-21, Bhan Nagar, Queens Road</span>
               <span className="block">Vaishali Nagar, Jaipur</span>
               <span className="block">Rajasthan, 302021</span>
               <div className="mt-4">
                 <span className="block">Email: <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a></span>
-                <span className="block text-primary/60 text-xs mt-1">WhatsApp: [to be added]</span>
+                {siteConfig.phone && <span className="block">Phone: {siteConfig.phone}</span>}
+                {siteConfig.whatsapp && <span className="block">WhatsApp: +{siteConfig.whatsapp}</span>}
               </div>
             </address>
-            <p className="text-xs text-primary/60 italic">
-              (Note: under the DPDP Act, you should name a specific individual as Grievance Officer — e.g. "Kanishk Deora, Grievance Officer" — once decided.)
-            </p>
           </div>
 
           <div className="space-y-4">
@@ -216,7 +218,7 @@ export default function PrivacyPolicy() {
           <div className="space-y-4">
             <h2 className="font-display text-2xl text-primary">13. Changes to This Policy</h2>
             <p>
-              We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. We will post the revised policy on this page with an updated "Last updated" date, and for significant changes, we will provide additional notice where appropriate.
+              We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. We will post the revised policy on this page with an updated &quot;Last updated&quot; date, and for significant changes, we will provide additional notice where appropriate.
             </p>
           </div>
 
@@ -232,7 +234,8 @@ export default function PrivacyPolicy() {
               <span className="block">Rajasthan, 302021</span>
               <div className="mt-4">
                 <span className="block">Email: <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a></span>
-                <span className="block text-primary/60 text-xs mt-1">WhatsApp: [to be added]</span>
+                {siteConfig.phone && <span className="block">Phone: {siteConfig.phone}</span>}
+                {siteConfig.whatsapp && <span className="block">WhatsApp: +{siteConfig.whatsapp}</span>}
               </div>
             </address>
           </div>

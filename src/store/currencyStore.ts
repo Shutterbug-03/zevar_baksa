@@ -3,7 +3,9 @@ import { persist } from "zustand/middleware";
 
 export type Currency = "INR" | "USD" | "GBP" | "AED";
 
-// Exchange rates relative to INR (approximate, update periodically)
+// Exchange rates relative to INR. These are STATIC approximations (not live rates)
+// and must be reviewed periodically. They are for display only: the customer is
+// always charged in INR at checkout, and the UI says so.
 const RATES: Record<Currency, number> = {
   INR: 1,
   USD: 0.012,

@@ -20,6 +20,8 @@ type CartStore = {
   totalItems: () => number;
   totalPrice: () => number;
   setItems: (items: CartItem[]) => void;
+  /** Apply authoritative server prices (id → INR) to items already in the cart. */
+  repriceItems: (prices: Record<string, number>) => void;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -74,6 +76,12 @@ export const useCartStore = create<CartStore>()(
       totalPrice: () =>
         get().items.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
       setItems: (items) => set({ items }),
+      repriceItems: (prices) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            prices[i.product.id] ? { ...i, product: { ...i.product, price: prices[i.product.id] } } : i
+          ),
+        })),
     }),
     {
       name: "zevar-cart", // persists in localStorage

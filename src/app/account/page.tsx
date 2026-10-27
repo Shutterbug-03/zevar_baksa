@@ -18,7 +18,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
-import { supabaseAnon, type Order } from "@/lib/supabase";
+import type { Order } from "@/lib/supabase";
 
 export default function AccountPage() {
   const { user, isLoaded } = useUser();
@@ -43,17 +43,13 @@ export default function AccountPage() {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const { data, error } = await supabaseAnon
-          .from("orders")
-          .select("*")
-          .eq("customer_email", email)
-          .order("created_at", { ascending: false });
-
-        if (!error && data) {
-          setOrders(data as Order[]);
+        const res = await fetch("/api/account/orders");
+        if (res.ok) {
+          const { orders } = await res.json();
+          setOrders(orders as Order[]);
         }
       } catch {
-        // Supabase might be placeholder — show empty state gracefully
+        // Network / DB unavailable — show empty state gracefully
       } finally {
         setLoading(false);
       }

@@ -46,3 +46,6 @@ next-env.d.ts
 /*.jpg
 /*.heic
 /*.HEIC
+
+# ERP vendor API dump (contains credential fields)
+/Busy API V2.json

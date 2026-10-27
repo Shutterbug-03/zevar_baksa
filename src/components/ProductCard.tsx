@@ -24,15 +24,14 @@ export function ProductCard({ product }: { product: Product }) {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isHovered && product.gallery && product.gallery.length > 1) {
-      interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % product.gallery.length);
-      }, 1400); // Very smooth, slightly slower pacing
-    } else {
-      setCurrentImageIndex(0);
-    }
-    return () => clearInterval(interval);
+    if (!isHovered || !product.gallery || product.gallery.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % product.gallery.length);
+    }, 1400); // Very smooth, slightly slower pacing
+    return () => {
+      clearInterval(interval);
+      setCurrentImageIndex(0); // back to the first image when hover ends
+    };
   }, [isHovered, product.gallery]);
 
   return (

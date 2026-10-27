@@ -1,3 +1,6 @@
+-- NOTE: the open "Allow ... from server" RLS policies below (true for every role,
+-- including the public anon key) were removed by 004_lock_down_rls.sql because
+-- they exposed all carts/wishlists. Run 004 after this file; do not re-add them.
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Zevar Baksa — Clerk User Data Schema
 -- Run this in your Supabase SQL Editor:

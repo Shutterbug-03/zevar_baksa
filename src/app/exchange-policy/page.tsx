@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
   title: "Exchange, Repair & Cancellation Policy — Zevar Baksa",
@@ -176,7 +177,8 @@ export default function ExchangePolicy() {
               <span className="block">Rajasthan – 302021</span>
               <div className="mt-4">
                 <span className="block">Email: <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a></span>
-                <span className="block text-primary/60 text-xs mt-1">WhatsApp: (to be added)</span>
+                {siteConfig.phone && <span className="block">Phone: {siteConfig.phone}</span>}
+                {siteConfig.whatsapp && <span className="block">WhatsApp: +{siteConfig.whatsapp}</span>}
               </div>
             </address>
           </div>

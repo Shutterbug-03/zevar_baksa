@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
   title: "Terms and Conditions — Zevar Baksa",
@@ -245,7 +246,7 @@ export default function TermsConditions() {
           <div className="space-y-4">
             <h2 className="font-display text-2xl text-primary">19. Arbitration</h2>
             <p>
-              Any dispute arising out of or relating to these Terms shall first be referred to and finally resolved by arbitration under the Arbitration and Conciliation Act, 1996, by a sole arbitrator appointed by mutual consent of the parties. The seat and venue of arbitration shall be Jaipur, Rajasthan, and proceedings shall be conducted in English. The arbitrator's award shall be final and binding on both parties. Arbitration shall proceed on an individual basis only; you waive any right to participate in a class or consolidated proceeding.
+              Any dispute arising out of or relating to these Terms shall first be referred to and finally resolved by arbitration under the Arbitration and Conciliation Act, 1996, by a sole arbitrator appointed by mutual consent of the parties. The seat and venue of arbitration shall be Jaipur, Rajasthan, and proceedings shall be conducted in English. The arbitrator&apos;s award shall be final and binding on both parties. Arbitration shall proceed on an individual basis only; you waive any right to participate in a class or consolidated proceeding.
             </p>
           </div>
 
@@ -289,7 +290,8 @@ export default function TermsConditions() {
               <span className="block">Rajasthan, 302021</span>
               <div className="mt-4">
                 <span className="block">Email: <a href="mailto:info@zevarbaksa.com" className="text-zb-red hover:underline">info@zevarbaksa.com</a></span>
-                <span className="block text-primary/60 text-xs mt-1">WhatsApp: [to be added]</span>
+                {siteConfig.phone && <span className="block">Phone: {siteConfig.phone}</span>}
+                {siteConfig.whatsapp && <span className="block">WhatsApp: +{siteConfig.whatsapp}</span>}
               </div>
             </address>
           </div>

@@ -41,9 +41,12 @@ function ShopContent() {
     fetchProducts();
   }, [fetchProducts]);
 
-  useEffect(() => {
+  // Re-sync the category when the URL param changes (adjust state during render)
+  const [prevCategoryParam, setPrevCategoryParam] = useState(categoryParam);
+  if (prevCategoryParam !== categoryParam) {
+    setPrevCategoryParam(categoryParam);
     setCat(resolveCategory(categoryParam));
-  }, [categoryParam]);
+  }
 
   let filtered = products;
 

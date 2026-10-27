@@ -1,33 +1,17 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-// Define public routes that do NOT require authentication
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/login",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/sso-callback(.*)",
-  "/shop(.*)",
-  "/product(.*)",
-  "/collection(.*)",
-  "/about",
-  "/contact",
-  "/terms-conditions",
-  "/privacy-policy",
-  "/shipping-policy",
-  "/exchange-policy",
-  "/wishlist",
-  "/checkout",
-  "/api/products(.*)",
-  "/api/create-order(.*)",
-  "/api/verify-payment(.*)",
-  "/api/webhooks(.*)",
-  "/api/sync-cart(.*)",
-  "/api/sync-wishlist(.*)"
+// Only these need a signed-in customer. Everything else is public — including
+// robots.txt / sitemap.xml (crawlers must reach them) and unknown URLs (so they
+// get the real 404 page instead of a sign-in redirect). API routes that need
+// auth (sync-cart, sync-wishlist) check it themselves; /api/orders uses
+// ADMIN_API_SECRET and /api/cron uses CRON_SECRET.
+const isProtectedRoute = createRouteMatcher([
+  "/account(.*)",
+  "/api/account(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
+  if (isProtectedRoute(request)) {
     await auth.protect();
   }
 });

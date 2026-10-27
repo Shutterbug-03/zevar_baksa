@@ -209,6 +209,10 @@ export function Nav() {
                       {FLAGS[c as Currency]} {c}
                     </button>
                   ))}
+                  {/* Rates are static approximations; checkout always charges INR */}
+                  <p className="px-3.5 pt-1.5 pb-1 mt-1 border-t border-[#420002]/10 text-[9px] leading-snug tracking-normal normal-case text-[#420002]/60 w-[170px]">
+                    Prices shown are approximate. You are charged in INR.
+                  </p>
                 </div>
               </div>
             </div>

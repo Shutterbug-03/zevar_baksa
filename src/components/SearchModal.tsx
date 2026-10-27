@@ -30,12 +30,17 @@ export function SearchModal() {
 
   // Auto-focus input when modal opens
   useEffect(() => {
-    if (searchOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    } else {
-      setQuery("");
-    }
+    if (!searchOpen) return;
+    const t = setTimeout(() => inputRef.current?.focus(), 100);
+    return () => clearTimeout(t);
   }, [searchOpen]);
+
+  // Clear the query when the modal closes (adjust state during render)
+  const [prevSearchOpen, setPrevSearchOpen] = useState(searchOpen);
+  if (prevSearchOpen !== searchOpen) {
+    setPrevSearchOpen(searchOpen);
+    if (!searchOpen) setQuery("");
+  }
 
   // Close on Escape
   useEffect(() => {

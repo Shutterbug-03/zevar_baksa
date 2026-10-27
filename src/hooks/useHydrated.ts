@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const noopSubscribe = () => () => {};
 
 /**
  * Returns `true` only after the component has mounted on the client.
@@ -6,9 +8,10 @@ import { useEffect, useState } from "react";
  * cause SSR/client HTML mismatches (hydration errors).
  */
 export function useHydrated() {
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-  return hydrated;
+  // false on the server and during hydration, true once on the client
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  );
 }

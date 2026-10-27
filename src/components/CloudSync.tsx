@@ -24,6 +24,7 @@ export function CloudSync() {
     
     // If user signs out, reset sync state
     if (!user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset sync flag when the external Clerk session ends
       setHasInitialSyncCompleted(false);
       lastSyncedCart.current = "";
       lastSyncedWishlist.current = "";

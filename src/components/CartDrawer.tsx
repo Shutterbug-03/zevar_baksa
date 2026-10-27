@@ -6,6 +6,7 @@ import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, Sparkles } from "lucid
 import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
+import { whatsappLink } from "@/data/siteConfig";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice } =
@@ -195,7 +196,7 @@ export function CartDrawer() {
             </Link>
 
             <Link
-              href="/contact"
+              href={whatsappLink("Hello Zevar Baksa, I would like to place an order.")}
               onClick={closeCart}
               className="w-full py-3 rounded-full border border-primary/30 text-primary text-[11px] uppercase tracking-[0.2em] font-sans font-semibold flex items-center justify-center gap-2 hover:bg-primary/5 transition-all duration-300"
             >

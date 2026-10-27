@@ -16,6 +16,11 @@ export default function Home() {
     const video = videoRef.current;
     if (!video) return;
 
+    // Phones get the 720p cut (~3.6MB) instead of the 1080p one (~10MB)
+    video.src = window.matchMedia("(max-width: 768px)").matches
+      ? "/hero-video-mobile.mp4"
+      : "/hero-video.mp4";
+
     // Safari requires muted to be set imperatively before calling play()
     video.muted = true;
     video.defaultMuted = true;
@@ -46,7 +51,6 @@ export default function Home() {
         {/* Full-Bleed Cinematic Background Video — dissolved smoothly into canvas */}
         <video
           ref={videoRef}
-          src="/hero-video.mp4"
           poster="/hero-poster.jpg"
           autoPlay
           loop

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { GoogleAnalytics, getGaId } from "@/components/GoogleAnalytics";
+import { CookieConsent } from "@/components/CookieConsent";
 import { CloudSync } from "@/components/CloudSync";
 import { LuxuryLoadingScreen } from "@/components/LuxuryLoadingScreen";
 import { Suspense } from "react";
@@ -93,6 +94,7 @@ export default function RootLayout({
             <LuxuryLoadingScreen />
           </Suspense>
           <CloudSync />
+          {getGaId() && <CookieConsent />}
         </ClerkProvider>
       </body>
     </html>

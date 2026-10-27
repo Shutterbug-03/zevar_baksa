@@ -42,6 +42,7 @@ export type Order = {
   address: Record<string, string>;
   items: OrderItem[];
   payment_method: string;
+  clerk_user_id?: string | null;
   created_at: string;
 };
 

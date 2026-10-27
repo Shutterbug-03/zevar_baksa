@@ -21,6 +21,7 @@ export function LuxuryLoadingScreen() {
   // Sync with pageLoading state from store
   useEffect(() => {
     if (pageLoading) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mount/fade sequencing driven by the external loading store
       setMounted(true);
       // Ensure slight tick for transition to take effect
       const t = setTimeout(() => setVisible(true), 20);

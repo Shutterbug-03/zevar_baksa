@@ -5,6 +5,7 @@ import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { X, Mail, Lock, User, Eye, EyeOff, ArrowRight, AlertCircle } from "lucide-react";
 import { useUIStore } from "@/store/uiStore";
+import { asErr } from "@/lib/clerkError";
 
 type Mode = "login" | "signup";
 
@@ -35,12 +36,11 @@ export function LoginModal() {
     return () => window.removeEventListener("keydown", handler);
   }, [closeLogin]);
 
-  // Lock body scroll & reset form state on close
-  useEffect(() => {
-    if (loginOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+  // Reset form state on close (adjust state during render)
+  const [prevLoginOpen, setPrevLoginOpen] = useState(loginOpen);
+  if (prevLoginOpen !== loginOpen) {
+    setPrevLoginOpen(loginOpen);
+    if (!loginOpen) {
       setMode("login");
       setName("");
       setEmail("");
@@ -49,6 +49,11 @@ export function LoginModal() {
       setVerifying(false);
       setError("");
     }
+  }
+
+  // Lock body scroll while open
+  useEffect(() => {
+    document.body.style.overflow = loginOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -76,10 +81,10 @@ export function LoginModal() {
         });
         if (error) throw error;
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[LoginModal] Google sign-in error:", err);
       setError(
-        err?.message ?? err?.longMessage ?? "Google authentication failed. Please try again."
+        asErr(err).message ?? asErr(err).longMessage ?? "Google authentication failed. Please try again."
       );
       setOauthLoading(false);
     }
@@ -93,20 +98,20 @@ export function LoginModal() {
       password,
     });
     if (error) {
-      const code = (error as any)?.code ?? "";
+      const code = asErr(error).code ?? "";
       if (code === "form_identifier_not_found") {
         throw new Error("No account found with this email. Please register first.");
       } else if (code === "form_password_incorrect") {
         throw new Error("Incorrect password. Please try again.");
       }
-      throw new Error((error as any)?.longMessage ?? (error as any)?.message ?? "Sign-in failed.");
+      throw new Error(asErr(error).longMessage ?? asErr(error).message ?? "Sign-in failed.");
     }
     // finalize creates the active session
     const finalizeResult = await signIn.finalize();
     if (finalizeResult.error) {
       throw new Error(
-        (finalizeResult.error as any)?.longMessage ??
-          (finalizeResult.error as any)?.message ??
+        asErr(finalizeResult.error).longMessage ??
+          asErr(finalizeResult.error).message ??
           "Could not complete sign-in."
       );
     }
@@ -126,11 +131,11 @@ export function LoginModal() {
       lastName,
     });
     if (error) {
-      const code = (error as any)?.code ?? "";
+      const code = asErr(error).code ?? "";
       if (code === "form_identifier_exists") {
         throw new Error("An account with this email already exists. Please sign in.");
       }
-      throw new Error((error as any)?.longMessage ?? (error as any)?.message ?? "Sign-up failed.");
+      throw new Error(asErr(error).longMessage ?? asErr(error).message ?? "Sign-up failed.");
     }
 
     // Status after password() call — if complete, finalize immediately
@@ -138,8 +143,8 @@ export function LoginModal() {
       const finalizeResult = await signUp.finalize();
       if (finalizeResult.error) {
         throw new Error(
-          (finalizeResult.error as any)?.longMessage ??
-            (finalizeResult.error as any)?.message ??
+          asErr(finalizeResult.error).longMessage ??
+            asErr(finalizeResult.error).message ??
             "Could not complete sign-up."
         );
       }
@@ -148,8 +153,8 @@ export function LoginModal() {
       const sendResult = await signUp.verifications.sendEmailCode();
       if (sendResult.error) {
         throw new Error(
-          (sendResult.error as any)?.longMessage ??
-            (sendResult.error as any)?.message ??
+          asErr(sendResult.error).longMessage ??
+            asErr(sendResult.error).message ??
             "Failed to send verification email."
         );
       }
@@ -174,21 +179,21 @@ export function LoginModal() {
       });
       if (error) {
         throw new Error(
-          (error as any)?.longMessage ?? (error as any)?.message ?? "Invalid verification code."
+          asErr(error).longMessage ?? asErr(error).message ?? "Invalid verification code."
         );
       }
       // After verification, finalize to create the session
       const finalizeResult = await signUp.finalize();
       if (finalizeResult.error) {
         throw new Error(
-          (finalizeResult.error as any)?.longMessage ??
-            (finalizeResult.error as any)?.message ??
+          asErr(finalizeResult.error).longMessage ??
+            asErr(finalizeResult.error).message ??
             "Could not create session."
         );
       }
       closeLogin();
-    } catch (err: any) {
-      setError(err?.message ?? "Verification failed. Please try again.");
+    } catch (err: unknown) {
+      setError(asErr(err).message ?? "Verification failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -218,8 +223,8 @@ export function LoginModal() {
         // closeLogin() called inside handleSignUp only if fully complete
         if (signUp?.status === "complete") closeLogin();
       }
-    } catch (err: any) {
-      setError(err?.message ?? "Authentication failed. Please try again.");
+    } catch (err: unknown) {
+      setError(asErr(err).message ?? "Authentication failed. Please try again.");
     } finally {
       setSubmitting(false);
     }

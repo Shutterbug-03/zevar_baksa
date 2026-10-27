@@ -1,3 +1,6 @@
+-- NOTE: the open "Allow insert from server" and "Customers read own orders" RLS
+-- policies below were removed by 004_lock_down_rls.sql (they let the public anon
+-- key insert fake orders). Run 004 after this file; do not re-add them.
 -- ─────────────────────────────────────────────────────────────────────────────
 -- Zevar Baksa — Supabase Schema
 -- Run this in your Supabase SQL Editor:
