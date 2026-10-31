@@ -75,36 +75,42 @@ export default function Home() {
               type="video/mp4"
             />
           </video>
+
+          {/* Cinematic Scrim Gradient: Solves contrast against workbench clutter (tape, bottles) without blurring */}
+          <div className="absolute inset-x-0 bottom-0 h-44 sm:h-56 bg-gradient-to-t from-[#1b0809]/85 via-[#1b0809]/40 to-transparent pointer-events-none" />
         </div>
 
         {/* ════════════════════════════════════════════════════
             CENTRAL SEAM WORDMARK — "ZEVAR BAKSA"
-            Straddles the dividing seam between Hero Video & Brand Story.
-            Upper half renders over the video in warm ivory (#fffaee) with soft luxury depth shadow.
-            Lower half renders over the cream canvas in deep imperial maroon (#420002).
+            UI/UX Pro Max Classical Luxury Editorial Architecture:
+            - Cormorant Garamond classical Roman capitals (no drooping swashes)
+            - Expanded royal letter-spacing (tracking-[0.28em] to 0.42em)
+            - Precision split-tone across the exact seam
+            - Upper: Warm Ivory (#fffaee) with ambient depth shadow
+            - Lower: Imperial Jaipur Maroon (#420002)
         ════════════════════════════════════════════════════ */}
         <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-30 pointer-events-none select-none flex justify-center px-4">
           <div className="relative inline-flex justify-center items-center text-center">
             
-            {/* Top Half (Over Video) — Warm Ivory Cream with subtle ambient shadow */}
+            {/* Top Half (Over Video) — Warm Ivory with ambient luxury depth */}
             <span
               aria-hidden="true"
               style={{
-                fontFamily: "'Rayleigh Glamour', var(--font-cormorant), Georgia, serif",
+                fontFamily: "var(--font-cormorant), 'Playfair Display', Georgia, serif",
                 clipPath: "polygon(0 0, 100% 0, 100% 50.2%, 0 50.2%)",
               }}
-              className="absolute inset-0 font-normal uppercase text-[#fffaee] drop-shadow-[0_4px_16px_rgba(0,0,0,0.65)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-[0.22em] sm:tracking-[0.28em] md:tracking-[0.32em] leading-none whitespace-nowrap"
+              className="absolute inset-0 font-light uppercase text-[#fffaee] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.26em] sm:tracking-[0.32em] md:tracking-[0.38em] lg:tracking-[0.42em] leading-none whitespace-nowrap"
             >
               ZEVAR BAKSA
             </span>
 
-            {/* Bottom Half (Over Cream Page) — Deep Brand Maroon */}
+            {/* Bottom Half (Over Cream Page) — Imperial Brand Maroon */}
             <h1
               style={{
-                fontFamily: "'Rayleigh Glamour', var(--font-cormorant), Georgia, serif",
+                fontFamily: "var(--font-cormorant), 'Playfair Display', Georgia, serif",
                 clipPath: "polygon(0 49.8%, 100% 49.8%, 100% 100%, 0 100%)",
               }}
-              className="relative font-normal uppercase text-[#420002] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-[0.22em] sm:tracking-[0.28em] md:tracking-[0.32em] leading-none whitespace-nowrap"
+              className="relative font-light uppercase text-[#420002] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.26em] sm:tracking-[0.32em] md:tracking-[0.38em] lg:tracking-[0.42em] leading-none whitespace-nowrap"
             >
               ZEVAR BAKSA
             </h1>
@@ -115,7 +121,7 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           2. ABOUT US — Exact Brand Story (Blended seamlessly with Hero & Section 3)
       ════════════════════════════════════════════════════ */}
-      <section className="relative w-full min-h-[75vh] pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 bg-[#fffaee] flex flex-col justify-center">
+      <section className="relative w-full min-h-[75vh] pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 bg-[#fffaee] flex flex-col justify-center">
         
         {/* Content Container */}
         <div className="relative z-20 mx-auto w-full max-w-[1500px] px-6 sm:px-10 md:px-16">
