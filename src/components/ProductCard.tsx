@@ -11,6 +11,15 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useHydrated } from "@/hooks/useHydrated";
 
+const getMediaUrl = (url: string) => {
+  if (!url) return url;
+  if (url.includes("/storage/v1/object/public/media/")) {
+    const sep = url.includes("?") ? "&" : "?";
+    return `${url}${sep}v=portrait_v3`;
+  }
+  return url;
+};
+
 export function ProductCard({ product }: { product: Product }) {
   const { toggle, isWishlisted } = useWishlistStore();
   const { format } = useCurrencyStore();
@@ -38,7 +47,7 @@ export function ProductCard({ product }: { product: Product }) {
     <div className="group block relative">
       <Link href={`/product/${product.id}`}>
         <div 
-          className="relative overflow-hidden aspect-[4/5] rounded-lg bg-[#0d0204]"
+          className="relative overflow-hidden aspect-[4/5] rounded-xl bg-[#FAF7F2] border border-[#420002]/5 transition-all duration-500 group-hover:shadow-[0_12px_32px_-12px_rgba(66,0,2,0.12)]"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -46,7 +55,7 @@ export function ProductCard({ product }: { product: Product }) {
             product.gallery.map((imgSrc, idx) => (
               <img
                 key={imgSrc}
-                src={imgSrc}
+                src={getMediaUrl(imgSrc)}
                 alt={`${product.name} - view ${idx + 1}`}
                 loading={idx === 0 ? "eager" : "lazy"}
                 className="absolute inset-0 h-full w-full object-cover group-hover:scale-105"
@@ -59,7 +68,7 @@ export function ProductCard({ product }: { product: Product }) {
             ))
           ) : (
             <img
-              src={product.image}
+              src={getMediaUrl(product.image)}
               alt={product.name}
               loading="eager"
               className="h-full w-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
