@@ -74,11 +74,54 @@ const faqs: FaqItem[] = [
 
 export function FaqSection() {
   const [openId, setOpenId] = useState<string | null>("faq-1");
+  const [showAll, setShowAll] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", query: "" });
 
   const toggleFaq = (id: string) => {
     setOpenId(openId === id ? null : id);
+  };
+
+  const renderFaqItem = (faq: FaqItem) => {
+    const isOpen = openId === faq.id;
+    return (
+      <div
+        key={faq.id}
+        className={`border rounded-xl transition-all duration-300 overflow-hidden bg-[#fffaee] ${
+          isOpen
+            ? "border-[#c82127] shadow-md"
+            : "border-[#420002]/15 hover:border-[#c82127]/50"
+        }`}
+      >
+        <button
+          onClick={() => toggleFaq(faq.id)}
+          className="w-full flex items-center justify-between p-4 sm:p-4.5 text-left focus:outline-none group font-sans cursor-pointer"
+        >
+          <span className="font-sans text-[13.5px] sm:text-[15px] font-medium text-[#420002] pr-3 leading-snug group-hover:text-[#c82127] transition-colors">
+            {faq.question}
+          </span>
+          <div
+            className={`flex-shrink-0 h-7 w-7 rounded-full border border-[#420002]/20 flex items-center justify-center transition-all duration-300 ${
+              isOpen
+                ? "bg-[#c82127] text-[#fffaee] rotate-180 border-[#c82127]"
+                : "bg-transparent text-[#420002]"
+            }`}
+          >
+            <ChevronDown className="h-3.5 w-3.5 stroke-[1.5]" />
+          </div>
+        </button>
+
+        <div
+          className={`transition-all duration-300 ease-in-out ${
+            isOpen ? "max-h-96 opacity-100 pb-4 px-4 sm:px-5" : "max-h-0 opacity-0 overflow-hidden"
+          }`}
+        >
+          <p className="text-[12.5px] sm:text-[13.5px] text-[#420002]/80 font-sans leading-relaxed border-t border-[#420002]/10 pt-3 font-light">
+            {faq.answer}
+          </p>
+        </div>
+      </div>
+    );
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -136,43 +179,42 @@ export function FaqSection() {
           
           {/* Left Column: Compact Accordions (7 cols) */}
           <div className="lg:col-span-7 flex flex-col gap-2.5 font-sans">
-            {faqs.map((faq) => {
-              const isOpen = openId === faq.id;
-              return (
-                <div
-                  key={faq.id}
-                  className={`border rounded-xl transition-all duration-300 overflow-hidden bg-[#fffaee] ${
-                    isOpen
-                      ? "border-[#c82127] shadow-md"
-                      : "border-[#420002]/15 hover:border-[#c82127]/50"
-                  }`}
-                >
-                  <button
-                    onClick={() => toggleFaq(faq.id)}
-                    className="w-full flex items-center justify-between p-4 sm:p-4.5 text-left focus:outline-none group font-sans cursor-pointer"
-                  >
-                    <span className="font-sans text-[13.5px] sm:text-[15px] font-medium text-[#420002] pr-3 leading-snug group-hover:text-[#c82127] transition-colors">
-                      {faq.question}
-                    </span>
-                    <div className={`flex-shrink-0 h-7 w-7 rounded-full border border-[#420002]/20 flex items-center justify-center transition-all duration-300 ${
-                      isOpen ? "bg-[#c82127] text-[#fffaee] rotate-180 border-[#c82127]" : "bg-transparent text-[#420002]"
-                    }`}>
-                      <ChevronDown className="h-3.5 w-3.5 stroke-[1.5]" />
-                    </div>
-                  </button>
+            {/* Top 5 FAQs — Perfectly match the height of the right concierge box */}
+            {faqs.slice(0, 5).map(renderFaqItem)}
 
-                  <div
-                    className={`transition-all duration-300 ease-in-out ${
-                      isOpen ? "max-h-96 opacity-100 pb-4 px-4 sm:px-5" : "max-h-0 opacity-0 overflow-hidden"
-                    }`}
-                  >
-                    <p className="text-[12.5px] sm:text-[13.5px] text-[#420002]/80 font-sans leading-relaxed border-t border-[#420002]/10 pt-3 font-light">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+            {/* Remaining FAQs — Expandable smoothly with dropdown */}
+            <div
+              className={`flex flex-col gap-2.5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
+                showAll
+                  ? "max-h-[1400px] opacity-100"
+                  : "max-h-0 opacity-0 pointer-events-none"
+              }`}
+            >
+              {faqs.slice(5).map(renderFaqItem)}
+            </div>
+
+            {/* Dropdown Toggle Button to expand / collapse selected FAQs */}
+            <button
+              type="button"
+              onClick={() => setShowAll(!showAll)}
+              className="w-full flex items-center justify-between p-3.5 sm:p-4 rounded-xl border border-[#420002]/20 bg-[#fffaee] hover:bg-[#420002]/5 hover:border-[#c82127]/60 text-[#420002] hover:text-[#c82127] transition-all duration-300 shadow-xs cursor-pointer group mt-0.5"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-[#c82127]">✦</span>
+                <span className="font-sans text-[12.5px] sm:text-[13.5px] font-medium tracking-wide">
+                  {showAll ? "Show Fewer Questions" : `View More Questions (${faqs.length - 5} More)`}
+                </span>
+              </div>
+              <div
+                className={`flex-shrink-0 h-6 w-6 rounded-full border border-[#420002]/20 flex items-center justify-center transition-all duration-300 ${
+                  showAll
+                    ? "bg-[#c82127] text-[#fffaee] rotate-180 border-[#c82127]"
+                    : "bg-transparent text-[#420002] group-hover:border-[#c82127] group-hover:text-[#c82127]"
+                }`}
+              >
+                <ChevronDown className="h-3 w-3 stroke-[1.8]" />
+              </div>
+            </button>
           </div>
 
           {/* Right Column: Direct Query Box (5 cols) */}
