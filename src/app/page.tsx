@@ -48,38 +48,74 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════
           1. HERO — Full Viewport Cinematic Video with Transparent Header
       ════════════════════════════════════════════════════ */}
-      <section className="relative w-full h-[100svh] min-h-[640px] overflow-hidden bg-[#fffaee]">
+      <section className="relative w-full h-[100svh] min-h-[640px] bg-[#fffaee]">
         
-        {/* Full-Bleed Cinematic Background Video */}
-        <video
-          ref={videoRef}
-          poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          controls={false}
-          disablePictureInPicture
-          {...{ "x-webkit-airplay": "deny" }}
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
-        >
-          <source
-            media="(max-width: 768px)"
-            src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
-            type="video/mp4"
-          />
-          <source
-            src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4"
-            type="video/mp4"
-          />
-        </video>
+        {/* Full-Bleed Cinematic Background Video Container (Clipped) */}
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            ref={videoRef}
+            poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            controls={false}
+            disablePictureInPicture
+            {...{ "x-webkit-airplay": "deny" }}
+            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+          >
+            <source
+              media="(max-width: 768px)"
+              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
+              type="video/mp4"
+            />
+            <source
+              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+
+        {/* ════════════════════════════════════════════════════
+            CENTRAL SEAM WORDMARK — "ZEVAR BAKSA"
+            Straddles the dividing seam between Hero Video & Brand Story.
+            Upper half renders over the video in warm ivory (#fffaee) with soft luxury depth shadow.
+            Lower half renders over the cream canvas in deep imperial maroon (#420002).
+        ════════════════════════════════════════════════════ */}
+        <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-30 pointer-events-none select-none flex justify-center px-4">
+          <div className="relative inline-flex justify-center items-center text-center">
+            
+            {/* Top Half (Over Video) — Warm Ivory Cream with subtle ambient shadow */}
+            <span
+              aria-hidden="true"
+              style={{
+                fontFamily: "'Rayleigh Glamour', var(--font-cormorant), Georgia, serif",
+                clipPath: "polygon(0 0, 100% 0, 100% 50.2%, 0 50.2%)",
+              }}
+              className="absolute inset-0 font-normal uppercase text-[#fffaee] drop-shadow-[0_4px_16px_rgba(0,0,0,0.65)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-[0.22em] sm:tracking-[0.28em] md:tracking-[0.32em] leading-none whitespace-nowrap"
+            >
+              ZEVAR BAKSA
+            </span>
+
+            {/* Bottom Half (Over Cream Page) — Deep Brand Maroon */}
+            <h1
+              style={{
+                fontFamily: "'Rayleigh Glamour', var(--font-cormorant), Georgia, serif",
+                clipPath: "polygon(0 49.8%, 100% 49.8%, 100% 100%, 0 100%)",
+              }}
+              className="relative font-normal uppercase text-[#420002] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl tracking-[0.22em] sm:tracking-[0.28em] md:tracking-[0.32em] leading-none whitespace-nowrap"
+            >
+              ZEVAR BAKSA
+            </h1>
+          </div>
+        </div>
       </section>
 
       {/* ════════════════════════════════════════════════════
           2. ABOUT US — Exact Brand Story (Blended seamlessly with Hero & Section 3)
       ════════════════════════════════════════════════════ */}
-      <section className="relative w-full min-h-[75vh] -mt-1 pt-10 sm:pt-14 pb-12 sm:pb-16 overflow-hidden bg-[#fffaee] flex flex-col justify-center">
+      <section className="relative w-full min-h-[75vh] pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 bg-[#fffaee] flex flex-col justify-center">
         
         {/* Content Container */}
         <div className="relative z-20 mx-auto w-full max-w-[1500px] px-6 sm:px-10 md:px-16">
