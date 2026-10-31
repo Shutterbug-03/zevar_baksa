@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { isBusyConfigured, getBusyItems, mapBusyToProduct } from "@/lib/busy";
 import { products as staticProducts } from "@/data/products";
 
-// Cache headers: 5 min CDN cache, stale-while-revalidate for zero-latency hits
+// Cache headers: short cache so catalog updates reflect promptly
 const CACHE_HEADERS = {
-  "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+  "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
 };
 
 export async function GET() {
@@ -20,8 +20,28 @@ export async function GET() {
     const busyItems = await getBusyItems();
     const mapped = busyItems.map(mapBusyToProduct);
 
+    // Merge strategy: staticProducts is the definitive curated catalog.
+    // Enrich with live ERP pricing and stock availability from BUSY.
+    const mappedMap = new Map(mapped.map((p) => [p.id.toLowerCase(), p]));
+    const merged = staticProducts.map((sp) => {
+      const live = mappedMap.get(sp.id.toLowerCase());
+      if (!live) return sp;
+      return {
+        ...sp,
+        price: live.price > 0 ? live.price : sp.price,
+        status: live.status,
+      };
+    });
+
+    // Also include any new items discovered in BUSY that aren't yet in static
+    for (const p of mapped) {
+      if (!staticProducts.some((sp) => sp.id.toLowerCase() === p.id.toLowerCase())) {
+        merged.push(p);
+      }
+    }
+
     return NextResponse.json(
-      { source: "busy", products: mapped.length > 0 ? mapped : staticProducts },
+      { source: "busy", products: merged },
       { headers: CACHE_HEADERS }
     );
   } catch (error) {

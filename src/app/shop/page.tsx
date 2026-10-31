@@ -29,8 +29,18 @@ function ShopContent() {
 
   const resolveCategory = (param: string | null) => {
     if (!param) return "All";
+    const lower = param.toLowerCase().trim();
+    if (lower === "neckwear" || lower === "necklace" || lower === "necklaces" || lower === "bridal") {
+      return "Necklaces";
+    }
+    if (lower === "earring" || lower === "earrings") {
+      return "Earrings";
+    }
+    if (lower === "pendant" || lower === "pendants") {
+      return "Pendants";
+    }
     const match = categories.find(
-      (c) => c.toLowerCase() === param.toLowerCase()
+      (c) => c.toLowerCase() === lower
     );
     if (match) return match;
     return "All";

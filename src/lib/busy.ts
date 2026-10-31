@@ -450,7 +450,7 @@ export function mapBusyToProduct(item: BusyItem): Product {
     image: primaryImg,
     gallery,
     category: matchingStatic?.category || category,
-    type: /pendant/i.test(rawCat) ? "Pendant" : undefined,
+    type: matchingStatic?.type || (/pendant/i.test(rawCat) ? "Pendant" : undefined),
     collection: matchingStatic?.collection || str(item.collection) || "Meena Bagh",
     description: matchingStatic?.description || str(item.description) || item.name,
     story:
