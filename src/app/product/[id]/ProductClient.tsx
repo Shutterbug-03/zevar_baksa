@@ -52,6 +52,11 @@ export default function ProductClient({
   // State for active image gallery
   const [selectedImage, setSelectedImage] = useState(product.image);
 
+  // Sync selectedImage when product changes
+  useEffect(() => {
+    setSelectedImage(product.image);
+  }, [product.image]);
+
   // Accordion active tabs
   const [openTab, setOpenTab] = useState<string | null>("specs");
 
@@ -415,7 +420,7 @@ export default function ProductClient({
                       )}
                       {product.specs.strand && (
                         <div className="flex justify-between border-b border-border/30 pb-2">
-                          <span className="text-foreground/50 font-medium">Necklace Strand</span>
+                          <span className="text-foreground/50 font-medium">Strand & Closure</span>
                           <span className="font-semibold text-right">{product.specs.strand}</span>
                         </div>
                       )}
@@ -427,13 +432,19 @@ export default function ProductClient({
                       )}
                       {product.specs.weight && (
                         <div className="flex justify-between border-b border-border/30 pb-2">
-                          <span className="text-foreground/50 font-medium">Weight (gram)</span>
+                          <span className="text-foreground/50 font-medium">Gross Weight</span>
                           <span className="font-semibold text-right">{product.specs.weight}</span>
                         </div>
                       )}
                       {product.specs.dimensions && (
                         <div className="flex justify-between border-b border-border/30 pb-2">
-                          <span className="text-foreground/50 font-medium">Pendant Size</span>
+                          <span className="text-foreground/50 font-medium">
+                            {product.category === "Earrings"
+                              ? "Earring Size"
+                              : product.type === "Pendant"
+                              ? "Pendant Size"
+                              : "Dimensions & Fit"}
+                          </span>
                           <span className="font-semibold text-right">{product.specs.dimensions}</span>
                         </div>
                       )}

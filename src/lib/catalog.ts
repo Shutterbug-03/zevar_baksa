@@ -16,16 +16,54 @@ const STALE_OK_MS = 60 * 60_000;
 
 let cache: { at: number; byId: Map<string, Product> } | null = null;
 
-const toMap = (list: Product[]) => new Map(list.map((p) => [p.id, p]));
+function buildCatalogMap(products: Product[]): Map<string, Product> {
+  const map = new Map<string, Product>();
+  for (const p of products) {
+    map.set(p.id, p);
+    map.set(p.id.toLowerCase(), p);
+    map.set(p.id.toUpperCase(), p);
+    map.set(p.name.toLowerCase(), p);
+    map.set(p.name.toLowerCase().replace(/\s+/g, "-"), p);
+    if (p.specs?.code) {
+      map.set(p.specs.code.toLowerCase(), p);
+      const sku = p.specs.code.split(" ")[0].toLowerCase();
+      map.set(sku, p);
+    }
+  }
+  return map;
+}
+
+function mergeCatalogs(live: Product[], fallback: Product[]): Product[] {
+  const liveMap = new Map(live.map((p) => [p.id.toLowerCase(), p]));
+  const merged = fallback.map((sp) => {
+    const l = liveMap.get(sp.id.toLowerCase());
+    if (!l) return sp;
+    return {
+      ...sp,
+      price: l.price > 0 ? l.price : sp.price,
+      status: l.status,
+    };
+  });
+
+  for (const p of live) {
+    if (!fallback.some((sp) => sp.id.toLowerCase() === p.id.toLowerCase())) {
+      merged.push(p);
+    }
+  }
+
+  return merged;
+}
 
 export async function getCatalog(): Promise<Map<string, Product>> {
-  if (!isBusyConfigured()) return toMap(staticProducts);
+  if (!isBusyConfigured()) return buildCatalogMap(staticProducts);
 
   if (cache && Date.now() - cache.at < FRESH_MS) return cache.byId;
 
   try {
-    const mapped = (await getBusyItems()).map(mapBusyToProduct);
-    const byId = toMap(mapped.length > 0 ? mapped : staticProducts);
+    const busyItems = await getBusyItems();
+    const mapped = busyItems.map(mapBusyToProduct);
+    const mergedList = mergeCatalogs(mapped, staticProducts);
+    const byId = buildCatalogMap(mergedList);
     cache = { at: Date.now(), byId };
     return byId;
   } catch (err) {
@@ -33,7 +71,8 @@ export async function getCatalog(): Promise<Map<string, Product>> {
       console.warn("[catalog] BUSY unreachable — using cached prices", err);
       return cache.byId;
     }
-    throw new Error("CATALOG_UNAVAILABLE");
+    console.warn("[catalog] BUSY failed, serving static catalog fallback:", err);
+    return buildCatalogMap(staticProducts);
   }
 }
 

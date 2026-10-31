@@ -65,7 +65,15 @@ export const useProductStore = create<ProductStore>()((set, get) => ({
     set({ products, status: "ready" });
   },
 
-  getById: (id) => get().products.find((p) => p.id === id),
+  getById: (id) => {
+    const target = (id || "").toLowerCase().trim();
+    return get().products.find(
+      (p) =>
+        p.id.toLowerCase() === target ||
+        p.name.toLowerCase() === target ||
+        p.name.toLowerCase().replace(/\s+/g, "-") === target
+    );
+  },
 
   getByCategory: (category) => {
     if (category === "All") return get().products;

@@ -14,11 +14,26 @@ import ProductClient from "./ProductClient";
  */
 async function findProduct(id: string): Promise<{ product?: Product; known: boolean }> {
   try {
-    const product = (await getCatalog()).get(id);
+    const catalog = await getCatalog();
+    const cleanId = decodeURIComponent(id).trim();
+    const product = catalog.get(cleanId) || catalog.get(cleanId.toLowerCase());
     return { product, known: true };
   } catch {
     return { known: false };
   }
+}
+
+export async function generateStaticParams() {
+  const { products } = await import("@/data/products");
+  const params: { id: string }[] = [];
+  for (const p of products) {
+    params.push({ id: p.id });
+    const slug = p.name.toLowerCase().replace(/\s+/g, "-");
+    if (slug !== p.id) {
+      params.push({ id: slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({
