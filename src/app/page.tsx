@@ -50,7 +50,7 @@ export default function Home() {
       ════════════════════════════════════════════════════ */}
       <section className="relative w-full h-[100svh] min-h-[640px] overflow-hidden bg-[#fffaee]">
         
-        {/* Full-Bleed Cinematic Background Video — dissolved smoothly into canvas */}
+        {/* Full-Bleed Cinematic Background Video */}
         <video
           ref={videoRef}
           poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg"
@@ -62,10 +62,6 @@ export default function Home() {
           controls={false}
           disablePictureInPicture
           {...{ "x-webkit-airplay": "deny" }}
-          style={{
-            maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)",
-          }}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
         >
           <source
