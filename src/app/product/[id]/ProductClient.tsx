@@ -64,6 +64,16 @@ export default function ProductClient({
     setSelectedImage(product.image);
   }, [product.image]);
 
+  // Ensure fresh media delivery and bypass cached orientation mismatches
+  const getMediaUrl = (url: string) => {
+    if (!url) return url;
+    if (url.includes("/storage/v1/object/public/media/")) {
+      const sep = url.includes("?") ? "&" : "?";
+      return `${url}${sep}v=portrait_v3`;
+    }
+    return url;
+  };
+
   const currentIndex = Math.max(0, product.gallery.indexOf(selectedImage));
 
   const handlePrevImage = () => {
@@ -182,7 +192,7 @@ export default function ProductClient({
             <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 lg:gap-6">
               
               {/* Thumbnails rail */}
-              <div className="flex md:flex-col gap-2.5 overflow-x-auto md:overflow-y-auto max-h-[640px] scrollbar-none flex-shrink-0 py-0.5">
+              <div className="flex md:flex-col gap-2.5 overflow-x-auto md:overflow-y-auto max-h-[680px] scrollbar-none flex-shrink-0 py-0.5">
                 {product.gallery.map((imgUrl, idx) => (
                   <button
                     key={idx}
@@ -195,7 +205,7 @@ export default function ProductClient({
                     }`}
                   >
                     <img
-                      src={imgUrl}
+                      src={getMediaUrl(imgUrl)}
                       alt={`${product.name} view ${idx + 1}`}
                       className="w-full h-full object-cover rounded-xl"
                     />
@@ -205,7 +215,7 @@ export default function ProductClient({
 
               {/* Main Featured Image — Clean, direct presentation with zero extra section box */}
               <div
-                className="relative flex-1 rounded-2xl overflow-hidden group select-none flex items-center justify-center min-h-[420px]"
+                className="relative flex-1 select-none flex items-start justify-center group"
                 onMouseEnter={() => setIsZoomed(true)}
                 onMouseLeave={() => setIsZoomed(false)}
                 onMouseMove={handleMouseMove}
@@ -213,91 +223,91 @@ export default function ProductClient({
                 {/* Main Image with Zoom pan */}
                 <div
                   onClick={() => setIsLightboxOpen(true)}
-                  className="w-full h-full flex items-center justify-center cursor-zoom-in overflow-hidden rounded-2xl"
+                  className="relative w-full cursor-zoom-in overflow-hidden rounded-2xl flex items-center justify-center"
                   title="Click to view full screen"
                 >
                   <img
-                    src={selectedImage}
+                    src={getMediaUrl(selectedImage)}
                     alt={product.name}
                     style={{
                       transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                      transform: isZoomed ? "scale(1.4)" : "scale(1)",
+                      transform: isZoomed ? "scale(1.35)" : "scale(1)",
                     }}
-                    className="w-full max-h-[720px] object-contain transition-transform duration-200 ease-out pointer-events-none rounded-2xl"
+                    className="w-full h-auto max-h-[760px] object-contain mx-auto rounded-2xl transition-transform duration-200 ease-out pointer-events-none"
                   />
-                </div>
 
-                {/* Floating Left / Right Nav Arrows */}
-                {product.gallery.length > 1 && (
-                  <>
+                  {/* Floating Action Controls: Fullscreen Zoom & Share */}
+                  <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handlePrevImage();
+                        setIsLightboxOpen(true);
                       }}
-                      className="absolute left-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/80 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
-                      aria-label="Previous view"
+                      className="h-9 w-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-105"
+                      title="Fullscreen zoom"
+                      aria-label="Zoom image"
                     >
-                      <ChevronLeft className="h-5 w-5 stroke-[1.8]" />
+                      <Maximize2 className="h-4 w-4 stroke-[1.7]" />
                     </button>
+
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleNextImage();
+                        navigator.clipboard?.writeText(window.location.href);
                       }}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/80 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
-                      aria-label="Next view"
+                      className="h-9 w-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-105"
+                      title="Copy link to product"
+                      aria-label="Share product"
                     >
-                      <ChevronRight className="h-5 w-5 stroke-[1.8]" />
+                      <Share2 className="h-4 w-4 stroke-[1.7]" />
                     </button>
-                  </>
-                )}
+                  </div>
 
-                {/* Availability Badge */}
-                <div className="absolute top-4 left-4 z-10">
-                  <span
-                    className={`px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.25em] font-semibold backdrop-blur-md shadow-xs font-sans ${
-                      product.status === "Ready to Ship"
-                        ? "bg-[#2D4A3E]/90 text-[#E2F2E7] border border-[#3E6554]/30"
-                        : product.status === "Made to Order"
-                        ? "bg-[#5A381E]/90 text-[#F5E6D8] border border-[#7A4F2C]/30"
-                        : "bg-stone-800/80 text-stone-200 border border-stone-600/30"
-                    }`}
-                  >
-                    {product.status}
-                  </span>
-                </div>
+                  {/* Floating Left / Right Nav Arrows */}
+                  {product.gallery.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePrevImage();
+                        }}
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
+                        aria-label="Previous view"
+                      >
+                        <ChevronLeft className="h-5 w-5 stroke-[1.8]" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNextImage();
+                        }}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
+                        aria-label="Next view"
+                      >
+                        <ChevronRight className="h-5 w-5 stroke-[1.8]" />
+                      </button>
+                    </>
+                  )}
 
-                {/* Top Right Action Controls: Fullscreen Zoom & Share */}
-                <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsLightboxOpen(true);
-                    }}
-                    className="h-9 w-9 rounded-full bg-white/80 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
-                    title="Fullscreen zoom"
-                    aria-label="Zoom image"
-                  >
-                    <Maximize2 className="h-4 w-4 stroke-[1.7]" />
-                  </button>
+                  {/* Availability Badge */}
+                  <div className="absolute top-4 left-4 z-10">
+                    <span
+                      className={`px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.25em] font-semibold backdrop-blur-md shadow-xs font-sans ${
+                        product.status === "Ready to Ship"
+                          ? "bg-[#2D4A3E]/90 text-[#E2F2E7] border border-[#3E6554]/30"
+                          : product.status === "Made to Order"
+                          ? "bg-[#5A381E]/90 text-[#F5E6D8] border border-[#7A4F2C]/30"
+                          : "bg-stone-800/80 text-stone-200 border border-stone-600/30"
+                      }`}
+                    >
+                      {product.status}
+                    </span>
+                  </div>
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigator.clipboard?.writeText(window.location.href);
-                    }}
-                    className="h-9 w-9 rounded-full bg-white/80 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm hover:scale-105"
-                    title="Copy link to product"
-                    aria-label="Share product"
-                  >
-                    <Share2 className="h-4 w-4 stroke-[1.7]" />
-                  </button>
-                </div>
-
-                {/* Bottom Gallery Position Indicator */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-3.5 py-1 rounded-full bg-white/85 backdrop-blur-md text-[#420002] text-[10px] font-sans font-semibold uppercase tracking-[0.2em] border border-[#420002]/10 shadow-xs pointer-events-none">
-                  {currentIndex + 1} / {product.gallery.length}
+                  {/* Bottom Gallery Position Indicator */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-3.5 py-1 rounded-full bg-white/85 backdrop-blur-md text-[#420002] text-[10px] font-sans font-semibold uppercase tracking-[0.2em] border border-[#420002]/10 shadow-xs pointer-events-none opacity-80 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                    {currentIndex + 1} / {product.gallery.length}
+                  </div>
                 </div>
 
               </div>
@@ -699,9 +709,9 @@ export default function ProductClient({
             )}
 
             <img
-              src={selectedImage}
+              src={getMediaUrl(selectedImage)}
               alt={product.name}
-              className="max-h-[75vh] max-w-full object-contain rounded-xl drop-shadow-2xl select-none"
+              className="max-h-[82vh] max-w-full object-contain rounded-xl drop-shadow-2xl select-none"
             />
 
             {product.gallery.length > 1 && (
@@ -731,9 +741,9 @@ export default function ProductClient({
                 }`}
               >
                 <img
-                  src={imgUrl}
+                  src={getMediaUrl(imgUrl)}
                   alt={`${product.name} thumbnail ${idx + 1}`}
-                  className="w-full h-full object-contain bg-[#1c080b] p-1"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               </button>
             ))}
