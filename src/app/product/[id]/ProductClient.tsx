@@ -315,14 +315,9 @@ export default function ProductClient({
             {/* RIGHT COLUMN: STICKY PRODUCT INFO & ACTIONS (5 Cols) */}
             <div className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-32 font-sans">
 
-              {/* Category, Collection & Product Code */}
+              {/* Category & Collection Tag */}
               <div>
                 <div className="flex flex-wrap items-center gap-2 mb-3">
-                  {product.specs.code && (
-                    <span className="px-2.5 py-1 rounded-full border border-[#420002]/20 bg-[#420002]/5 text-[#420002] text-[10px] uppercase tracking-[0.25em] font-semibold font-sans">
-                      {product.specs.code}
-                    </span>
-                  )}
                   <span className="text-[11px] uppercase tracking-[0.3em] text-[#420002] font-semibold font-sans">
                     {product.category}
                   </span>
@@ -529,12 +524,6 @@ export default function ProductClient({
 
                   {openTab === "specs" && (
                     <div className="pt-4 pb-2 text-[13px] text-foreground/80 space-y-2.5 font-sans">
-                      {product.specs.code && (
-                        <div className="flex justify-between border-b border-[#420002]/10 pb-2">
-                          <span className="text-foreground/55 font-medium">Product Code</span>
-                          <span className="font-semibold text-[#420002] text-right">{product.specs.code}</span>
-                        </div>
-                      )}
                       <div className="flex justify-between border-b border-[#420002]/10 pb-2">
                         <span className="text-foreground/55 font-medium">Precious Metal</span>
                         <span className="font-semibold text-right">{product.specs.metal}</span>
