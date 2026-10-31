@@ -59,7 +59,7 @@ const csp = [
   "img-src 'self' data: blob: https: http:",
   `media-src 'self' blob: https://*.supabase.co ${supabaseCfg.origin || ""}`.trim(),
   "font-src 'self' data:",
-  `connect-src 'self' ${clerk} https://clerk-telemetry.com https://*.supabase.co wss://*.supabase.co ${supabaseCfg.origin || ""} ${supabaseCfg.wsOrigin || ""} https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-cx.razorpay.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net${isDev ? " ws: wss:" : ""}`,
+  `connect-src 'self' ${clerk} https://clerk-telemetry.com https://*.spline.design https://*.splinecode.com https://*.supabase.co wss://*.supabase.co ${supabaseCfg.origin || ""} ${supabaseCfg.wsOrigin || ""} https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-cx.razorpay.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net${isDev ? " ws: wss:" : ""}`,
   `frame-src 'self' ${clerk} https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com`,
   "worker-src 'self' blob:",
   "object-src 'none'",

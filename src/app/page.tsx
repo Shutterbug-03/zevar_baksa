@@ -16,10 +16,12 @@ export default function Home() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Phones get the 720p cut (~3.6MB) instead of the 1080p one (~10MB)
-    video.src = window.matchMedia("(max-width: 768px)").matches
-      ? "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
-      : "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4";
+    // If src is not already picked by <source>, set according to viewport
+    if (!video.currentSrc) {
+      video.src = window.matchMedia("(max-width: 768px)").matches
+        ? "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
+        : "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4";
+    }
 
     // Safari requires muted to be set imperatively before calling play()
     video.muted = true;
@@ -65,7 +67,17 @@ export default function Home() {
             WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%)",
           }}
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
-        />
+        >
+          <source
+            media="(max-width: 768px)"
+            src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4"
+            type="video/mp4"
+          />
+        </video>
       </section>
 
       {/* ════════════════════════════════════════════════════
