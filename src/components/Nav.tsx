@@ -171,7 +171,7 @@ export function Nav() {
           >
             <div className="relative flex items-center justify-center">
               <img
-                src="/logos/submark.png"
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/submark.png"
                 alt="Zevar Baksa Monogram"
                 className={`h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
                   isTransparentDarkHero ? "brightness-0 invert drop-shadow-md" : ""

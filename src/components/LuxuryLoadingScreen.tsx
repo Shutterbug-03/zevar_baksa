@@ -171,7 +171,7 @@ export function LuxuryLoadingScreen() {
           />
           <div className="relative h-18 w-18 sm:h-20 sm:w-20 rounded-full bg-[#fffaee] border border-[#420002]/15 flex items-center justify-center p-3.5 shadow-sm">
             <img
-              src="/logos/submark.png"
+              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/submark.png"
               alt="Zevar Baksa Monogram Emblem"
               className="h-full w-full object-contain drop-shadow-xs"
             />

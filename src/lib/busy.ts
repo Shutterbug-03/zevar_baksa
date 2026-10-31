@@ -428,7 +428,7 @@ export function mapBusyToProduct(item: BusyItem): Product {
   const primaryImg =
     item.imageUrl ||
     matchingStatic?.image ||
-    `/images/products/${item.itemCode}.jpg`;
+    `http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/images/products/${item.itemCode}.jpg`;
 
   const gallery =
     item.galleryUrls && item.galleryUrls.length > 0

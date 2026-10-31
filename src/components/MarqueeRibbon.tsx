@@ -26,7 +26,7 @@ const Stamp = () => (
   <div className="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 border border-[#fffaee]/60 rounded-full p-1.5 sm:p-2 bg-[#fffaee] flex-shrink-0 shadow-md">
     <div className="absolute inset-0.5 border border-[#c82127]/25 rounded-full pointer-events-none" />
     <img
-      src="/logos/submark.png"
+      src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/submark.png"
       alt="Zevar Baksa Seal"
       className="h-5 sm:h-5.5 w-auto object-contain"
     />

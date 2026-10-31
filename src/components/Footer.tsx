@@ -23,7 +23,7 @@ export function Footer() {
               {/* Hindi Secondary Logo */}
               <div className="inline-block my-2">
                 <img
-                  src="/logos/secondary-logo-hindi.png"
+                  src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/secondary-logo-hindi.png"
                   alt="ज़ेवर बक्सा"
                   className="h-20 sm:h-24 md:h-28 w-auto brightness-0 invert drop-shadow-md"
                 />

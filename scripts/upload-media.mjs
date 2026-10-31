@@ -1,6 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
+
+// Global polyfill for Node.js 20
+global.WebSocket = WebSocket;
 
 const envPath = path.join(process.cwd(), '.env.local');
 if (!fs.existsSync(envPath)) {

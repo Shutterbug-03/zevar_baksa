@@ -13,31 +13,31 @@ interface BentoCard {
 
 const topLayer: BentoCard[] = [
   {
-    src: "/landing-grid/grid-1.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-1.jpg",
     alt: "Handcrafted Three-Tier Hair Jewelry Chains",
     aspect: "aspect-[4/3.8]",
     position: "object-[center_22%]",
   },
   {
-    src: "/landing-grid/grid-2.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-2.jpg",
     alt: "Handcrafted Bird Motif Pendant Close-up",
     aspect: "aspect-[4/3.8]",
     position: "object-[center_35%]",
   },
   {
-    src: "/landing-grid/grid-3.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-3.jpg",
     alt: "Green Meenakari Floral Pendant on Pearl Strand",
     aspect: "aspect-[4/3.8]",
     position: "object-center",
   },
   {
-    src: "/landing-grid/grid-4.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-4.jpg",
     alt: "Purple Enamel Drop Earrings on Sacred Leaf",
     aspect: "aspect-[4/3.8]",
     position: "object-center",
   },
   {
-    src: "/landing-grid/grid-5.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-5.jpg",
     alt: "Sterling Silver and Blue Enamel Royal Choker and Earrings",
     aspect: "aspect-[4/3.8]",
     position: "object-[center_18%]",
@@ -46,19 +46,19 @@ const topLayer: BentoCard[] = [
 
 const bottomLayer: BentoCard[] = [
   {
-    src: "/landing-grid/grid-6.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-6.jpg",
     alt: "Emerald Green Meenakari Statement Necklace",
     aspect: "aspect-[16/9.5]",
     position: "object-[center_30%]",
   },
   {
-    src: "/landing-grid/grid-7.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-7.jpg",
     alt: "Zevar Baksa Signature Crimson Trunk with Handcrafted Jewels",
     aspect: "aspect-[16/9.5]",
     position: "object-center",
   },
   {
-    src: "/landing-grid/grid-8.jpg",
+    src: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/landing-grid/grid-8.jpg",
     alt: "Sterling Silver Turquoise Enamel Filigree Tassel Necklace",
     aspect: "aspect-[16/9.5]",
     position: "object-[center_35%]",

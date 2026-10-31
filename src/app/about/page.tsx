@@ -70,7 +70,7 @@ export default function About() {
             {/* 1. Needle & Enamel Application */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="/bento-1-needle.jpg" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/bento-1-needle.jpg" 
                 alt="Artisan applying vibrant enamel with precision needle" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -79,7 +79,7 @@ export default function About() {
             {/* 2. Camel Meenakari Crafting */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="/bento-2-camel.jpg" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/bento-2-camel.jpg" 
                 alt="Artisan crafting gold and meenakari camel heirloom piece" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -88,7 +88,7 @@ export default function About() {
             {/* 3. Brass Pigment Palette */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="/bento-3-palette.jpg" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/bento-3-palette.jpg" 
                 alt="Traditional brass palette with natural enamel color pigments" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -100,7 +100,7 @@ export default function About() {
             {/* 4. Flower Filigree Assembly with Tweezers */}
             <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="/bento-4-tweezers.jpg" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/bento-4-tweezers.jpg" 
                 alt="Karigar handcrafting delicate jewellery flower motif with precision tweezers" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -109,7 +109,7 @@ export default function About() {
             {/* 5. Liquid Crucible Pouring */}
             <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
               <img 
-                src="/bento-5-pouring.jpg" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/bento-5-pouring.jpg" 
                 alt="Hands pouring molten liquid from traditional crucible into vessel" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -269,7 +269,7 @@ export default function About() {
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
-                src="/logos/primary-logo.png" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/primary-logo.png" 
                 alt="Zevar Baksa English Wordmark" 
                 className="max-h-12 w-auto object-contain" 
               />
@@ -288,7 +288,7 @@ export default function About() {
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
-                src="/logos/submark.png" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/submark.png" 
                 alt="Zevar Baksa Submark" 
                 className="max-h-16 w-auto object-contain" 
               />
@@ -307,7 +307,7 @@ export default function About() {
           <div className="space-y-6">
             <div className="h-36 flex items-center justify-center border-b border-[#420002]/10 pb-6">
               <img 
-                src="/logos/secondary-logo-hindi.png" 
+                src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/logos/secondary-logo-hindi.png" 
                 alt="ज़ेवर बक्सा Hindi Wordmark" 
                 className="max-h-16 w-auto object-contain" 
               />

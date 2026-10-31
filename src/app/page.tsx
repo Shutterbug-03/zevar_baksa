@@ -18,8 +18,8 @@ export default function Home() {
 
     // Phones get the 720p cut (~3.6MB) instead of the 1080p one (~10MB)
     video.src = window.matchMedia("(max-width: 768px)").matches
-      ? "/hero-video-mobile.mp4"
-      : "/hero-video.mp4";
+      ? "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
+      : "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4";
 
     // Safari requires muted to be set imperatively before calling play()
     video.muted = true;
@@ -51,7 +51,7 @@ export default function Home() {
         {/* Full-Bleed Cinematic Background Video — dissolved smoothly into canvas */}
         <video
           ref={videoRef}
-          poster="/hero-poster.jpg"
+          poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg"
           autoPlay
           loop
           muted
@@ -125,7 +125,7 @@ export default function Home() {
                 {/* Main Photo: Brand Story Showcase */}
                 <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl rounded-lg bg-[#f4eee1] group">
                   <img
-                    src="/brand-story.jpg"
+                    src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/brand-story.jpg"
                     alt="Zevar Baksa Brand Story Jewellery"
                     className="h-full w-full object-cover object-center transition-transform duration-1000 group-hover:scale-105"
                   />
