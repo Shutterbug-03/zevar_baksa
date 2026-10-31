@@ -83,23 +83,24 @@ export default function Home() {
         {/* ════════════════════════════════════════════════════
             CENTRAL SEAM WORDMARK — "ZEVAR BAKSA"
             UI/UX Pro Max Classical Luxury Editorial Architecture:
-            - Cormorant Garamond classical Roman capitals (no drooping swashes)
-            - Expanded royal letter-spacing (tracking-[0.28em] to 0.42em)
+            - Cinzel broad Roman inscriptional letterforms (broad, stately, no drooping swashes)
+            - Horizontal glyph expansion (scaleX 1.15) for broader letter architecture
+            - Confident medium stroke weight (weight 500)
             - Precision split-tone across the exact seam
             - Upper: Warm Ivory (#fffaee) with ambient depth shadow
             - Lower: Imperial Jaipur Maroon (#420002)
         ════════════════════════════════════════════════════ */}
         <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-30 pointer-events-none select-none flex justify-center px-4">
-          <div className="relative inline-flex justify-center items-center text-center">
+          <div className="relative inline-flex justify-center items-center text-center transform scale-x-110 sm:scale-x-115">
             
             {/* Top Half (Over Video) — Warm Ivory with ambient luxury depth */}
             <span
               aria-hidden="true"
               style={{
-                fontFamily: "var(--font-cormorant), 'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-cinzel), 'Cinzel', var(--font-cormorant), Georgia, serif",
                 clipPath: "polygon(0 0, 100% 0, 100% 50.2%, 0 50.2%)",
               }}
-              className="absolute inset-0 font-light uppercase text-[#fffaee] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.26em] sm:tracking-[0.32em] md:tracking-[0.38em] lg:tracking-[0.42em] leading-none whitespace-nowrap"
+              className="absolute inset-0 font-medium uppercase text-[#fffaee] drop-shadow-[0_4px_24px_rgba(0,0,0,0.85)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em] leading-none whitespace-nowrap"
             >
               ZEVAR BAKSA
             </span>
@@ -107,10 +108,10 @@ export default function Home() {
             {/* Bottom Half (Over Cream Page) — Imperial Brand Maroon */}
             <h1
               style={{
-                fontFamily: "var(--font-cormorant), 'Playfair Display', Georgia, serif",
+                fontFamily: "var(--font-cinzel), 'Cinzel', var(--font-cormorant), Georgia, serif",
                 clipPath: "polygon(0 49.8%, 100% 49.8%, 100% 100%, 0 100%)",
               }}
-              className="relative font-light uppercase text-[#420002] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.26em] sm:tracking-[0.32em] md:tracking-[0.38em] lg:tracking-[0.42em] leading-none whitespace-nowrap"
+              className="relative font-medium uppercase text-[#420002] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em] leading-none whitespace-nowrap"
             >
               ZEVAR BAKSA
             </h1>
