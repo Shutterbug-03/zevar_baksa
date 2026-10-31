@@ -182,30 +182,30 @@ export default function ProductClient({
             <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 lg:gap-6">
               
               {/* Thumbnails rail */}
-              <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[640px] scrollbar-none flex-shrink-0 py-1 px-0.5">
+              <div className="flex md:flex-col gap-2.5 overflow-x-auto md:overflow-y-auto max-h-[640px] scrollbar-none flex-shrink-0 py-0.5">
                 {product.gallery.map((imgUrl, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl)}
                     aria-label={`View ${product.name} angle ${idx + 1}`}
-                    className={`relative w-20 h-24 sm:w-22 sm:h-26 md:w-24 md:h-30 rounded-xl overflow-hidden border transition-all duration-300 flex-shrink-0 bg-gradient-to-b from-[#FAF8F5] to-[#F4EFEA] p-1.5 flex items-center justify-center ${
+                    className={`relative w-16 h-22 sm:w-20 sm:h-26 md:w-22 md:h-28 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 flex items-center justify-center ${
                       selectedImage === imgUrl
-                        ? "border-[#420002] ring-2 ring-[#420002]/25 shadow-md scale-[1.03] bg-white"
-                        : "border-[#420002]/10 hover:border-[#420002]/35 opacity-75 hover:opacity-100 hover:scale-[1.01]"
+                        ? "ring-2 ring-primary shadow-md scale-[1.02] opacity-100"
+                        : "opacity-60 hover:opacity-100 hover:scale-[1.01]"
                     }`}
                   >
                     <img
                       src={imgUrl}
                       alt={`${product.name} view ${idx + 1}`}
-                      className="w-full h-full object-contain drop-shadow-xs"
+                      className="w-full h-full object-cover rounded-xl"
                     />
                   </button>
                 ))}
               </div>
 
-              {/* Main Featured Image Frame */}
+              {/* Main Featured Image — Clean, direct presentation with zero extra section box */}
               <div
-                className="relative flex-1 aspect-[3/4] sm:aspect-[4/5] bg-gradient-to-b from-[#FAF8F5] via-[#F6F2EB] to-[#ECE5DC] rounded-2xl overflow-hidden border border-[#420002]/10 shadow-[0_12px_40px_-15px_rgba(66,0,2,0.08)] group flex items-center justify-center select-none"
+                className="relative flex-1 rounded-2xl overflow-hidden group select-none flex items-center justify-center min-h-[420px]"
                 onMouseEnter={() => setIsZoomed(true)}
                 onMouseLeave={() => setIsZoomed(false)}
                 onMouseMove={handleMouseMove}
@@ -213,7 +213,7 @@ export default function ProductClient({
                 {/* Main Image with Zoom pan */}
                 <div
                   onClick={() => setIsLightboxOpen(true)}
-                  className="w-full h-full flex items-center justify-center p-6 md:p-10 cursor-zoom-in overflow-hidden"
+                  className="w-full h-full flex items-center justify-center cursor-zoom-in overflow-hidden rounded-2xl"
                   title="Click to view full screen"
                 >
                   <img
@@ -221,9 +221,9 @@ export default function ProductClient({
                     alt={product.name}
                     style={{
                       transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                      transform: isZoomed ? "scale(1.7)" : "scale(1)",
+                      transform: isZoomed ? "scale(1.4)" : "scale(1)",
                     }}
-                    className="w-full h-full object-contain transition-transform duration-200 ease-out drop-shadow-md pointer-events-none"
+                    className="w-full max-h-[720px] object-contain transition-transform duration-200 ease-out pointer-events-none rounded-2xl"
                   />
                 </div>
 
