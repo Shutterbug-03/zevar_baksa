@@ -54,7 +54,7 @@ export default function Home() {
         <div className="absolute inset-0 overflow-hidden">
           <video
             ref={videoRef}
-            poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg"
+            poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg?v=2"
             autoPlay
             loop
             muted
@@ -67,17 +67,17 @@ export default function Home() {
           >
             <source
               media="(max-width: 768px)"
-              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
+              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4?v=2"
               type="video/mp4"
             />
             <source
-              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4"
+              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4?v=2"
               type="video/mp4"
             />
           </video>
 
-          {/* Cinematic Scrim Gradient: Solves contrast against workbench clutter (tape, bottles) without blurring */}
-          <div className="absolute inset-x-0 bottom-0 h-44 sm:h-56 bg-gradient-to-t from-[#1b0809]/85 via-[#1b0809]/40 to-transparent pointer-events-none" />
+          {/* Minimal Soft Vignette: Subtle, transparent, does not dim the video */}
+          <div className="absolute inset-x-0 bottom-0 h-28 sm:h-36 bg-gradient-to-t from-[#1b0809]/45 via-[#1b0809]/15 to-transparent pointer-events-none" />
         </div>
 
         {/* ════════════════════════════════════════════════════
