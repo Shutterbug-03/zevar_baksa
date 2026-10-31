@@ -9,11 +9,8 @@ import { useSearchParams } from "next/navigation";
 
 const categories = ["All", "Earrings", "Pendants", "Necklaces"];
 
-// A pendant is a Necklaces-category piece flagged by its BUSY group (`type`) or named as one.
-const isPendant = (p: Product) =>
-  p.type === "Pendant" ||
-  p.name.toLowerCase().includes("pendant") ||
-  !!p.subtitle?.toLowerCase().includes("pendant");
+// A pendant is a piece explicitly typed as "Pendant" (P1–P9). All other Necklaces are Necklaces (N1–N4).
+const isPendant = (p: Product) => p.type === "Pendant";
 
 function ProductSkeleton() {
   return (

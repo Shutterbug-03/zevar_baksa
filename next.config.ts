@@ -21,6 +21,27 @@ function clerkFrontendHost(): string | null {
 
 const clerk = ["https://*.clerk.accounts.dev", clerkFrontendHost()].filter(Boolean).join(" ");
 
+function getSupabaseConfig() {
+  const urlStr = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!urlStr || urlStr.includes("YOUR_COOLIFY") || urlStr.includes("PLACEHOLDER")) {
+    return { host: null, protocol: null, port: undefined, origin: null, wsOrigin: null };
+  }
+  try {
+    const u = new URL(urlStr);
+    return {
+      host: u.hostname,
+      port: u.port || undefined,
+      protocol: (u.protocol.replace(":", "") as "http" | "https") || "https",
+      origin: u.origin,
+      wsOrigin: u.protocol === "https:" ? `wss://${u.host}` : `ws://${u.host}`,
+    };
+  } catch {
+    return { host: null, protocol: null, port: undefined, origin: null, wsOrigin: null };
+  }
+}
+
+const supabaseCfg = getSupabaseConfig();
+
 /**
  * Content-Security-Policy, based on every external host the app talks to:
  *  - Clerk (auth UI + Cloudflare Turnstile captcha), Razorpay checkout (script + iframe + API),
@@ -34,11 +55,11 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} ${clerk} https://challenges.cloudflare.com https://checkout.razorpay.com https://www.googletagmanager.com https://www.google-analytics.com`,
   "style-src 'self' 'unsafe-inline'",
-  // https: because product images may come from the ERP / Supabase / Clerk avatars / Razorpay logos
-  "img-src 'self' data: blob: https:",
-  "media-src 'self' blob: https://*.supabase.co",
+  // Allow remote product images from Supabase, ERP, avatars, etc.
+  "img-src 'self' data: blob: https: http:",
+  `media-src 'self' blob: https://*.supabase.co ${supabaseCfg.origin || ""}`.trim(),
   "font-src 'self' data:",
-  `connect-src 'self' ${clerk} https://clerk-telemetry.com https://*.supabase.co wss://*.supabase.co https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-cx.razorpay.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net${isDev ? " ws: wss:" : ""}`,
+  `connect-src 'self' ${clerk} https://clerk-telemetry.com https://*.supabase.co wss://*.supabase.co ${supabaseCfg.origin || ""} ${supabaseCfg.wsOrigin || ""} https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-cx.razorpay.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://stats.g.doubleclick.net${isDev ? " ws: wss:" : ""}`,
   `frame-src 'self' ${clerk} https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com`,
   "worker-src 'self' blob:",
   "object-src 'none'",
@@ -67,6 +88,16 @@ const nextConfig: NextConfig = {
         hostname: "*.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+      ...(supabaseCfg.host
+        ? [
+            {
+              protocol: supabaseCfg.protocol ?? "https",
+              hostname: supabaseCfg.host,
+              port: supabaseCfg.port,
+              pathname: "/storage/v1/object/public/**",
+            },
+          ]
+        : []),
     ],
   },
   async headers() {

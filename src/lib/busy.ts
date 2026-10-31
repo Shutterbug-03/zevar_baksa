@@ -29,9 +29,9 @@ const BUSY_PASSWORD = process.env.BUSY_PASSWORD ?? "";
 export function isBusyConfigured(): boolean {
   return (
     !!process.env.BUSY_API_URL &&
-    !process.env.BUSY_API_URL.includes("PLACEHOLDER") &&
+    !process.env.BUSY_API_URL.toUpperCase().includes("PLACEHOLDER") &&
     !!process.env.BUSY_API_KEY &&
-    !process.env.BUSY_API_KEY.includes("PLACEHOLDER")
+    !process.env.BUSY_API_KEY.toUpperCase().includes("PLACEHOLDER")
   );
 }
 
@@ -392,20 +392,24 @@ export function mapBusyToProduct(item: BusyItem): Product {
 
   // Find matching static product to enrich with high-res photography and editorial copy
   const matchingStatic = staticProducts.find((p) => {
-    // 1. Match by SKU alias e.g. ZB-26-MB-P-0001 -> P1, ZB-26-MB-E-0007 -> E7
+    // 1. Match by SKU alias e.g. ZB-26-MB-P-0001 -> P1, ZB-26-MB-E-0007 -> E7, ZB-26-MB-N-0001 -> N1
     if (item.alias) {
-      const match = item.alias.match(/-(P|E)-0*(\d+)/i);
+      const match = item.alias.match(/-(P|E|N)-0*(\d+)/i);
       if (match) {
         const idCode = `${match[1]}${parseInt(match[2], 10)}`.toLowerCase();
-        if (p.id.toLowerCase() === idCode || p.specs.code?.toLowerCase() === idCode) {
+        if (p.id.toLowerCase() === idCode || p.specs.code?.toLowerCase().includes(idCode)) {
           return true;
         }
       }
     }
-    // 2. Match by base name e.g. "Sugga" in "Sugga Pendant"
-    const cleanItemName = (item.printName || item.name).toLowerCase();
-    const cleanStaticName = p.name.toLowerCase();
-    return cleanItemName.includes(cleanStaticName);
+    // 2. Match by exact or word-bounded name (prevents "Gul" matching "Gulnaar", "Gulabi", or "Naksh-e-Gul")
+    const cleanItemName = (item.printName || item.name).toLowerCase().trim();
+    const cleanStaticName = p.name.toLowerCase().trim();
+    if (cleanItemName === cleanStaticName) return true;
+    const wordBoundary = new RegExp(`\\b${cleanStaticName}\\b`, "i");
+    // Ensure we don't match substrings of hyphenated compounds (e.g. "gul" in "naksh-e-gul")
+    if (cleanStaticName === "gul" && cleanItemName.includes("naksh")) return false;
+    return wordBoundary.test(cleanItemName);
   });
 
   // Derive status from live stock in BUSY
@@ -570,18 +574,218 @@ export async function updateBusyItemStock(
   return true;
 }
 
+// ─── Default Party & SKU Mapping ─────────────────────────────────────────────
+
+/**
+ * Default Party Account for Zevar Baksa (Code 1290 - DEENDAYAL RAJ KUMAR JEWELLERS).
+ * Stored and passed when posting sales vouchers to Busy ERP.
+ * Can be overridden via BUSY_DEFAULT_PARTY_CODE env var.
+ */
+export const DEFAULT_BUSY_PARTY = {
+  code: 1290,
+  name: "DEENDAYAL RAJ KUMAR JEWELLERS",
+  alias: null,
+  printname: "DEENDAYAL RAJ KUMAR JEWELLERS",
+  groupcode: 117,
+  parentgroup: "Sundry Creditors",
+  address1: "360, GALI MEMIYAN, GOPAL JI KA RASTA",
+  address2: "JOHRI BAZAR, Jaipur, Rajasthan, 302003",
+  address3: null,
+  address4: null,
+  pincode: "302003",
+  station: "GOPAL JI KA RASTA, JOHRI BAZAR",
+  icountry: "India",
+  istate: "Rajasthan",
+  gstno: "08BAJPS4638A1ZN",
+  emailid: null,
+  mobileno: null,
+  contactpersonname: null,
+  mobileno2: null,
+  transport: null,
+  category: null,
+  optionalfield1: null,
+  optionalfield2: null,
+  optionalfield3: null,
+  optionalfield4: null,
+  optionalfield5: null,
+  optionalfield6: null,
+  optionalfield7: null,
+  optionalfield8: null,
+  optionalfield9: null,
+};
+
+const PRODUCT_CODE_MAP: Record<string, number> = {
+  // Pendants (P1 - P9)
+  "p1": 1295,
+  "p-0001": 1295,
+  "zb-26-mb-p-0001": 1295,
+  "sugga": 1295,
+  "p2": 1297,
+  "p-0002": 1297,
+  "zb-26-mb-p-0002": 1297,
+  "rangila": 1297,
+  "p3": 1298,
+  "p-0003": 1298,
+  "zb-26-mb-p-0003": 1298,
+  "bulbul": 1298,
+  "p4": 1300,
+  "p-0004": 1300,
+  "zb-26-mb-p-0004": 1300,
+  "manik": 1300,
+  "p5": 1301,
+  "p-0005": 1301,
+  "zb-26-mb-p-0005": 1301,
+  "kalapi": 1301,
+  "p6": 1302,
+  "p-0006": 1302,
+  "zb-26-mb-p-0006": 1302,
+  "boond": 1302,
+  "p7": 1303,
+  "p-0007": 1303,
+  "zb-26-mb-p-0007": 1303,
+  "naksh-e-gul": 1303,
+  "p8": 1304,
+  "p-0008": 1304,
+  "zb-26-mb-p-0008": 1304,
+  "sunehri": 1304,
+  "p9": 1305,
+  "p-0009": 1305,
+  "zb-26-mb-p-0009": 1305,
+  "parwaaz": 1305,
+
+  // Necklaces (N1 - N4)
+  "n1": 1318,
+  "n-0001": 1318,
+  "zb-26-mb-n-0001": 1318,
+  "mayuri": 1318,
+  "n2": 1319,
+  "n-0002": 1319,
+  "zb-26-mb-n-0002": 1319,
+  "kusum": 1319,
+  "n3": 1320,
+  "n-0003": 1320,
+  "zb-26-mb-n-0003": 1320,
+  "kumud": 1320,
+  "n4": 1321,
+  "n-0004": 1321,
+  "zb-26-mb-n-0004": 1321,
+  "nilofer": 1321,
+
+  // Earrings (E1 - E11)
+  "e1": 1307,
+  "e-0001": 1307,
+  "zb-26-mb-e-0001": 1307,
+  "neel": 1307,
+  "e2": 1308,
+  "e-0002": 1308,
+  "zb-26-mb-e-0002": 1308,
+  "darbar": 1308,
+  "e3": 1309,
+  "e-0003": 1309,
+  "zb-26-mb-e-0003": 1309,
+  "kanak": 1309,
+  "e4": 1310,
+  "e-0004": 1310,
+  "zb-26-mb-e-0004": 1310,
+  "gul": 1310,
+  "e5": 1311,
+  "e-0005": 1311,
+  "zb-26-mb-e-0005": 1311,
+  "gulabi": 1311,
+  "e6": 1312,
+  "e-0006": 1312,
+  "zb-26-mb-e-0006": 1312,
+  "gulnaar": 1312,
+  "e7": 1313,
+  "e-0007": 1313,
+  "zb-26-mb-e-0007": 1313,
+  "aabha": 1313,
+  "e8": 1314,
+  "e-0008": 1314,
+  "zb-26-mb-e-0008": 1314,
+  "pankhuri": 1314,
+  "e9": 1315,
+  "e-0009": 1315,
+  "zb-26-mb-e-0009": 1315,
+  "rang": 1315,
+  "e10": 1316,
+  "e-0010": 1316,
+  "zb-26-mb-e-0010": 1316,
+  "leher": 1316,
+  "e11": 1317,
+  "e-0011": 1317,
+  "zb-26-mb-e-0011": 1317,
+  "neelkamal": 1317,
+};
+
+function resolveBusyItemCode(identifier: string, name?: string): number {
+  const num = parseInt(identifier, 10);
+  if (!isNaN(num) && num > 1000) return num;
+
+  const key = identifier.toLowerCase().trim();
+  if (PRODUCT_CODE_MAP[key]) return PRODUCT_CODE_MAP[key];
+
+  const match = key.match(/-(p|e|n)-0*(\d+)/i);
+  if (match) {
+    const directKey = `${match[1]}${parseInt(match[2], 10)}`.toLowerCase();
+    if (PRODUCT_CODE_MAP[directKey]) return PRODUCT_CODE_MAP[directKey];
+  }
+
+  if (name) {
+    const cleanName = name.toLowerCase();
+    for (const [k, code] of Object.entries(PRODUCT_CODE_MAP)) {
+      if (cleanName.includes(k)) return code;
+    }
+  }
+
+  return 1313;
+}
+
+const STATE_GST_CODES: Record<string, number> = {
+  rajasthan: 8,
+  delhi: 7,
+  maharashtra: 27,
+  karnataka: 29,
+  gujarat: 24,
+  tamilnadu: 33,
+  tamil_nadu: 33,
+  uttarpradesh: 9,
+  uttar_pradesh: 9,
+  haryana: 6,
+  punjab: 3,
+  telangana: 36,
+  westbengal: 19,
+  west_bengal: 19,
+  madhyapradesh: 23,
+  madhya_pradesh: 23,
+  kerala: 32,
+  andhrapradesh: 37,
+  andhra_pradesh: 37,
+  bihar: 10,
+  goa: 30,
+  assam: 18,
+  odisha: 21,
+  chandigarh: 4,
+  jharkhand: 20,
+  uttarakhand: 5,
+  himachalpradesh: 2,
+};
+
+function getGstStateCode(stateName?: string): number {
+  if (!stateName) return 8;
+  const clean = stateName.toLowerCase().replace(/[^a-z]/g, "");
+  return STATE_GST_CODES[clean] ?? 8;
+}
+
 // ─── Sales Voucher / Order Sync ───────────────────────────────────────────────
 
 /**
- * Create a confirmed Sales Order / Sales Voucher in BUSY after payment confirmation.
+ * Create a confirmed Sales Order / Sales Voucher in BUSY after payment confirmation
+ * via POST /appvoucher/inventory-insert.
  *
- * Returns the BUSY voucher number on success, or `null` when the order could NOT
- * be written to BUSY. Callers must treat `null` as "needs manual entry" — the
+ * Returns the BUSY voucher reference on success, or `null` when the order could NOT
+ * be written to BUSY. Callers treat `null` as "needs manual entry" — the
  * order notification email flags it for the admin (see notifyOrderPlaced).
- *
- * NOTE: The current NeoInfotech API V2 collection has NO write endpoint (every
- * request apart from auth is a GET), so today this always logs and returns null.
- * It never fabricates a voucher number, and stock in BUSY is NOT decremented.
  */
 export async function createSalesOrder({
   partnerEmail,
@@ -594,7 +798,7 @@ export async function createSalesOrder({
   paymentMethod,
 }: CreateBusySaleOrderParams): Promise<string | null> {
   console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("📋 BUSY ERP: Order NOT synced (no write endpoint yet) — enter manually");
+  console.log("📋 BUSY ERP: Processing Sale Voucher via /appvoucher/inventory-insert...");
   console.log(`👤 Party/Customer : ${partnerName} <${partnerEmail}> | Phone: ${partnerPhone || "N/A"}`);
   console.log(`🧾 Razorpay Order : ${razorpayOrderId}`);
   console.log(`💳 Payment ID     : ${razorpayPaymentId} (${paymentMethod.toUpperCase()})`);
@@ -604,33 +808,164 @@ export async function createSalesOrder({
   });
   console.log(`🏠 Shipping Addr  : ${[address.address1, address.address2, address.city, address.state, address.pincode].filter(Boolean).join(", ")}`);
 
-  if (isBusyConfigured()) {
-    console.log("⚠️  Waiting for ERP vendor to provide a POST /vouchers/create endpoint");
-  } else {
+  if (!isBusyConfigured()) {
     console.log("⚠️  BUSY not configured — simulation mode");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    return null;
   }
 
-  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const partyCode = Number(process.env.BUSY_DEFAULT_PARTY_CODE || DEFAULT_BUSY_PARTY.code);
+    const settlementPartyCode = Number(process.env.BUSY_SETTLEMENT_PARTY_CODE || 1);
 
-  // ── PLACEHOLDER: replace once the vendor ships a write endpoint ──────────
-  // When NeoInfotech provides a POST endpoint for creating vouchers, call it here
-  // via busyFetch and return the voucher number it gives back, e.g.:
-  //
-  //   const res = await busyFetch<{ success: boolean; vchNo: string }>("/vouchers/create", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       vchType: "SALE",
-  //       vchDate: new Date().toISOString().slice(0, 10),
-  //       partyName: partnerName,
-  //       items: lines.map((l) => ({ itemCode: l.itemCode, qty: l.quantity, rate: l.priceUnit })),
-  //       narration: `Zevar Baksa Online | ${razorpayOrderId}`,
-  //     }),
-  //   });
-  //   return res.success ? res.vchNo : null;
-  //
-  // (Endpoint path and payload shape above are guesses based on Busy voucher
-  // conventions — confirm against the vendor's docs.) Until then: null.
-  return null;
+    let totalQty = 0;
+    let preTaxTotal = 0;
+    let totalWithGst = 0;
+
+    const itemDetails = lines.map((line, idx) => {
+      const code = resolveBusyItemCode(line.itemCode, line.name);
+      const qty = Math.max(1, line.quantity || 1);
+      totalQty += qty;
+
+      const rate = Math.round(line.priceUnit || 0);
+      const amount = rate * qty;
+      const gstRate = line.taxRate || 3;
+      const gstAmt = Math.round((amount * gstRate) / 100);
+      const lineTotalWithGst = amount + gstAmt;
+
+      preTaxTotal += amount;
+      totalWithGst += lineTotalWithGst;
+
+      return {
+        itemCode: code,
+        mcCode: 0,
+        srno: idx + 1,
+        mainQty: qty,
+        altQty: 0,
+        amount,
+        vchQty: qty,
+        netRate: rate,
+        price: rate,
+        totalWithGst: lineTotalWithGst,
+        listPrice: rate,
+        discountPer: 0,
+        discountAmt: 0,
+        gstAmt,
+        gstRate,
+        gstRate1: gstRate,
+        refCode: idx + 1,
+      };
+    });
+
+    const payload = {
+      year: new Date().getFullYear(),
+      vouchers: [
+        {
+          header: {
+            vchType: "SALE",
+            date: today,
+            stockUpdationDate: today,
+            status: 1,
+            vchNo: "",
+            vchSeriesCode: 1,
+            partyCode,
+            mcCode: 0,
+            vchAmtBaseCur: totalWithGst,
+            vchSalePurcAmt: preTaxTotal,
+            orgvchamtbasecur: totalWithGst,
+            saleType: 0,
+            createdBy: 1,
+            creationTime: null,
+            authorisedBy: "",
+            authorisationTime: null,
+            modifiedBy: null,
+            modificationTime: null,
+            vchCancelled: 0,
+            brokeragemode: 0,
+            brokerage: 0,
+            brokerageAmt: 0,
+            tranType: 0,
+            cancelled: 0,
+            approvalStatus: 0,
+            syncStatus: 0,
+            busyDocLink: "",
+          },
+          itemDetails,
+          vchOtherInfo: {
+            of1: "", of2: "", of3: "", of4: "", of5: "",
+            of6: "", of7: "", of8: "", of9: "", of10: "",
+            of11: "", of12: "", of13: "", of14: "", of15: "",
+            of16: "", of17: "", of18: "", of19: "", of20: "",
+            transport: "",
+            narration1: `Zevar Baksa Online Order | ${razorpayOrderId}`,
+            narration2: "",
+            vchNotes: `Paid via Razorpay: ${razorpayPaymentId} (${paymentMethod})`,
+            station: address.city || "Jaipur",
+            grNo: "",
+            vehicleNo: "",
+            itemDesc: "",
+            totalQty: String(totalQty),
+            purchaseBillNo: "",
+            purchaseBillDate: "",
+            grDate: null,
+            pinCode: address.pincode || "302003",
+          },
+          shippingDetail: {
+            partyName: partnerName || "Online Customer",
+            add1: address.address1 || "",
+            add2: [address.address2, address.city].filter(Boolean).join(", "),
+            add3: "",
+            add4: "",
+            mobileNo: partnerPhone || "",
+            email: partnerEmail || "",
+            itPan: "",
+            stateCode: getGstStateCode(address.state),
+            gstNo: "",
+            adharNo: "",
+            fssaiNo: "",
+            udyamNo: "",
+            msmeType: 0,
+          },
+          settlementDetail: [
+            {
+              date: today,
+              vchNo: "",
+              srno: 1,
+              partyCode: settlementPartyCode,
+              mode: 1,
+              amount: totalWithGst,
+              narration: `Online payment via Razorpay (${razorpayPaymentId})`,
+            },
+          ],
+        },
+      ],
+    };
+
+    console.log(`📤 Posting sale voucher to /appvoucher/inventory-insert for party [${partyCode}]...`);
+    const res = await busyFetch<{
+      success: boolean;
+      message?: string;
+      vchNo?: string;
+    }>("appvoucher/inventory-insert", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    console.log("✅ BUSY inventory voucher response:", res);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+
+    if (res.success) {
+      return res.vchNo || res.message || `BUSY-SALE-${razorpayOrderId.replace("order_", "")}`;
+    }
+
+    console.warn(`[BUSY] Insert failed: ${res.message || "Unknown error"}`);
+    return null;
+  } catch (error) {
+    console.error("[BUSY] Failed to post sales voucher:", error);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+    return null;
+  }
 }
 
 /** Get recent sale vouchers from BUSY */

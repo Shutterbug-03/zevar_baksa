@@ -46,6 +46,11 @@ next-env.d.ts
 /*.jpg
 /*.heic
 /*.HEIC
+/Neckpieces/
+/Earrings/
+/public/Neckpieces/
+/public/Earrings/
+/APP Voucher.json
 
 # ERP vendor API dump (contains credential fields)
 /Busy API V2.json
