@@ -146,28 +146,30 @@ export default function ProductClient({
 
   return (
     <Layout>
-      <Script id="structured-data-product" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": product.name,
-        "image": product.gallery,
-        "description": product.description,
-        "brand": {
-          "@type": "Brand",
-          "name": "Zevar Baksa"
-        },
-        "offers": {
-          "@type": "Offer",
-          "url": `https://zevarbaksa.com/product/${product.id}`,
-          "priceCurrency": "INR",
-          "price": product.price,
-          "availability": product.status === "Out of Stock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
-          "itemCondition": "https://schema.org/NewCondition"
-        }
-      }) }} />
+      <Script id="structured-data-product" type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": product.name,
+          "image": product.gallery,
+          "description": product.description,
+          "brand": {
+            "@type": "Brand",
+            "name": "Zevar Baksa"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": `https://zevarbaksa.com/product/${product.id}`,
+            "priceCurrency": "INR",
+            "price": product.price,
+            "availability": product.status === "Out of Stock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition"
+          }
+        })
+      }} />
       <div className="bg-background min-h-screen pt-28 md:pt-36 pb-20 font-sans">
         <div className="mx-auto max-w-[1600px] px-6 md:px-12 lg:px-16">
-          
+
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-foreground/50 mb-8 md:mb-12 font-sans">
             <Link href="/" className="hover:text-primary transition-colors">
@@ -187,10 +189,10 @@ export default function ProductClient({
 
           {/* MAIN PRODUCT GRID (2-Columns: Left Gallery, Right Details) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            
+
             {/* LEFT COLUMN: MULTI-IMAGE GALLERY (7 Cols) */}
             <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 lg:gap-6">
-              
+
               {/* Thumbnails rail */}
               <div className="flex md:flex-col gap-2.5 overflow-x-auto md:overflow-y-auto max-h-[680px] scrollbar-none flex-shrink-0 py-0.5">
                 {product.gallery.map((imgUrl, idx) => (
@@ -198,11 +200,10 @@ export default function ProductClient({
                     key={idx}
                     onClick={() => setSelectedImage(imgUrl)}
                     aria-label={`View ${product.name} angle ${idx + 1}`}
-                    className={`relative w-16 h-22 sm:w-20 sm:h-26 md:w-22 md:h-28 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 flex items-center justify-center ${
-                      selectedImage === imgUrl
+                    className={`relative w-16 h-22 sm:w-20 sm:h-26 md:w-22 md:h-28 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 flex items-center justify-center ${selectedImage === imgUrl
                         ? "ring-2 ring-primary shadow-md scale-[1.02] opacity-100"
                         : "opacity-60 hover:opacity-100 hover:scale-[1.01]"
-                    }`}
+                      }`}
                   >
                     <img
                       src={getMediaUrl(imgUrl)}
@@ -292,13 +293,12 @@ export default function ProductClient({
                   {/* Availability Badge */}
                   <div className="absolute top-4 left-4 z-10">
                     <span
-                      className={`px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.25em] font-semibold backdrop-blur-md shadow-xs font-sans ${
-                        product.status === "Ready to Ship"
+                      className={`px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.25em] font-semibold backdrop-blur-md shadow-xs font-sans ${product.status === "Ready to Ship"
                           ? "bg-[#2D4A3E]/90 text-[#E2F2E7] border border-[#3E6554]/30"
                           : product.status === "Made to Order"
-                          ? "bg-[#5A381E]/90 text-[#F5E6D8] border border-[#7A4F2C]/30"
-                          : "bg-stone-800/80 text-stone-200 border border-stone-600/30"
-                      }`}
+                            ? "bg-[#5A381E]/90 text-[#F5E6D8] border border-[#7A4F2C]/30"
+                            : "bg-stone-800/80 text-stone-200 border border-stone-600/30"
+                        }`}
                     >
                       {product.status}
                     </span>
@@ -316,7 +316,7 @@ export default function ProductClient({
 
             {/* RIGHT COLUMN: STICKY PRODUCT INFO & ACTIONS (5 Cols) */}
             <div className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-32 font-sans">
-              
+
               {/* Category & Collection Tag */}
               <div>
                 {/* Category, Collection & Product Code */}
@@ -378,11 +378,10 @@ export default function ProductClient({
                     <button
                       key={option}
                       onClick={() => setSelectedSize(option)}
-                      className={`px-4 py-2.5 rounded-md text-[11px] uppercase tracking-[0.15em] border transition-all text-center font-sans ${
-                        selectedSize === option
+                      className={`px-4 py-2.5 rounded-md text-[11px] uppercase tracking-[0.15em] border transition-all text-center font-sans ${selectedSize === option
                           ? "bg-primary text-primary-foreground border-primary font-semibold shadow-xs"
                           : "border-border text-foreground/70 hover:border-foreground/40 bg-background"
-                      }`}
+                        }`}
                     >
                       {option}
                     </button>
@@ -392,18 +391,17 @@ export default function ProductClient({
 
               {/* ACTION BUTTONS */}
               <div className="flex flex-col gap-3 pt-2">
-                
+
                 {/* Primary Add to Box button */}
                 <button
                   onClick={handleAddToBag}
                   disabled={product.status === "Out of Stock"}
-                  className={`w-full py-4 px-6 rounded-full text-[11px] uppercase tracking-[0.25em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5 shadow-md ${
-                    product.status === "Out of Stock"
+                  className={`w-full py-4 px-6 rounded-full text-[11px] uppercase tracking-[0.25em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5 shadow-md ${product.status === "Out of Stock"
                       ? "bg-stone-300 text-stone-500 cursor-not-allowed border border-stone-300"
                       : addedToBag
-                      ? "bg-emerald-800 text-emerald-100 hover:bg-emerald-900 shadow-lg scale-[1.01]"
-                      : "bg-primary text-primary-foreground hover:bg-[#5C0A19] hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
-                  }`}
+                        ? "bg-emerald-800 text-emerald-100 hover:bg-emerald-900 shadow-lg scale-[1.01]"
+                        : "bg-primary text-primary-foreground hover:bg-[#5C0A19] hover:shadow-xl hover:scale-[1.01] active:scale-[0.99]"
+                    }`}
                 >
                   {addedToBag ? (
                     <>
@@ -429,11 +427,10 @@ export default function ProductClient({
                     }
                     toggleWishlist(product);
                   }}
-                  className={`w-full py-3 px-6 rounded-full border text-[11px] uppercase tracking-[0.22em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5 ${
-                    wishlisted
+                  className={`w-full py-3 px-6 rounded-full border text-[11px] uppercase tracking-[0.22em] font-sans font-semibold transition-all duration-300 flex items-center justify-center gap-2.5 ${wishlisted
                       ? "border-primary/60 bg-primary/5 text-primary"
                       : "border-border text-foreground/60 hover:border-primary/40 hover:text-primary"
-                  }`}
+                    }`}
                 >
                   <Heart className={`h-4 w-4 ${wishlisted ? "fill-primary text-primary" : ""}`} />
                   {wishlisted ? "Saved to Wishlist" : "Save to Wishlist"}
@@ -494,7 +491,7 @@ export default function ProductClient({
 
               {/* ACCORDION SPECIFICATIONS & HERITAGE TABS */}
               <div className="border-t border-border/60 pt-4 flex flex-col gap-3 font-sans">
-                
+
                 {/* Tab 1: Specifications */}
                 <div className="border border-border/60 rounded-lg overflow-hidden bg-background">
                   <button
@@ -503,9 +500,8 @@ export default function ProductClient({
                   >
                     <span>Materials & Technical Specifications</span>
                     <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 ${
-                        openTab === "specs" ? "rotate-180" : ""
-                      }`}
+                      className={`h-4 w-4 transition-transform duration-300 ${openTab === "specs" ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -559,8 +555,8 @@ export default function ProductClient({
                             {product.category === "Earrings"
                               ? "Earring Size"
                               : product.type === "Pendant"
-                              ? "Pendant Size"
-                              : "Dimensions & Fit"}
+                                ? "Pendant Size"
+                                : "Dimensions & Fit"}
                           </span>
                           <span className="font-semibold text-right">{product.specs.dimensions}</span>
                         </div>
@@ -587,9 +583,8 @@ export default function ProductClient({
                   >
                     <span>Artisan Heritage & Inspiration</span>
                     <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 ${
-                        openTab === "story" ? "rotate-180" : ""
-                      }`}
+                      className={`h-4 w-4 transition-transform duration-300 ${openTab === "story" ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -611,9 +606,8 @@ export default function ProductClient({
                   >
                     <span>Complimentary Lifetime Care</span>
                     <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 ${
-                        openTab === "care" ? "rotate-180" : ""
-                      }`}
+                      className={`h-4 w-4 transition-transform duration-300 ${openTab === "care" ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -734,11 +728,10 @@ export default function ProductClient({
               <button
                 key={idx}
                 onClick={() => setSelectedImage(imgUrl)}
-                className={`relative w-14 h-18 rounded-lg overflow-hidden border transition-all flex-shrink-0 ${
-                  selectedImage === imgUrl
+                className={`relative w-14 h-18 rounded-lg overflow-hidden border transition-all flex-shrink-0 ${selectedImage === imgUrl
                     ? "border-[#d4af37] ring-2 ring-[#d4af37]/40 scale-105 opacity-100"
                     : "border-white/20 opacity-40 hover:opacity-100"
-                }`}
+                  }`}
               >
                 <img
                   src={getMediaUrl(imgUrl)}
