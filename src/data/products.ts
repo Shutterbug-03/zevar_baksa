@@ -457,11 +457,10 @@ export const products: Product[] = [
     subtitle: "13 Teardrop Cobalt Enamel Silver Hasli-Inspired Necklace with Matching Stud Drops",
     price: 60000,
     status: "Ready to Ship",
-    image: "/images/products/nilofer/1b.png",
+    image: "/images/products/nilofer/4.jpg",
     gallery: [
-      "/images/products/nilofer/1b.png",
-      "/images/products/nilofer/3.jpg",
       "/images/products/nilofer/4.jpg",
+      "/images/products/nilofer/3.jpg",
       "/images/products/nilofer/5.jpg",
       "/images/products/nilofer/6.jpg",
       "/images/products/nilofer/7.jpg",
