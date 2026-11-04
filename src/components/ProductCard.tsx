@@ -12,12 +12,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useHydrated } from "@/hooks/useHydrated";
 
 const getMediaUrl = (url: string) => {
-  if (!url) return url;
-  if (url.includes("/storage/v1/object/public/media/")) {
-    const sep = url.includes("?") ? "&" : "?";
-    return `${url}${sep}v=portrait_v3`;
+  if (!url) return "";
+  let clean = url;
+  if (clean.includes("/storage/v1/object/public/media/")) {
+    clean = "/" + clean.split("/storage/v1/object/public/media/")[1];
   }
-  return url;
+  const sep = clean.includes("?") ? "&" : "?";
+  return `${clean}${sep}v=portrait_v3`;
 };
 
 export function ProductCard({ product }: { product: Product }) {

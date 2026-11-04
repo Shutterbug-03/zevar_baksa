@@ -23,7 +23,6 @@ const cormorant = Cormorant_Garamond({
 
 const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   variable: "--font-cinzel",
 });
 
@@ -41,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Zevar Baksa",
     images: [
       {
-        url: "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/og-image.jpg", // Note: Ensure you add an og-image.jpg in the public folder
+        url: "/og-image.jpg", // Note: Ensure you add an og-image.jpg in the public folder
         width: 1200,
         height: 630,
         alt: "Zevar Baksa - Handcrafted Heirloom Jewellery",
@@ -54,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Zevar Baksa — Handcrafted Heirloom Jewellery",
     description: "Zevar Baksa is a house of handcrafted heirloom jewellery — kundan, polki, and jadau pieces, made to order in India.",
-    images: ["http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/og-image.jpg"],
+    images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "/",

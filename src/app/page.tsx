@@ -19,8 +19,8 @@ export default function Home() {
     // If src is not already picked by <source>, set according to viewport
     if (!video.currentSrc) {
       video.src = window.matchMedia("(max-width: 768px)").matches
-        ? "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4"
-        : "http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4";
+        ? "/hero-video-mobile.mp4"
+        : "/hero-video.mp4";
     }
 
     // Safari requires muted to be set imperatively before calling play()
@@ -54,7 +54,7 @@ export default function Home() {
         <div className="absolute inset-0 overflow-hidden">
           <video
             ref={videoRef}
-            poster="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-poster.jpg?v=2"
+            poster="/hero-poster.jpg?v=2"
             autoPlay
             loop
             muted
@@ -67,11 +67,11 @@ export default function Home() {
           >
             <source
               media="(max-width: 768px)"
-              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video-mobile.mp4?v=2"
+              src="/hero-video-mobile.mp4?v=2"
               type="video/mp4"
             />
             <source
-              src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/hero-video.mp4?v=2"
+              src="/hero-video.mp4?v=2"
               type="video/mp4"
             />
           </video>
@@ -176,7 +176,7 @@ export default function Home() {
                 {/* Main Photo: Brand Story Showcase */}
                 <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl rounded-lg bg-[#f4eee1] group">
                   <img
-                    src="http://supabasekong-j3msdlgzavva5jgddpsq05gs.72.61.236.7.sslip.io/storage/v1/object/public/media/brand-story.jpg"
+                    src="/brand-story.jpg"
                     alt="Zevar Baksa Brand Story Jewellery"
                     className="h-full w-full object-cover object-center transition-transform duration-1000 group-hover:scale-105"
                   />

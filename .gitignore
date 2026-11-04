@@ -40,7 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# raw media dumps in root directory (Next.js only serves /public)
+# Raw media dumps in root and public directory (not used in web app)
 /*.mp4
 /*.JPG
 /*.jpg
@@ -51,22 +51,10 @@ next-env.d.ts
 /Earrings/
 /public/Neckpieces/
 /public/Earrings/
-/APP Voucher.json
-
-# Media hosted remotely in Supabase Storage bucket
-/public/images/
-/public/landing-grid/
-/public/logos/
-/public/hero-video*
-/public/brand-story.jpg
-/public/meena-bagh-bg.jpg
-/public/hero-poster.jpg
-/public/bento-*.jpg
-/public/og-image.jpg
 /public/DSC*.JPG
 /public/IMG_*.jpg
 /public/FullSizeRender_25.jpg
-/public/media/
+/APP Voucher.json
 
 # ERP vendor API dump (contains credential fields)
 /Busy API V2.json

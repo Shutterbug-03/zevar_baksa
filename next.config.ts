@@ -100,6 +100,14 @@ const nextConfig: NextConfig = {
         : []),
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/storage/v1/object/public/media/:path*",
+        destination: "/:path*",
+      },
+    ];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
