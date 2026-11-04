@@ -71,14 +71,9 @@ export default function CollectionClient({ slug }: { slug: string }) {
             <div className="w-12 sm:w-14 h-[1.5px] bg-[#d4af37] shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
           </div>
 
-          {/* Opening Paragraph */}
+          {/* Narrative Paragraph */}
           <p className="text-[11px] sm:text-[12px] md:text-[13px] lowercase tracking-[0.18em] text-[#fffaee] font-sans leading-[1.85] max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            meenakari is the art of placing colour onto metal and making it permanent. fired at 750°c, each piece is a collaboration between centuries of jaipur tradition and modern design.
-          </p>
-
-          {/* History / Origin Paragraph */}
-          <p className="text-[11px] sm:text-[12px] md:text-[13px] lowercase tracking-[0.18em] text-[#fffaee] font-sans leading-[1.85] max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            the name comes from the persian &apos;mina&apos;, meaning paradise. the craft travelled from persia into the mughal court, and from there to jaipur, where it found the hands that would keep it alive for centuries. a single piece passes through many artisans before it is finished, each adding what the last could not, then fired at close to 750°c — fused to metal by heat that forgives nothing.
+            meenakari is the art of placing colour onto metal and making it permanent. fired at 750°c, each piece is a collaboration between centuries of jaipur tradition and modern design. the name comes from the persian &apos;mina&apos;, meaning paradise. the craft travelled from persia into the mughal court, and from there to jaipur, where it found the hands that would keep it alive for centuries. a single piece passes through many artisans before it is finished, each adding what the last could not, then fired at close to 750°c — fused to metal by heat that forgives nothing.
           </p>
 
           {/* Karigar & Founder Line */}
