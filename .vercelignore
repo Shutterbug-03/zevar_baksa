@@ -1,0 +1,15 @@
+.git
+node_modules
+.next
+*.xlsx
+*.mp4
+!public/hero-video.mp4
+!public/hero-video-mobile.mp4
+public/Neckpieces
+public/Earrings
+public/DSC*
+public/FullSizeRender*
+public/IMG_1053*
+public/IMG_7110*
+public/IMG_87*
+public/IMG_88*
