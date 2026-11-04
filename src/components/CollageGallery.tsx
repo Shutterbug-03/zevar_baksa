@@ -22,7 +22,7 @@ const topLayer: BentoCard[] = [
     src: "/landing-grid/grid-2.jpg",
     alt: "Handcrafted Bird Motif Pendant Close-up",
     aspect: "aspect-[4/3.8]",
-    position: "object-[center_35%]",
+    position: "object-center",
   },
   {
     src: "/landing-grid/grid-3.jpg",
@@ -40,7 +40,7 @@ const topLayer: BentoCard[] = [
     src: "/landing-grid/grid-5.jpg",
     alt: "Sterling Silver and Blue Enamel Royal Choker and Earrings",
     aspect: "aspect-[4/3.8]",
-    position: "object-[center_18%]",
+    position: "object-center",
   },
 ];
 
