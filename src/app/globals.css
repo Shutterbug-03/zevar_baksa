@@ -218,6 +218,44 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes luxury-sheen {
+  0% {
+    transform: translateX(-140%) skewX(-15deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(140%) skewX(-15deg);
+    opacity: 1;
+  }
+  51%, 100% {
+    transform: translateX(140%) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes luxury-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+  50% {
+    transform: scale(1.028);
+    opacity: 1;
+  }
+}
+
+@keyframes luxury-track {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
 @utility ease-spline {
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }

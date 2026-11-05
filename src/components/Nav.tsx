@@ -56,17 +56,17 @@ export function Nav() {
       return;
     }
 
-    let msg = "Entering The Vault...";
+    let msg = "Jaipur Atelier";
     if (label) {
-      msg = `Curating ${label}...`;
+      msg = label;
     } else if (href.includes("Necklaces") || href.includes("pendant")) {
-      msg = "Curating Pendants & Necklaces...";
+      msg = "Pendants & Necklaces";
     } else if (href.includes("Earrings")) {
-      msg = "Curating Handcrafted Earrings...";
+      msg = "Handcrafted Earrings";
     } else if (href.includes("/collection/")) {
-      msg = "Opening Jaipur Collection Archive...";
+      msg = "Jaipur Collection Archive";
     } else if (href === "/shop") {
-      msg = "Unlocking All Masterpieces...";
+      msg = "All Masterpieces";
     }
 
     // Activate the royal luxury loading screen immediately so current/landing page is NEVER visible
