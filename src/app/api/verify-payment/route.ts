@@ -6,17 +6,7 @@
  * The Razorpay webhook (/api/webhooks/razorpay) does the same if this call
  * never arrives, e.g. the customer closed the tab after paying via UPI.
  *
- * Body: {
- *   razorpay_order_id: string,
- *   razorpay_payment_id: string,
- *   razorpay_signature: string,
- *   customerEmail: string,
- *   customerName: string,
- *   customerPhone?: string,   // fallback only — DB values win
- *   address?: object,         // fallback only — DB values win
- *   items: OrderItem[],
- *   amount: number (INR)
- * }
+ * Body: { razorpay_order_id, razorpay_payment_id, razorpay_signature }
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -42,52 +32,19 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = await req.json();
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      customerEmail,
-      customerName,
-      customerPhone,
-      address,
-      items,
-      amount,
-    } = body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();
 
-    // ── Detect placeholder mode ──────────────────────────────────────────────
-    const isPlaceholder =
-      !process.env.RAZORPAY_KEY_SECRET ||
-      process.env.RAZORPAY_KEY_SECRET.includes("PLACEHOLDER");
-
-    let isValid = false;
-
-    // Skipping signature checks is for local dev only — never in production.
-    if (isPlaceholder && process.env.NODE_ENV === "production") {
-      console.error("[verify-payment] RAZORPAY_KEY_SECRET missing in production");
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keySecret) {
+      console.error("[verify-payment] RAZORPAY_KEY_SECRET missing");
       return NextResponse.json({ error: "Payment verification unavailable." }, { status: 503 });
     }
 
-    if (isPlaceholder) {
-      // Skip signature verification in placeholder / dev mode
-      console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-      console.log("🧪 RAZORPAY: Placeholder mode — skipping signature verification");
-      console.log(`✅ Payment ID: ${razorpay_payment_id}`);
-      console.log(`📦 Order ID:   ${razorpay_order_id}`);
-      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-      isValid = true;
-    } else {
-      // ── Real signature verification ────────────────────────────────────────
-      const keySecret = process.env.RAZORPAY_KEY_SECRET!;
-      const body = `${razorpay_order_id}|${razorpay_payment_id}`;
-      const expectedSignature = crypto
-        .createHmac("sha256", keySecret)
-        .update(body)
-        .digest("hex");
-      const given = Buffer.from(String(razorpay_signature ?? ""));
-      const expected = Buffer.from(expectedSignature);
-      isValid = given.length === expected.length && crypto.timingSafeEqual(given, expected);
-    }
+    const expected = Buffer.from(
+      crypto.createHmac("sha256", keySecret).update(`${razorpay_order_id}|${razorpay_payment_id}`).digest("hex")
+    );
+    const given = Buffer.from(String(razorpay_signature ?? ""));
+    const isValid = given.length === expected.length && crypto.timingSafeEqual(given, expected);
 
     if (!isValid) {
       return NextResponse.json(
@@ -97,20 +54,10 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Mark paid + BUSY + emails (shared with the Razorpay webhook) ───────
-    // Order details come from Supabase; the body values are a fallback for
-    // when the DB row is missing (e.g. placeholder DB in dev).
     await fulfillPaidOrder({
       razorpayOrderId: razorpay_order_id,
       razorpayPaymentId: razorpay_payment_id,
       razorpaySignature: razorpay_signature,
-      fallback: {
-        email: customerEmail,
-        name: customerName,
-        phone: customerPhone,
-        address,
-        items,
-        amountINR: amount,
-      },
     });
 
     return NextResponse.json({

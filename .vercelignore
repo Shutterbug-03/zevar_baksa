@@ -2,6 +2,9 @@
 node_modules
 .next
 *.xlsx
+Earrings
+Neckpieces
+Remaining images for website 2
 *.mp4
 !public/hero-video.mp4
 !public/hero-video-mobile.mp4
@@ -14,3 +17,10 @@ public/IMG_7110*
 public/IMG_87*
 public/IMG_88*
 
+
+# Secrets and vendor dumps — never upload with `vercel` CLI deploys
+.env*
+!.env.example
+Busy API V2.json
+APP Voucher.json
+Remaining images for website 2

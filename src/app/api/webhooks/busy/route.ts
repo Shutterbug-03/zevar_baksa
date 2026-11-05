@@ -25,22 +25,17 @@ export async function POST(req: NextRequest) {
   try {
     const expectedSecret = process.env.BUSY_WEBHOOK_SECRET;
 
-    // Only enforce secret validation if one is configured
-    if (expectedSecret && !expectedSecret.includes("PLACEHOLDER")) {
-      const incomingSecret =
-        req.headers.get("x-busy-webhook-secret") ??
-        req.headers.get("authorization")?.replace("Bearer ", "") ??
-        "";
-
-      if (!timingSafeCompare(incomingSecret, expectedSecret)) {
-        console.warn("[Webhook BUSY] Rejected: invalid secret from", req.headers.get("x-forwarded-for"));
-        return NextResponse.json(
-          { error: "Unauthorized webhook caller" },
-          { status: 401 }
-        );
-      }
-    } else {
-      console.log("[Webhook BUSY] Secret not configured — accepting in placeholder mode");
+    if (!expectedSecret) {
+      console.error("[Webhook BUSY] BUSY_WEBHOOK_SECRET is not set — refusing");
+      return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+    }
+    const incomingSecret =
+      req.headers.get("x-busy-webhook-secret") ??
+      req.headers.get("authorization")?.replace("Bearer ", "") ??
+      "";
+    if (!timingSafeCompare(incomingSecret, expectedSecret)) {
+      console.warn("[Webhook BUSY] Rejected: invalid secret from", req.headers.get("x-forwarded-for"));
+      return NextResponse.json({ error: "Unauthorized webhook caller" }, { status: 401 });
     }
 
     const body = await req.json();

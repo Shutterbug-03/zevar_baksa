@@ -30,88 +30,55 @@ type FulfillInput = {
   razorpayOrderId: string;
   razorpayPaymentId: string;
   razorpaySignature?: string;
-  /** Used only when no Supabase row exists (dev / placeholder DB). */
-  fallback?: Partial<OrderSnapshot>;
 };
 
-const isSupabasePlaceholder = () =>
-  !process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPABASE_SERVICE_ROLE_KEY.includes("PLACEHOLDER");
+/** Only an order still waiting for payment can become paid (failed = expired by the cron, then paid late). */
+const CLAIMABLE = ["pending", "failed"];
 
 export async function fulfillPaidOrder({
   razorpayOrderId,
   razorpayPaymentId,
   razorpaySignature,
-  fallback = {},
 }: FulfillInput): Promise<{ alreadyProcessed: boolean }> {
-  let snapshot: OrderSnapshot = {
-    email: fallback.email ?? "",
-    name: fallback.name ?? "",
-    phone: fallback.phone ?? "",
-    address: fallback.address ?? {},
-    items: fallback.items ?? [],
-    amountINR: fallback.amountINR ?? 0,
-    paymentMethod: fallback.paymentMethod ?? "online",
-  };
+  const { data: existing, error: readErr } = await supabaseAdmin
+    .from("orders")
+    .select("*")
+    .eq("razorpay_order_id", razorpayOrderId)
+    .maybeSingle();
+  if (readErr) throw readErr;
 
-  if (isSupabasePlaceholder()) {
-    console.log("ℹ️  Supabase: Placeholder — order not persisted");
-  } else {
-    const { data: existing, error: readErr } = await supabaseAdmin
-      .from("orders")
-      .select("*")
-      .eq("razorpay_order_id", razorpayOrderId)
-      .maybeSingle();
-
-    if (readErr) console.error("[fulfill] Supabase read error:", readErr);
-
-    if (existing) {
-      if (existing.status === "paid") return { alreadyProcessed: true };
-
-      // Atomic claim: only one caller flips pending → paid.
-      const { data: claimed, error: updErr } = await supabaseAdmin
-        .from("orders")
-        .update({
-          razorpay_payment_id: razorpayPaymentId,
-          razorpay_signature: razorpaySignature ?? null,
-          status: "paid",
-        })
-        .eq("razorpay_order_id", razorpayOrderId)
-        .neq("status", "paid")
-        .select("id");
-
-      if (updErr) console.error("[fulfill] Supabase update error:", updErr);
-      if (!updErr && (!claimed || claimed.length === 0)) return { alreadyProcessed: true };
-
-      snapshot = {
-        email: existing.customer_email,
-        name: existing.customer_name,
-        phone: existing.customer_phone,
-        address: existing.address ?? {},
-        items: existing.items ?? [],
-        amountINR: Math.round(existing.amount / 100),
-        paymentMethod: existing.payment_method,
-      };
-    } else if (snapshot.email) {
-      // create-order's insert failed earlier — record the paid order now.
-      const { error: insErr } = await supabaseAdmin.from("orders").insert({
-        razorpay_order_id: razorpayOrderId,
-        razorpay_payment_id: razorpayPaymentId,
-        razorpay_signature: razorpaySignature ?? null,
-        amount: snapshot.amountINR * 100,
-        status: "paid",
-        customer_email: snapshot.email,
-        customer_name: snapshot.name,
-        customer_phone: snapshot.phone,
-        address: snapshot.address,
-        items: snapshot.items,
-        payment_method: snapshot.paymentMethod,
-      });
-      if (insErr) console.error("[fulfill] Supabase insert error:", insErr);
-    }
+  // No row: not a store checkout (e.g. a payment link made in the Razorpay dashboard).
+  if (!existing) {
+    console.warn(`[fulfill] No order row for ${razorpayOrderId} — ignoring`);
+    return { alreadyProcessed: true };
   }
+  // paid / shipped / delivered / refunded / cancelled: already handled — never move it back.
+  if (!CLAIMABLE.includes(existing.status)) return { alreadyProcessed: true };
 
-  await notifyOrderPlaced(razorpayOrderId, razorpayPaymentId, snapshot);
+  // Atomic claim: only one caller (browser or webhook) flips it to paid.
+  const { data: claimed, error: updErr } = await supabaseAdmin
+    .from("orders")
+    .update({
+      razorpay_payment_id: razorpayPaymentId,
+      razorpay_signature: razorpaySignature ?? null,
+      status: "paid",
+    })
+    .eq("razorpay_order_id", razorpayOrderId)
+    .in("status", CLAIMABLE)
+    .select("id");
+  // Throw so the webhook returns 500 and Razorpay retries; no emails for an unrecorded payment.
+  if (updErr) throw updErr;
+  if (!claimed || claimed.length === 0) return { alreadyProcessed: true };
+
+  await notifyOrderPlaced(razorpayOrderId, razorpayPaymentId, {
+    email: existing.customer_email,
+    name: existing.customer_name,
+    phone: existing.customer_phone,
+    address: existing.address ?? {},
+    items: existing.items ?? [],
+    amountINR: Math.round(existing.amount / 100),
+    paymentMethod: existing.payment_method,
+  });
 
   return { alreadyProcessed: false };
 }
@@ -126,10 +93,13 @@ export async function notifyOrderPlaced(
   snapshot: OrderSnapshot
 ) {
   // ── BUSY ERP ──────────────────────────────────────────────────────────
-  // null = not written to BUSY (no vendor write endpoint yet, or the call failed);
-  // the admin email then tells the team to enter the order manually.
+  // Live payments post a sale voucher to BUSY. null = not written (test mode or the call
+  // failed); the admin email then tells the team to enter the order manually.
   let busyVoucherNo: string | null = null;
-  try {
+  // BUSY holds the real books: test-mode (rzp_test_) payments must never post sale vouchers there.
+  const livePayments = process.env.RAZORPAY_KEY_ID?.startsWith("rzp_live_") ?? false;
+  if (!livePayments) console.log(`[fulfill] Razorpay test mode — not posting ${razorpayOrderId} to BUSY`);
+  else try {
     const { createSalesOrder } = await import("@/lib/busy");
     busyVoucherNo = await createSalesOrder({
       partnerEmail: snapshot.email,

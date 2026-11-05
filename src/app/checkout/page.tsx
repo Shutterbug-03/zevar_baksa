@@ -115,7 +115,8 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
   const priceTotal = hydrated ? totalPrice() : 0;
 
   const shipping = 0; // Free insured shipping
-  const tax = Math.round(priceTotal * 0.03); // 3% GST placeholder
+  // Prices include 3% GST, so the GST inside ₹X is X − X/1.03 (same as the invoice email).
+  const tax = Math.round(priceTotal - priceTotal / 1.03);
 
   return (
     <div className="bg-secondary/30 border border-border/60 rounded-2xl overflow-hidden">
@@ -983,32 +984,6 @@ export default function CheckoutPage() {
 
       const orderData = await createRes.json();
 
-      // Placeholder / dev mode — skip real modal, simulate success
-      const isPlaceholder = orderData.key?.includes("PLACEHOLDER");
-      if (isPlaceholder) {
-        console.log("Dev mode: Skipping Razorpay modal — placeholder keys");
-        await fetch("/api/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            razorpay_order_id: orderData.order_id,
-            razorpay_payment_id: `pay_dev_${Date.now()}`,
-            razorpay_signature: "dev_placeholder",
-            customerEmail: address.email,
-            customerName: `${address.firstName} ${address.lastName}`.trim(),
-            customerPhone: address.phone,
-            address,
-            items: orderItems,
-            amount: totalINR,
-          }),
-        });
-        clearCart();
-        setOrderRef(orderData.order_id);
-        setPlaced(true);
-        setPlacing(false);
-        return;
-      }
-
       // Step 2: Open real Razorpay modal
       type RazorpayOptions = {
         key: string;
@@ -1040,7 +1015,8 @@ export default function CheckoutPage() {
         prefill: {
           name: `${address.firstName} ${address.lastName}`.trim(),
           email: address.email,
-          contact: normalizeIndianPhone(address.phone) ?? address.phone,
+          // Razorpay expects the country code; a bare 10-digit number makes it ask again.
+          contact: `+91${normalizeIndianPhone(address.phone) ?? address.phone}`,
         },
         theme: { color: "#6B1225" },
         handler: async (response) => {
@@ -1052,12 +1028,6 @@ export default function CheckoutPage() {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-              customerEmail: address.email,
-              customerName: `${address.firstName} ${address.lastName}`.trim(),
-              customerPhone: address.phone,
-              address,
-              items: orderItems,
-              amount: totalINR,
             }),
           });
 

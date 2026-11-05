@@ -106,6 +106,15 @@ export function LoginModal() {
       }
       throw new Error(asErr(error).longMessage ?? asErr(error).message ?? "Sign-in failed.");
     }
+    // New browser/device: Clerk's Device Trust asks for an emailed code before creating a session.
+    if (signIn.status === "needs_client_trust" || signIn.status === "needs_second_factor") {
+      const sent = await signIn.mfa.sendEmailCode();
+      if (sent.error) {
+        throw new Error(asErr(sent.error).longMessage ?? asErr(sent.error).message ?? "Could not send the sign-in code.");
+      }
+      setVerifying(true);
+      return false;
+    }
     // finalize creates the active session
     const finalizeResult = await signIn.finalize();
     if (finalizeResult.error) {
@@ -115,6 +124,7 @@ export function LoginModal() {
           "Could not complete sign-in."
       );
     }
+    return true;
   };
 
   // ── Email + Password Sign Up ────────────────────────────────────
@@ -170,20 +180,23 @@ export function LoginModal() {
       setError("Please enter the verification code.");
       return;
     }
-    if (!signUp) return;
+    const flow = mode === "login" ? signIn : signUp;
+    if (!flow) return;
 
     setSubmitting(true);
     try {
-      const { error } = await signUp.verifications.verifyEmailCode({
-        code: verificationCode.trim(),
-      });
+      const code = verificationCode.trim();
+      const { error } =
+        mode === "login"
+          ? await signIn!.mfa.verifyEmailCode({ code })
+          : await signUp!.verifications.verifyEmailCode({ code });
       if (error) {
         throw new Error(
           asErr(error).longMessage ?? asErr(error).message ?? "Invalid verification code."
         );
       }
       // After verification, finalize to create the session
-      const finalizeResult = await signUp.finalize();
+      const finalizeResult = await flow.finalize();
       if (finalizeResult.error) {
         throw new Error(
           asErr(finalizeResult.error).longMessage ??
@@ -216,8 +229,7 @@ export function LoginModal() {
     setSubmitting(true);
     try {
       if (mode === "login") {
-        await handleSignIn();
-        closeLogin();
+        if (await handleSignIn()) closeLogin();
       } else {
         await handleSignUp();
         // closeLogin() called inside handleSignUp only if fully complete

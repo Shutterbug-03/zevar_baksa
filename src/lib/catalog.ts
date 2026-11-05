@@ -4,8 +4,8 @@
  *
  * Mirrors what /api/products serves (BUSY when configured, else static), so the
  * customer is charged what the storefront showed. If BUSY is configured but
- * unreachable we reuse the last good catalog for up to an hour and otherwise
- * refuse the order rather than guess a price.
+ * unreachable we reuse the last good catalog for up to an hour, then fall back
+ * to the static catalog (which /api/products also serves, so prices still match).
  */
 
 import { products as staticProducts, type Product } from "@/data/products";
@@ -14,7 +14,7 @@ import { isBusyConfigured, getBusyItems, mapBusyToProduct } from "@/lib/busy";
 const FRESH_MS = 5 * 60_000;
 const STALE_OK_MS = 60 * 60_000;
 
-let cache: { at: number; byId: Map<string, Product> } | null = null;
+let cache: { at: number; list: Product[] } | null = null;
 
 function buildCatalogMap(products: Product[]): Map<string, Product> {
   const map = new Map<string, Product>();
@@ -54,26 +54,28 @@ function mergeCatalogs(live: Product[], fallback: Product[]): Product[] {
   return merged;
 }
 
-export async function getCatalog(): Promise<Map<string, Product>> {
-  if (!isBusyConfigured()) return buildCatalogMap(staticProducts);
+/** The storefront catalog: static curated list enriched with live BUSY price + stock. */
+export async function getProductList(): Promise<Product[]> {
+  if (!isBusyConfigured()) return staticProducts;
 
-  if (cache && Date.now() - cache.at < FRESH_MS) return cache.byId;
+  if (cache && Date.now() - cache.at < FRESH_MS) return cache.list;
 
   try {
-    const busyItems = await getBusyItems();
-    const mapped = busyItems.map(mapBusyToProduct);
-    const mergedList = mergeCatalogs(mapped, staticProducts);
-    const byId = buildCatalogMap(mergedList);
-    cache = { at: Date.now(), byId };
-    return byId;
+    const list = mergeCatalogs((await getBusyItems()).map(mapBusyToProduct), staticProducts);
+    cache = { at: Date.now(), list };
+    return list;
   } catch (err) {
     if (cache && Date.now() - cache.at < STALE_OK_MS) {
       console.warn("[catalog] BUSY unreachable — using cached prices", err);
-      return cache.byId;
+      return cache.list;
     }
     console.warn("[catalog] BUSY failed, serving static catalog fallback:", err);
-    return buildCatalogMap(staticProducts);
+    return staticProducts;
   }
+}
+
+export async function getCatalog(): Promise<Map<string, Product>> {
+  return buildCatalogMap(await getProductList());
 }
 
 export type PricedLine = {
