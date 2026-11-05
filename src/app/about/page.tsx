@@ -3,8 +3,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "Our Story — Zevar Baksa",
-  description: "Handcrafted jewellery born in Jaipur. Story first, credited artisans, limited runs, and living craft traditions.",
+  title: "Our Story",
+  description: "The story of Zevar Baksa, a Jaipur jewellery house: \"Zevar\" means jewellery and \"Baksa\" means box. Handcrafted silver and meenakari pieces, designed from scratch and credited to the artisans who make them.",
+  alternates: { canonical: "/about" },
 };
 
 const philosophy = [
@@ -37,7 +38,7 @@ export default function About() {
       <section className="pt-44 pb-28 border-t border-[#420002]/10 mx-auto max-w-[1300px] px-6 sm:px-10 md:px-16">
         
         <h1 className="font-display text-4xl sm:text-5xl text-[#c82127] leading-tight mb-8 sm:mb-10 text-center">
-          BRAND STORY
+          BRAND STORY<span className="sr-only"> of Zevar Baksa, Jaipur</span>
         </h1>
 
         <div className="space-y-6 text-base sm:text-lg text-[#420002]/80 font-sans font-light leading-relaxed w-full text-justify">

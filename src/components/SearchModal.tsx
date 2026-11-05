@@ -104,7 +104,7 @@ export function SearchModal() {
                 Popular Searches
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Jhumka", "Bridal Set", "Kundan", "Polki", "Necklace", "Bracelet"].map((term) => (
+                {["Pendant", "Earrings", "Necklace", "Meena Bagh", "Enamel", "Kundan"].map((term) => (
                   <button
                     key={term}
                     onClick={() => setQuery(term)}

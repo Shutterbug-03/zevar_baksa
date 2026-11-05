@@ -2,7 +2,8 @@ import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
-  title: "Exchange, Repair & Cancellation Policy — Zevar Baksa",
+  title: "Exchange, Repair & Cancellation Policy",
+  alternates: { canonical: "/exchange-policy" },
   description: "Our policies for exchanges, repairs, and order cancellations.",
 };
 

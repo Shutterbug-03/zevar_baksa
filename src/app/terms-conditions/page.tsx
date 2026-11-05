@@ -2,7 +2,8 @@ import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
-  title: "Terms and Conditions — Zevar Baksa",
+  title: "Terms and Conditions",
+  alternates: { canonical: "/terms-conditions" },
   description: "Terms and conditions for accessing and using the Zevar Baksa website.",
 };
 

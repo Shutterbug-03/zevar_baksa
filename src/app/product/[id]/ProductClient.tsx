@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Script from "next/script";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -199,27 +198,6 @@ export default function ProductClient({
 
   return (
     <Layout>
-      <Script id="structured-data-product" type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org/",
-          "@type": "Product",
-          "name": product.name,
-          "image": product.gallery,
-          "description": product.description,
-          "brand": {
-            "@type": "Brand",
-            "name": "Zevar Baksa"
-          },
-          "offers": {
-            "@type": "Offer",
-            "url": `https://zevarbaksa.com/product/${product.id}`,
-            "priceCurrency": "INR",
-            "price": product.price,
-            "availability": product.status === "Out of Stock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
-            "itemCondition": "https://schema.org/NewCondition"
-          }
-        })
-      }} />
       <div className="bg-background min-h-screen pt-28 md:pt-36 pb-20 font-sans">
         <div className="mx-auto max-w-[1600px] px-6 md:px-12 lg:px-16">
 
@@ -586,14 +564,13 @@ export default function ProductClient({
                     />
                   </button>
 
-                  {openTab === "story" && (
-                    <div className="pt-4 pb-2 text-[13px] text-foreground/80 font-sans leading-relaxed space-y-3">
-                      <p>{product.description}</p>
-                      <p className="italic text-[#420002] border-l-2 border-[#d4af37] pl-3.5 font-serif text-base">
-                        &quot;{product.story}&quot;
-                      </p>
-                    </div>
-                  )}
+                  {/* Always rendered (hidden when closed) so the story is in the page text crawlers read */}
+                  <div hidden={openTab !== "story"} className="pt-4 pb-2 text-[13px] text-foreground/80 font-sans leading-relaxed space-y-3">
+                    <p>{product.description}</p>
+                    <p className="italic text-[#420002] border-l-2 border-[#d4af37] pl-3.5 font-serif text-base">
+                      &quot;{product.story}&quot;
+                    </p>
+                  </div>
                 </div>
 
                 {/* Tab 3: Care & Maintenance */}

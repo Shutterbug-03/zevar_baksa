@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getCatalog } from "@/lib/catalog";
 import type { Product } from "@/data/products";
 import ProductClient from "./ProductClient";
+import { JsonLd, absoluteUrl } from "@/lib/seo";
 
 /**
  * Server shell for the product page: resolves the product from the same catalog the
@@ -81,5 +82,59 @@ export default async function ProductDetailPage({
   const { product, known } = await findProduct(id);
   if (known && !product) notFound();
 
-  return <ProductClient id={id} initialProduct={product} />;
+  return (
+    <>
+      {product && <JsonLd data={productLd(product)} />}
+      <ProductClient id={id} initialProduct={product} />
+    </>
+  );
+}
+
+/** Product + Offer + breadcrumbs, rendered on the server so crawlers read price and stock. */
+function productLd(product: Product) {
+  const url = absoluteUrl(`/product/${product.id}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `${url}#product`,
+        name: product.name,
+        description: product.description,
+        image: (product.gallery?.length ? product.gallery : [product.image]).map(absoluteUrl),
+        sku: product.specs?.code?.split(" ")[0] || product.id,
+        category: product.category,
+        material: product.specs?.metal,
+        brand: { "@type": "Brand", name: "Zevar Baksa" },
+        manufacturer: { "@id": `${absoluteUrl("/")}#organization` },
+        offers: {
+          "@type": "Offer",
+          url,
+          priceCurrency: "INR",
+          price: product.price,
+          availability:
+            product.status === "Out of Stock"
+              ? "https://schema.org/OutOfStock"
+              : product.status === "Made to Order"
+                ? "https://schema.org/PreOrder"
+                : "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition",
+          seller: { "@id": `${absoluteUrl("/")}#organization` },
+          shippingDetails: {
+            "@type": "OfferShippingDetails",
+            shippingRate: { "@type": "MonetaryAmount", value: 0, currency: "INR" },
+            shippingDestination: { "@type": "DefinedRegion", addressCountry: "IN" },
+          },
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Shop", item: absoluteUrl("/shop") },
+          { "@type": "ListItem", position: 3, name: product.name, item: url },
+        ],
+      },
+    ],
+  };
 }

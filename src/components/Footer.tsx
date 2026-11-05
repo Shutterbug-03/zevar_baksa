@@ -146,6 +146,21 @@ export function Footer() {
           </span>
         </div>
 
+        {/* Studio credit */}
+        <p className="mt-6 text-center text-[11px] tracking-[0.08em] text-[#fffaee]/55 font-sans">
+          Made with{" "}
+          <span aria-label="love" role="img" className="text-[#fffaee]/80">♥</span>{" "}
+          by{" "}
+          <a
+            href="https://egluetechnology.com"
+            target="_blank"
+            rel="noopener"
+            className="font-medium text-[#fffaee]/80 underline-offset-4 decoration-[#fffaee]/40 transition-colors hover:text-[#fffaee] hover:underline focus-visible:text-[#fffaee] focus-visible:underline focus-visible:outline-none"
+          >
+            eglue
+          </a>
+        </p>
+
       </div>
     </footer>
   );

@@ -2,7 +2,8 @@ import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
-  title: "Privacy Policy — Zevar Baksa",
+  title: "Privacy Policy",
+  alternates: { canonical: "/privacy-policy" },
   description: "How we collect, use, and protect your personal data.",
 };
 

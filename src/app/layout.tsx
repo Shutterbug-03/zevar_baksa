@@ -7,7 +7,8 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { CloudSync } from "@/components/CloudSync";
 import { LuxuryLoadingScreen } from "@/components/LuxuryLoadingScreen";
 import { Suspense } from "react";
-import Script from "next/script";
+import { JsonLd, SITE_URL, SITE_DESCRIPTION, absoluteUrl } from "@/lib/seo";
+import { siteConfig } from "@/data/siteConfig";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,15 +28,15 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://zevarbaksa.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Zevar Baksa — Handcrafted Heirloom Jewellery",
     template: "%s | Zevar Baksa",
   },
-  description: "Zevar Baksa is a house of handcrafted heirloom jewellery — kundan, polki, and jadau pieces, made to order in India.",
+  description: SITE_DESCRIPTION,
   openGraph: {
     title: "Zevar Baksa — Handcrafted Heirloom Jewellery",
-    description: "Zevar Baksa is a house of handcrafted heirloom jewellery — kundan, polki, and jadau pieces, made to order in India.",
+    description: SITE_DESCRIPTION,
     url: "/",
     siteName: "Zevar Baksa",
     images: [
@@ -52,12 +53,55 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Zevar Baksa — Handcrafted Heirloom Jewellery",
-    description: "Zevar Baksa is a house of handcrafted heirloom jewellery — kundan, polki, and jadau pieces, made to order in India.",
+    description: SITE_DESCRIPTION,
     images: ["/og-image.jpg"],
   },
-  alternates: {
-    canonical: "/",
-  },
+  // No site-wide canonical: each page sets its own. A canonical here is inherited by every
+  // page without one and tells crawlers that page is a copy of the homepage.
+};
+
+// Brand entity for AI systems and search engines. "Zevar Baksa" in full, with its address and
+// profiles, keeps it distinct from other jewellers named "Zevar".
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "JewelryStore",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Zevar Baksa",
+      alternateName: "ZevarBaksa",
+      legalName: "ZevarBaksa LLP",
+      description: SITE_DESCRIPTION,
+      slogan: "A little box of memories, worn close to the heart.",
+      url: SITE_URL,
+      logo: absoluteUrl("/icon.png"),
+      image: absoluteUrl("/og-image.jpg"),
+      email: siteConfig.email,
+      telephone: siteConfig.phone,
+      priceRange: "From ₹9,000",
+      currenciesAccepted: "INR",
+      paymentAccepted: "UPI, Credit Card, Debit Card, Net Banking",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "B-21, Bhan Nagar, Queens Road, Vaishali Nagar",
+        addressLocality: "Jaipur",
+        addressRegion: "Rajasthan",
+        postalCode: "302021",
+        addressCountry: "IN",
+      },
+      areaServed: "IN",
+      knowsAbout: ["Meenakari enamel jewellery", "925 sterling silver jewellery", "Kundan setting", "Jaipur jewellery craft"],
+      sameAs: ["https://www.instagram.com/zevarbaksa"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "Zevar Baksa",
+      url: SITE_URL,
+      inLanguage: "en-IN",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -72,27 +116,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <GoogleAnalytics />
-        <Script id="structured-data-org" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Zevar Baksa",
-          "url": "https://zevarbaksa.com",
-          "logo": "https://zevarbaksa.com/og-image.jpg",
-          "sameAs": [
-            "https://instagram.com/zevarbaksa"
-          ]
-        }) }} />
-        <Script id="structured-data-website" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": "Zevar Baksa",
-          "url": "https://zevarbaksa.com",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://zevarbaksa.com/shop?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
-        }) }} />
+        <JsonLd data={organizationLd} />
         <ClerkProvider>
           {children}
           <Suspense fallback={null}>

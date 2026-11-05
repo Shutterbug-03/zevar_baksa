@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 import { products as staticProducts } from "@/data/products";
 import { collections } from "@/data/collections";
-import { getCatalog } from "@/lib/catalog";
+import { getProductList } from "@/lib/catalog";
+import { SITE_URL } from "@/lib/seo";
 
 // Regenerate hourly so new/removed BUSY products show up without a redeploy
 export const revalidate = 3600;
@@ -10,10 +11,10 @@ export const revalidate = 3600;
 const SITE_LAST_MODIFIED = "2026-10-01";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://zevarbaksa.com";
+  const baseUrl = SITE_URL;
 
   // Static routes
-  const routes = ["", "/shop", "/about", "/contact", "/wishlist"].map(
+  const routes = ["", "/shop", "/about", "/contact"].map(
     (route) => ({
       url: `${baseUrl}${route}`,
       lastModified: SITE_LAST_MODIFIED,
@@ -35,7 +36,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Product routes — same catalog as the storefront/checkout (BUSY when configured, else static)
   let catalogProducts = staticProducts;
   try {
-    catalogProducts = [...(await getCatalog()).values()];
+    // The product list, not getCatalog(): that lookup map holds each product under 5 keys.
+    catalogProducts = await getProductList();
   } catch {
     // BUSY unreachable: fall back to the static catalog rather than failing the sitemap
   }

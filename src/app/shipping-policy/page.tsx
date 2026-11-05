@@ -2,7 +2,8 @@ import { Layout } from "@/components/Layout";
 import { siteConfig } from "@/data/siteConfig";
 
 export const metadata = {
-  title: "Shipping Policy — Zevar Baksa",
+  title: "Shipping Policy",
+  alternates: { canonical: "/shipping-policy" },
   description: "Shipping and dispatch information for Zevar Baksa orders.",
 };
 

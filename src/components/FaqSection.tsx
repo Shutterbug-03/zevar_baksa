@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Script from "next/script";
+import { JsonLd } from "@/lib/seo";
 import { ChevronDown, Send, CheckCircle2 } from "lucide-react";
 
 interface FaqItem {
@@ -137,7 +137,7 @@ export function FaqSection() {
   return (
     <section className="relative w-full bg-[#fffaee] pt-10 sm:pt-14 pb-20 sm:pb-24 md:pb-28 overflow-hidden font-sans flex flex-col justify-center">
       
-      <Script id="structured-data-faq" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": faqs.map(faq => ({
@@ -148,7 +148,7 @@ export function FaqSection() {
             "text": faq.answer
           }
         }))
-      }) }} />
+      }} />
 
       <div className="relative z-20 mx-auto max-w-[1500px] px-5 sm:px-8 md:px-16 w-full">
         
