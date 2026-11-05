@@ -56,8 +56,8 @@ export function Nav() {
       return;
     }
 
-    let msg = "Jaipur Atelier";
-    if (label) {
+    let msg = "";
+    if (label && label.toLowerCase() !== "jaipur atelier") {
       msg = label;
     } else if (href.includes("Necklaces") || href.includes("pendant")) {
       msg = "Pendants & Necklaces";

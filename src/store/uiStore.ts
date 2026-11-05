@@ -17,12 +17,12 @@ export const useUIStore = create<UIStore>()((set) => ({
   searchOpen: false,
   loginOpen: false,
   pageLoading: false,
-  pageLoadingMessage: "Jaipur Atelier",
+  pageLoadingMessage: "",
   openSearch: () => set({ searchOpen: true }),
   closeSearch: () => set({ searchOpen: false }),
   openLogin: () => set({ loginOpen: true }),
   closeLogin: () => set({ loginOpen: false }),
-  startPageLoading: (message = "Jaipur Atelier") =>
+  startPageLoading: (message = "") =>
     set({ pageLoading: true, pageLoadingMessage: message }),
   stopPageLoading: () => set({ pageLoading: false }),
 }));
