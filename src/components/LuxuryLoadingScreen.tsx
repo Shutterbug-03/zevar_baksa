@@ -88,7 +88,7 @@ export function LuxuryLoadingScreen() {
         }
 
         // Determine context-aware poetic message
-        let msg = "Jaipur Atelier";
+        let msg = "";
         if (url.pathname.includes("/product/")) {
           msg = "Curating Masterpiece";
         } else if (url.search.includes("Necklaces") || url.search.includes("pendants") || url.pathname.includes("pendant")) {
@@ -108,7 +108,7 @@ export function LuxuryLoadingScreen() {
         } else if (url.pathname === "/wishlist") {
           msg = "Saved Heirlooms";
         } else if (url.pathname === "/contact") {
-          msg = "Connecting With Atelier";
+          msg = "Contact Concierge";
         }
 
         startPageLoading(msg);
@@ -214,7 +214,7 @@ export function LuxuryLoadingScreen() {
           </span>
 
           {/* Curated Route Context Caption (Subtle & Understated) */}
-          {pageLoadingMessage && (
+          {pageLoadingMessage && pageLoadingMessage.toLowerCase() !== "jaipur atelier" && (
             <p className="font-serif-brand italic text-[11px] sm:text-xs text-[#420002]/50 tracking-wider mt-2.5">
               {pageLoadingMessage}
             </p>
