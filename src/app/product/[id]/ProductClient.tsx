@@ -15,7 +15,6 @@ import {
   Sparkles,
   ChevronDown,
   CheckCircle2,
-  Calendar,
   Share2,
   Heart,
   ZoomIn,
@@ -360,50 +359,6 @@ export default function ProductClient({
                 <span className="text-[11px] uppercase tracking-[0.2em] text-[#d4af37] font-medium font-sans flex items-center gap-1">
                   <span>✦</span> Free Insured Transit
                 </span>
-              </div>
-
-              {/* Dispatch timeframe alert */}
-              <div className="flex items-center justify-between bg-[#420002]/[0.03] border-l-2 border-[#d4af37] px-4 py-3 rounded-r-lg text-xs text-foreground/80 font-sans">
-                <div className="flex items-center gap-2.5">
-                  <Calendar className="h-4 w-4 text-[#420002] flex-shrink-0" />
-                  <span>
-                    <strong>Atelier Dispatch:</strong> {product.dispatchTime}
-                  </span>
-                </div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/50 font-medium">
-                  Jaipur Workshop
-                </span>
-              </div>
-
-              {/* Custom Sizing Dropdown / Info */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-[11px] uppercase tracking-[0.22em] font-semibold text-foreground/80 font-sans">
-                    Size & Fit Preference
-                  </label>
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-[#d4af37] font-medium">
-                    Bespoke Atelier Service
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-2.5">
-                  {["Standard Atelier Fit", "Custom Sizing Request"].map((option) => (
-                    <button
-                      key={option}
-                      onClick={() => setSelectedSize(option)}
-                      className={`px-4 py-3 rounded-xl text-[11px] uppercase tracking-[0.18em] border transition-all text-center font-sans ${selectedSize === option
-                          ? "bg-[#420002] text-[#fffaee] border-[#420002] font-semibold shadow-xs"
-                          : "border-[#420002]/15 text-foreground/70 hover:border-[#420002]/40 bg-transparent hover:bg-[#420002]/[0.02]"
-                        }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-                {selectedSize === "Custom Sizing Request" && (
-                  <p className="mt-2 text-xs text-foreground/65 font-sans leading-relaxed pl-1">
-                    ✦ Our atelier concierge will reach out post-order to tailor the dori tie or chain length to your exact neckline.
-                  </p>
-                )}
               </div>
 
               {/* ACTION BUTTONS */}
