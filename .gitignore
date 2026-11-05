@@ -54,6 +54,7 @@ next-env.d.ts
 /public/DSC*.JPG
 /public/IMG_*.jpg
 /public/FullSizeRender_25.jpg
+/Remaining images for website 2/
 /APP Voucher.json
 
 # ERP vendor API dump (contains credential fields)
