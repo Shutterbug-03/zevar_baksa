@@ -81,25 +81,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*.supabase.co",
-        pathname: "/storage/v1/object/public/**",
-      },
-      ...(supabaseCfg.host
-        ? [
-            {
-              protocol: supabaseCfg.protocol ?? "https",
-              hostname: supabaseCfg.host,
-              port: supabaseCfg.port,
-              pathname: "/storage/v1/object/public/**",
-            },
-          ]
-        : []),
-    ],
-  },
+  // No next/image in the app: keep the /_next/image optimizer off so it can't be used as a proxy.
+  images: { unoptimized: true },
   async rewrites() {
     return [
       {

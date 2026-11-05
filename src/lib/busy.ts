@@ -539,41 +539,6 @@ export async function getBusyItems(options?: {
   }
 }
 
-/** Fetch a single item by item code from BUSY */
-export async function getBusyItem(itemCode: string): Promise<BusyItem | null> {
-  if (!isBusyConfigured()) {
-    return null;
-  }
-
-  try {
-    const response = await busyFetch<{
-      success: boolean;
-      items: BusyRawItem[];
-    }>(`masters/items?code=${encodeURIComponent(itemCode)}&limit=1`);
-
-    const raw = response.items?.[0];
-    if (!raw) return null;
-    return rawToBusyItem(raw);
-  } catch (err) {
-    console.error(`[BUSY] Failed to fetch item ${itemCode}:`, err);
-    return null;
-  }
-}
-
-/** Update an item's stock quantity or status in BUSY */
-export async function updateBusyItemStock(
-  itemCode: string,
-  qtyInStock: number
-): Promise<boolean> {
-  // NOTE: The NeoInfotech API V2 does not have a stock update endpoint.
-  // Stock is managed within BUSY desktop software itself.
-  // This function logs the intended update for manual reconciliation.
-  console.warn(
-    `[BUSY] Stock update not supported via API. Item ${itemCode} → ${qtyInStock} (log only)`
-  );
-  return true;
-}
-
 // ─── Default Party & SKU Mapping ─────────────────────────────────────────────
 
 /**
@@ -1052,54 +1017,4 @@ export async function getBusyStockLevels(options?: {
     console.error("[BUSY] Failed to fetch stock levels:", err);
     return [];
   }
-}
-
-// ─── Account Helpers (bonus — available from the API) ─────────────────────────
-
-/** Fetch accounts from BUSY Master */
-export async function getBusyAccounts(options?: {
-  search?: string;
-  groupname?: string;
-  page?: number;
-  limit?: number;
-}) {
-  if (!isBusyConfigured()) return [];
-
-  const params = new URLSearchParams();
-  params.set("page", String(options?.page ?? 1));
-  params.set("limit", String(options?.limit ?? 100));
-  if (options?.search) params.set("search", options.search);
-  if (options?.groupname) params.set("groupname", options.groupname);
-
-  const res = await busyFetch<{
-    success: boolean;
-    accounts: Array<Record<string, unknown>>;
-  }>(`masters/accounts?${params.toString()}`);
-
-  return res.accounts ?? [];
-}
-
-/** Get account balance report */
-export async function getBusyAccountBalance(options?: {
-  enddate?: string;
-  parentgroup?: string;
-  billtype?: "payable" | "receivable";
-  page?: number;
-  limit?: number;
-}) {
-  if (!isBusyConfigured()) return [];
-
-  const params = new URLSearchParams();
-  params.set("enddate", options?.enddate ?? new Date().toISOString().split("T")[0]);
-  params.set("page", String(options?.page ?? 1));
-  params.set("limit", String(options?.limit ?? 100));
-  if (options?.parentgroup) params.set("parentgroup", options.parentgroup);
-  if (options?.billtype) params.set("billtype", options.billtype);
-
-  const res = await busyFetch<{
-    success: boolean;
-    data: Array<Record<string, unknown>>;
-  }>(`reports/accountbalance?${params.toString()}`);
-
-  return res.data ?? [];
 }

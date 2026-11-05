@@ -20,7 +20,10 @@ export async function GET() {
   }
 
   const user = await currentUser();
-  const email = user?.primaryEmailAddress?.emailAddress?.trim().toLowerCase();
+  // Guest orders are matched by email, so only trust an email Clerk has verified.
+  const primary = user?.primaryEmailAddress;
+  const email =
+    primary?.verification?.status === "verified" ? primary.emailAddress.trim().toLowerCase() : undefined;
 
   const columns = "id, razorpay_order_id, amount, currency, status, items, payment_method, created_at, courier, tracking_number, tracking_url";
 

@@ -15,7 +15,6 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 import { getRazorpay, generateReceipt } from "@/lib/razorpay";
 import { auth } from "@clerk/nextjs/server";
 import { supabaseAdmin } from "@/lib/supabase";
@@ -64,12 +63,6 @@ export async function POST(req: NextRequest) {
     try {
       ({ lines: pricedItems, totalINR } = await priceCart(items));
     } catch (e) {
-      if (e instanceof Error && e.message === "CATALOG_UNAVAILABLE") {
-        return NextResponse.json(
-          { error: "We could not confirm current prices. Please try again in a moment." },
-          { status: 503 }
-        );
-      }
       if (e instanceof OutOfStockError) {
         return NextResponse.json({ error: e.message }, { status: 409 });
       }
@@ -92,83 +85,51 @@ export async function POST(req: NextRequest) {
     const amountInPaise = totalINR * 100; // Razorpay uses paise
     const receipt = generateReceipt();
 
-    // ── Detect placeholder keys ──────────────────────────────────────────────
-    const isPlaceholder =
-      !process.env.RAZORPAY_KEY_ID ||
-      process.env.RAZORPAY_KEY_ID.includes("PLACEHOLDER") ||
-      !process.env.RAZORPAY_KEY_SECRET ||
-      process.env.RAZORPAY_KEY_SECRET.includes("PLACEHOLDER");
-
-    const isSupabasePlaceholder =
-      !process.env.SUPABASE_SERVICE_ROLE_KEY ||
-      process.env.SUPABASE_SERVICE_ROLE_KEY.includes("PLACEHOLDER");
-
-    // Never run on fake keys in production — fail closed instead of faking orders.
-    if (process.env.NODE_ENV === "production" && (isPlaceholder || isSupabasePlaceholder)) {
-      console.error("[create-order] Razorpay/Supabase credentials missing in production");
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error("[create-order] Razorpay/Supabase credentials missing");
       return NextResponse.json({ error: "Checkout is temporarily unavailable." }, { status: 503 });
     }
 
-    let razorpayOrderId: string;
-
-    if (isPlaceholder) {
-      // Dev / placeholder mode — generate a fake order ID
-      razorpayOrderId = `order_test_${crypto.randomBytes(10).toString("hex")}`;
-      console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-      console.log("🧪 RAZORPAY: Placeholder mode — no real order created");
-      console.log(`💰 Amount: ₹${totalINR} (${amountInPaise} paise)`);
-      console.log(`📦 Fake Order ID: ${razorpayOrderId}`);
-      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-    } else {
-      // ── Real Razorpay order ──────────────────────────────────────────────
-      const razorpay = getRazorpay();
-      const order = await razorpay.orders.create({
-        amount: amountInPaise,
-        currency: "INR",
-        receipt,
-        notes: {
-          customer_email: customerEmail,
-          payment_method: paymentMethod ?? "upi",
-        },
-      });
-      razorpayOrderId = order.id;
-    }
+    const order = await getRazorpay().orders.create({
+      amount: amountInPaise,
+      currency: "INR",
+      receipt,
+      notes: {
+        customer_email: customerEmail,
+        payment_method: paymentMethod ?? "upi",
+      },
+    });
+    const razorpayOrderId = order.id;
 
     // ── Save pending order to Supabase ───────────────────────────────────────
     const { userId } = await auth(); // null for guest checkout
 
-    if (!isSupabasePlaceholder) {
-      const { error } = await supabaseAdmin.from("orders").insert({
-        razorpay_order_id: razorpayOrderId,
-        amount: amountInPaise,
-        currency: "INR",
-        status: "pending",
-        customer_email: customerEmail.trim().toLowerCase(),
-        customer_name: customerName ?? "",
-        customer_phone: phone,
-        address,
-        items: pricedItems,
-        payment_method: paymentMethod ?? "upi",
-        clerk_user_id: userId,
-      });
+    const { error } = await supabaseAdmin.from("orders").insert({
+      razorpay_order_id: razorpayOrderId,
+      amount: amountInPaise,
+      currency: "INR",
+      status: "pending",
+      customer_email: customerEmail.trim().toLowerCase(),
+      customer_name: customerName ?? "",
+      customer_phone: phone,
+      address,
+      items: pricedItems,
+      payment_method: paymentMethod ?? "upi",
+      clerk_user_id: userId,
+    });
 
-      if (error) {
-        console.error("Supabase insert error:", error);
-        // Without a DB row the webhook/verify step has nothing to fulfil — don't take
-        // payment in production. (Local dev with an unconfigured DB carries on.)
-        if (process.env.NODE_ENV === "production") {
-          return NextResponse.json({ error: "Failed to create order. Please try again." }, { status: 500 });
-        }
-      }
-    } else {
-      console.log("ℹ️  Supabase: Placeholder mode — order not saved to DB");
+    // Without a DB row the webhook/verify step has nothing to fulfil — don't take payment.
+    if (error) {
+      console.error("Supabase insert error:", error);
+      return NextResponse.json({ error: "Failed to create order. Please try again." }, { status: 500 });
     }
 
     return NextResponse.json({
       order_id: razorpayOrderId,
       amount: amountInPaise,
       currency: "INR",
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "rzp_test_PLACEHOLDER",
+      // The key id is public by design; reading it at runtime means a key swap needs no rebuild.
+      key: process.env.RAZORPAY_KEY_ID,
       receipt,
     });
   } catch (err) {

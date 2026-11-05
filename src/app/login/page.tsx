@@ -16,6 +16,13 @@ import {
 } from "lucide-react";
 import { asErr } from "@/lib/clerkError";
 
+/** Where to go after sign-in: a same-site path only, so ?redirect_url= can't send people off-site. */
+function safeRedirect(): string {
+  const target = new URLSearchParams(window.location.search).get("redirect_url") ?? "";
+  // No control chars: browsers strip tabs/newlines, turning "/\t/evil.com" into "//evil.com".
+  return /^\/(?![\/\\])[^\x00-\x1f\x7f]*$/.test(target) ? target : "/account";
+}
+
 type Mode = "login" | "signup";
 
 export default function LoginPage() {
@@ -90,6 +97,15 @@ export default function LoginPage() {
       }
       throw new Error(asErr(error).longMessage ?? asErr(error).message ?? "Sign-in failed.");
     }
+    // New browser/device: Clerk's Device Trust asks for an emailed code before creating a session.
+    if (signIn.status === "needs_client_trust" || signIn.status === "needs_second_factor") {
+      const sent = await signIn.mfa.sendEmailCode();
+      if (sent.error) {
+        throw new Error(asErr(sent.error).longMessage ?? asErr(sent.error).message ?? "Could not send the sign-in code.");
+      }
+      setVerifying(true);
+      return;
+    }
     const finalizeResult = await signIn.finalize();
     if (finalizeResult?.error) {
       throw new Error(
@@ -99,9 +115,7 @@ export default function LoginPage() {
       );
     }
     
-    const params = new URLSearchParams(window.location.search);
-    const redirectUrl = params.get("redirect_url") || "/account";
-    router.push(redirectUrl);
+    router.push(safeRedirect());
   };
 
   // ── Email + Password Sign Up ────────────────────────────────────
@@ -134,9 +148,7 @@ export default function LoginPage() {
             "Could not complete sign-up."
         );
       }
-      const params = new URLSearchParams(window.location.search);
-      const redirectUrl = params.get("redirect_url") || "/account";
-      router.push(redirectUrl);
+      router.push(safeRedirect());
     } else {
       const sendResult = await signUp.verifications.sendEmailCode();
       if (sendResult.error) {
@@ -158,19 +170,22 @@ export default function LoginPage() {
       setError("Please enter the verification code.");
       return;
     }
-    if (!signUp) return;
+    const flow = mode === "login" ? signIn : signUp;
+    if (!flow) return;
 
     setSubmitting(true);
     try {
-      const { error } = await signUp.verifications.verifyEmailCode({
-        code: verificationCode.trim(),
-      });
+      const code = verificationCode.trim();
+      const { error } =
+        mode === "login"
+          ? await signIn!.mfa.verifyEmailCode({ code })
+          : await signUp!.verifications.verifyEmailCode({ code });
       if (error) {
         throw new Error(
           asErr(error).longMessage ?? asErr(error).message ?? "Invalid verification code."
         );
       }
-      const finalizeResult = await signUp.finalize();
+      const finalizeResult = await flow.finalize();
       if (finalizeResult?.error) {
         throw new Error(
           asErr(finalizeResult.error).longMessage ??
@@ -178,9 +193,7 @@ export default function LoginPage() {
             "Could not create session."
         );
       }
-      const params = new URLSearchParams(window.location.search);
-      const redirectUrl = params.get("redirect_url") || "/account";
-      router.push(redirectUrl);
+      router.push(safeRedirect());
     } catch (err: unknown) {
       setError(asErr(err).message ?? "Verification failed. Please try again.");
     } finally {
@@ -268,7 +281,7 @@ export default function LoginPage() {
                   disabled={submitting}
                   className="w-full py-3.5 rounded-lg bg-[#c82127] hover:bg-[#a5181d] text-[#fffaee] text-xs uppercase tracking-[0.2em] font-sans font-semibold transition-colors cursor-pointer disabled:opacity-60"
                 >
-                  {submitting ? "Verifying..." : "Complete Registration"}
+                  {submitting ? "Verifying..." : mode === "login" ? "Sign In" : "Complete Registration"}
                 </button>
                 <button
                   type="button"
