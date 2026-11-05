@@ -127,6 +127,12 @@ export function Footer() {
               >
                 info@zevarbaksa.com
               </a>
+              <a
+                href="tel:+919216048928"
+                className="mt-1 block text-xs text-[#fffaee] hover:underline underline-offset-4 transition-colors font-medium"
+              >
+                +91 92160 48928
+              </a>
             </div>
           </div>
 

@@ -6,9 +6,9 @@
  */
 
 export const siteConfig = {
-  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? "",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "+91 92160 48928",
   /** Digits only with country code, e.g. 919876543210 */
-  whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "").replace(/\D/g, ""),
+  whatsapp: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919216048928").replace(/\D/g, ""),
   email: "info@zevarbaksa.com",
   grievanceOfficer: {
     name: process.env.NEXT_PUBLIC_GRIEVANCE_OFFICER_NAME ?? "",
