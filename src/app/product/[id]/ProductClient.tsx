@@ -5,9 +5,6 @@ import Script from "next/script";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ShieldCheck,
-  Truck,
-  Gift,
   ChevronLeft,
   ChevronRight,
   MessageCircle,
@@ -436,31 +433,6 @@ export default function ProductClient({
                   </Link>
                 </div>
               )}
-
-              {/* TRUST & ASSURANCE BADGES */}
-              <div className="grid grid-cols-3 gap-2.5 border-t border-[#420002]/15 pt-6 mt-1 text-center">
-                <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-[#420002]/[0.03] border border-[#420002]/5">
-                  <ShieldCheck className="h-5 w-5 text-[#420002] stroke-[1.4]" />
-                  <span className="text-[10px] uppercase tracking-[0.15em] font-semibold text-[#420002] font-sans">
-                    BIS Hallmarked
-                  </span>
-                  <span className="text-[9px] text-foreground/55 font-sans">925 Sterling Silver</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-[#420002]/[0.03] border border-[#420002]/5">
-                  <Truck className="h-5 w-5 text-[#420002] stroke-[1.4]" />
-                  <span className="text-[10px] uppercase tracking-[0.15em] font-semibold text-[#420002] font-sans">
-                    Insured Transit
-                  </span>
-                  <span className="text-[9px] text-foreground/55 font-sans">Doorstep Protection</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-[#420002]/[0.03] border border-[#420002]/5">
-                  <Gift className="h-5 w-5 text-[#420002] stroke-[1.4]" />
-                  <span className="text-[10px] uppercase tracking-[0.15em] font-semibold text-[#420002] font-sans">
-                    Heirloom Box
-                  </span>
-                  <span className="text-[9px] text-foreground/55 font-sans">Brass & Silk Velvet</span>
-                </div>
-              </div>
 
               {/* ACCORDION SPECIFICATIONS & HERITAGE TABS */}
               <div className="border-t border-[#420002]/15 pt-2 flex flex-col font-sans">
