@@ -71,21 +71,27 @@ export default function CollectionClient({ slug }: { slug: string }) {
             <div className="w-12 sm:w-14 h-[1.5px] bg-[#d4af37] shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
           </div>
 
-          {/* Unified Narrative Paragraph */}
-          <p className="text-[11.5px] sm:text-[12.5px] md:text-[13px] tracking-[0.16em] text-[#fffaee] font-sans leading-[1.95] max-w-3xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            <span className="lowercase">
-              meenakari is the art of placing colour onto metal and making it permanent. fired at 750°c, each piece is a collaboration between centuries of jaipur tradition and modern design. the name comes from the persian &apos;mina&apos;, meaning paradise. the craft travelled from persia into the mughal court, and from there to jaipur, where it found the hands that would keep it alive for centuries. a single piece passes through many artisans before it is finished, each adding what the last could not, then fired at close to 750°c — fused to metal by heat that forgives nothing.
-            </span>{" "}
-            <span className="uppercase font-medium text-[#fffaee]">DEEPAK SANKIT</span>{" "}
-            <span className="font-serif-brand italic font-normal text-amber-200 lowercase tracking-normal">— master karigar &amp; designer</span>
-            <span className="text-amber-200/70 mx-1.5">·</span>
-            <span className="uppercase font-medium text-[#fffaee]">TANISHKA</span>{" "}
-            <span className="font-serif-brand italic font-normal text-amber-200 lowercase tracking-normal">— founder&apos;s devotion</span>
-            {" — "}
-            <span className="font-serif-brand italic text-[#fffaee] tracking-wide">
-              &ldquo;a woman chooses to wear what another woman once wore. she does not inherit it passively, she chooses it again, the way deepak chooses the bench each morning. the thread survives because someone, generation after generation, decides to pick it up. not a craft to be sold quickly, but one to be understood, and then worn.&rdquo;
-            </span>
-          </p>
+          {/* Narrative Text Paragraphs — Same as Home Page Brand Story */}
+          <div className="space-y-3.5 sm:space-y-4 text-[12px] sm:text-[13px] md:text-[13.5px] text-[#fffaee] font-sans font-light leading-[1.7] sm:leading-[1.75] max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <p>
+              Meenakari is the art of placing colour onto metal and making it permanent. The name comes from the Persian mina, meaning paradise, and the craft travelled from Persia into the Mughal court, and from there to Jaipur, where it found the hands that would keep it alive for centuries to come.
+            </p>
+            <p>
+              A single piece passes through many artisans before it is finished, each one adding what the last could not, then fired at close to 750°C, fused to metal by heat that forgives nothing.
+            </p>
+            <p>
+              Deepak Sankit (Designer/Artisan) was born into this craft. He continues the ritual and tradition seven generations of jewellers followed before him. He picks up the same tools which once made jewellery for the royals and now carries the family&apos;s legacy forward.
+            </p>
+            <p>
+              For Tanishka (Founder), Meenakari has always stood apart: a craft where colour becomes permanent, where patience is shown in places one thinks not to look. It was the kind of artistry she wanted the brand built around from the start. Not decoration, but devotion, fired into metal.
+            </p>
+            <p>
+              The collection is meant to be timeless, something to be passed down to generations, something they choose. It is meant to be chosen everyday, the same way Deepak chooses to sit on the bench his predecessors sat at. The thread does not survive because it was handed down. It survives because someone, generation after generation, decides to pick it up.
+            </p>
+            <p>
+              It&apos;s a craft to sit with, to be indulged in.
+            </p>
+          </div>
 
           {/* Hallmarks Badges */}
           <div className="pt-2 sm:pt-3">
