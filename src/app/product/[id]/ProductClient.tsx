@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Script from "next/script";
 import Link from "next/link";
 import {
@@ -104,6 +104,62 @@ export default function ProductClient({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen, currentIndex, product.gallery]);
 
+  // Lightbox thumbnail strip ref & active thumbnail auto-scroll
+  const lightboxThumbsRef = useRef<HTMLDivElement>(null);
+  const lightboxThumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const pageThumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Keep active thumbnail visible in both gallery rail and lightbox strip
+  useEffect(() => {
+    if (isLightboxOpen && lightboxThumbRefs.current[currentIndex]) {
+      lightboxThumbRefs.current[currentIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+    if (pageThumbRefs.current[currentIndex]) {
+      pageThumbRefs.current[currentIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [isLightboxOpen, currentIndex]);
+
+  // Wheel / trackpad scrolling through lightbox gallery
+  const lastScrollTime = useRef(0);
+  const handleLightboxWheel = (e: React.WheelEvent) => {
+    const now = Date.now();
+    if (now - lastScrollTime.current < 280) return;
+    if (Math.abs(e.deltaY) > 20 || Math.abs(e.deltaX) > 20) {
+      lastScrollTime.current = now;
+      if (e.deltaY > 0 || e.deltaX > 0) {
+        handleNextImage();
+      } else {
+        handlePrevImage();
+      }
+    }
+  };
+
+  // Touch swipe through lightbox gallery
+  const touchStartX = useRef<number | null>(null);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(deltaX) > 35) {
+      if (deltaX < 0) {
+        handleNextImage();
+      } else {
+        handlePrevImage();
+      }
+    }
+    touchStartX.current = null;
+  };
+
   // Accordion active tabs
   const [openTab, setOpenTab] = useState<string | null>("specs");
 
@@ -195,6 +251,9 @@ export default function ProductClient({
                 {product.gallery.map((imgUrl, idx) => (
                   <button
                     key={idx}
+                    ref={(el) => {
+                      pageThumbRefs.current[idx] = el;
+                    }}
                     onClick={() => setSelectedImage(imgUrl)}
                     aria-label={`View ${product.name} angle ${idx + 1}`}
                     className={`relative w-16 h-22 sm:w-20 sm:h-26 md:w-22 md:h-28 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 flex items-center justify-center ${selectedImage === imgUrl
@@ -605,80 +664,93 @@ export default function ProductClient({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-[#0d0204]/96 backdrop-blur-2xl flex flex-col justify-between p-4 md:p-8 animate-fade-in select-none"
+          className="fixed inset-0 z-50 bg-[#0d0204]/96 backdrop-blur-2xl flex flex-col h-[100dvh] w-screen overflow-hidden select-none animate-fade-in"
           onClick={() => setIsLightboxOpen(false)}
         >
           {/* Top Bar */}
-          <div className="flex items-center justify-between text-white/90 z-20 pb-4 border-b border-white/10 max-w-7xl mx-auto w-full">
+          <div className="flex-shrink-0 flex items-center justify-between text-white/90 z-20 px-4 sm:px-6 md:px-8 pt-4 pb-3 border-b border-white/10 max-w-7xl mx-auto w-full">
             <div className="flex items-center gap-3">
-              <span className="font-display text-xl md:text-2xl text-[#f3eedf]">{product.name}</span>
+              <span className="font-display text-lg sm:text-xl md:text-2xl text-[#f3eedf]">{product.name}</span>
               <span className="text-white/30">•</span>
-              <span className="text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-sans font-medium">
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#d4af37] font-sans font-medium">
                 View {currentIndex + 1} of {product.gallery.length}
               </span>
             </div>
             <button
               onClick={() => setIsLightboxOpen(false)}
-              className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shadow-sm"
+              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shadow-sm"
               aria-label="Close fullscreen view"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
 
-          {/* Main Full-Res Display with Navigation */}
+          {/* Main Full-Res Display with Navigation (Strictly contained within viewport flex) */}
           <div
-            className="relative flex-1 flex items-center justify-center max-w-6xl mx-auto w-full my-auto px-4"
+            className="relative flex-1 min-h-0 flex items-center justify-center max-w-6xl mx-auto w-full px-4 sm:px-8 py-2 my-auto"
             onClick={(e) => e.stopPropagation()}
+            onWheel={handleLightboxWheel}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {product.gallery.length > 1 && (
               <button
                 onClick={handlePrevImage}
-                className="absolute left-0 md:-left-8 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all z-20 backdrop-blur-md"
+                className="absolute left-2 sm:left-4 md:-left-6 top-1/2 -translate-y-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all z-20 backdrop-blur-md shadow-lg"
                 aria-label="Previous view"
               >
-                <ChevronLeft className="h-6 w-6" />
+                <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
             )}
 
             <img
               src={getMediaUrl(selectedImage)}
               alt={product.name}
-              className="max-h-[82vh] max-w-full object-contain rounded-xl drop-shadow-2xl select-none"
+              className="max-h-full max-w-full object-contain rounded-xl drop-shadow-2xl select-none"
             />
 
             {product.gallery.length > 1 && (
               <button
                 onClick={handleNextImage}
-                className="absolute right-0 md:-right-8 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all z-20 backdrop-blur-md"
+                className="absolute right-2 sm:right-4 md:-right-6 top-1/2 -translate-y-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all z-20 backdrop-blur-md shadow-lg"
                 aria-label="Next view"
               >
-                <ChevronRight className="h-6 w-6" />
+                <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
             )}
           </div>
 
-          {/* Bottom Thumbnails Strip in Lightbox */}
+          {/* Bottom Thumbnails Strip in Lightbox - Fully Visible, Elevated with Breathing Room */}
           <div
-            className="flex items-center justify-center gap-2 overflow-x-auto py-2 z-20 max-w-4xl mx-auto w-full scrollbar-none"
+            className="flex-shrink-0 z-20 max-w-4xl mx-auto w-full px-4 pt-2 pb-4 sm:pb-6"
             onClick={(e) => e.stopPropagation()}
           >
-            {product.gallery.map((imgUrl, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedImage(imgUrl)}
-                className={`relative w-14 h-18 rounded-lg overflow-hidden border transition-all flex-shrink-0 ${selectedImage === imgUrl
-                    ? "border-[#d4af37] ring-2 ring-[#d4af37]/40 scale-105 opacity-100"
-                    : "border-white/20 opacity-40 hover:opacity-100"
+            <div
+              ref={lightboxThumbsRef}
+              className="flex items-center justify-center gap-2.5 sm:gap-3 overflow-x-auto py-1 scrollbar-none"
+            >
+              {product.gallery.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  ref={(el) => {
+                    lightboxThumbRefs.current[idx] = el;
+                  }}
+                  onClick={() => setSelectedImage(imgUrl)}
+                  className={`relative w-12 h-16 sm:w-14 sm:h-19 md:w-16 md:h-22 rounded-lg overflow-hidden border transition-all duration-200 flex-shrink-0 ${
+                    selectedImage === imgUrl
+                      ? "border-[#d4af37] ring-2 ring-[#d4af37] scale-105 opacity-100 shadow-[0_0_14px_rgba(212,175,55,0.45)]"
+                      : "border-white/20 opacity-45 hover:opacity-100 hover:border-white/50"
                   }`}
-              >
-                <img
-                  src={getMediaUrl(imgUrl)}
-                  alt={`${product.name} thumbnail ${idx + 1}`}
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              </button>
-            ))}
+                  aria-label={`View angle ${idx + 1}`}
+                >
+                  <img
+                    src={getMediaUrl(imgUrl)}
+                    alt={`${product.name} thumbnail ${idx + 1}`}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}
