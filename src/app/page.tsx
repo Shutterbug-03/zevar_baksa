@@ -77,31 +77,17 @@ export default function Home() {
           </video>
 
           {/* Minimal Soft Vignette: Subtle, transparent, does not dim the video */}
-          <div className="absolute inset-x-0 bottom-0 h-28 sm:h-36 bg-gradient-to-t from-[#1b0809]/45 via-[#1b0809]/15 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
         </div>
 
-        {/* ════════════════════════════════════════════════════
-            CENTRAL SEAM WORDMARK — "ZEVAR BAKSA"
-            Unified Signature Brand Red (#c82127)
-        ════════════════════════════════════════════════════ */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 z-30 pointer-events-none select-none flex justify-center px-4">
-          <div className="relative inline-flex justify-center items-center text-center transform scale-x-110 sm:scale-x-115">
-            <h1
-              style={{
-                fontFamily: "var(--font-cinzel), 'Cinzel', var(--font-cormorant), Georgia, serif",
-              }}
-              className="relative font-medium uppercase text-[#c82127] drop-shadow-[0_2px_16px_rgba(0,0,0,0.35)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.75rem] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em] leading-none whitespace-nowrap"
-            >
-              ZEVAR BAKSA
-            </h1>
-          </div>
-        </div>
+        {/* Semantic SEO Heading */}
+        <h1 className="sr-only">Zevar Baksa — Handcrafted Heirloom Jewellery</h1>
       </section>
 
       {/* ════════════════════════════════════════════════════
           2. ABOUT US — Exact Brand Story (Blended seamlessly with Hero & Section 3)
       ════════════════════════════════════════════════════ */}
-      <section className="relative w-full min-h-[75vh] pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 bg-[#fffaee] flex flex-col justify-center">
+      <section className="relative w-full min-h-[75vh] pt-12 sm:pt-16 md:pt-20 pb-12 sm:pb-16 bg-[#fffaee] flex flex-col justify-center">
         
         {/* Content Container */}
         <div className="relative z-20 mx-auto w-full max-w-[1500px] px-6 sm:px-10 md:px-16">
