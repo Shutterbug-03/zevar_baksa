@@ -71,26 +71,21 @@ export default function CollectionClient({ slug }: { slug: string }) {
             <div className="w-12 sm:w-14 h-[1.5px] bg-[#d4af37] shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
           </div>
 
-          {/* Narrative Paragraph */}
-          <p className="text-[11px] sm:text-[12px] md:text-[13px] lowercase tracking-[0.18em] text-[#fffaee] font-sans leading-[1.85] max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            meenakari is the art of placing colour onto metal and making it permanent. fired at 750°c, each piece is a collaboration between centuries of jaipur tradition and modern design. the name comes from the persian &apos;mina&apos;, meaning paradise. the craft travelled from persia into the mughal court, and from there to jaipur, where it found the hands that would keep it alive for centuries. a single piece passes through many artisans before it is finished, each adding what the last could not, then fired at close to 750°c — fused to metal by heat that forgives nothing.
-          </p>
-
-          {/* Karigar & Founder Line */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[11px] sm:text-[12px] md:text-[12.5px] tracking-[0.22em] font-sans text-[#fffaee] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            <span className="font-medium uppercase text-[#fffaee]">DEEPAK SANKIT</span>
+          {/* Unified Narrative Paragraph */}
+          <p className="text-[11.5px] sm:text-[12.5px] md:text-[13px] tracking-[0.16em] text-[#fffaee] font-sans leading-[1.95] max-w-3xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <span className="lowercase">
+              meenakari is the art of placing colour onto metal and making it permanent. fired at 750°c, each piece is a collaboration between centuries of jaipur tradition and modern design. the name comes from the persian &apos;mina&apos;, meaning paradise. the craft travelled from persia into the mughal court, and from there to jaipur, where it found the hands that would keep it alive for centuries. a single piece passes through many artisans before it is finished, each adding what the last could not, then fired at close to 750°c — fused to metal by heat that forgives nothing.
+            </span>{" "}
+            <span className="uppercase font-medium text-[#fffaee]">DEEPAK SANKIT</span>{" "}
             <span className="font-serif-brand italic font-normal text-amber-200 lowercase tracking-normal">— master karigar &amp; designer</span>
-            <span className="text-amber-200/70 mx-1">·</span>
-            <span className="font-medium uppercase text-[#fffaee]">TANISHKA</span>
+            <span className="text-amber-200/70 mx-1.5">·</span>
+            <span className="uppercase font-medium text-[#fffaee]">TANISHKA</span>{" "}
             <span className="font-serif-brand italic font-normal text-amber-200 lowercase tracking-normal">— founder&apos;s devotion</span>
-          </div>
-
-          {/* Heritage Quote */}
-          <div className="max-w-xl sm:max-w-2xl pt-2">
-            <p className="font-serif-brand italic text-[13px] sm:text-[14px] md:text-[14.5px] text-[#fffaee] leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+            {" — "}
+            <span className="font-serif-brand italic text-[#fffaee] tracking-wide">
               &ldquo;a woman chooses to wear what another woman once wore. she does not inherit it passively, she chooses it again, the way deepak chooses the bench each morning. the thread survives because someone, generation after generation, decides to pick it up. not a craft to be sold quickly, but one to be understood, and then worn.&rdquo;
-            </p>
-          </div>
+            </span>
+          </p>
 
           {/* Hallmarks Badges */}
           <div className="pt-2 sm:pt-3">
