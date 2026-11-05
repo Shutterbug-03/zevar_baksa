@@ -62,8 +62,8 @@ export const collections: Collection[] = [
       {
         id: "p1",
         name: "Sugga",
-        tagline: "925 Silver • 24K Gold Kundan & Enamel",
-        description: "A delicate bird-shaped pendant in 925 silver with rich enamel detailing and 24K gold Kundan accent.",
+        tagline: "925 Silver • 22K Gold Kundan & Enamel",
+        description: "A delicate bird-shaped pendant in 925 silver with rich enamel detailing and 22K gold Kundan accent.",
         image: "/images/products/sugga/1.png",
         price: "₹16,000",
         cta: "Explore Sugga Pendant",
@@ -71,8 +71,8 @@ export const collections: Collection[] = [
       {
         id: "p2",
         name: "Rangila",
-        tagline: "24K Gold • Emerald, Ruby & Polki",
-        description: "Handcrafted in 24K gold adorned with emeralds, rubies and luminous polki on a fine pearl strand.",
+        tagline: "22K Gold • Emerald, Ruby & Polki",
+        description: "Handcrafted in 22K gold adorned with emeralds, rubies and luminous polki on a fine pearl strand.",
         image: "/images/products/rangila/1.png",
         price: "₹1,50,000",
         cta: "Explore Rangila Pendant",
@@ -80,8 +80,8 @@ export const collections: Collection[] = [
       {
         id: "p3",
         name: "Bulbul",
-        tagline: "24K Gold • Kundan Polki & Pearls",
-        description: "Delicate bird silhouette in pure 24K gold with traditional Kundan polki setting on a fine pearl necklace.",
+        tagline: "22K Gold • Kundan Polki & Pearls",
+        description: "Delicate bird silhouette in pure 22K gold with traditional Kundan polki setting on a fine pearl necklace.",
         image: "/images/products/bulbul/1.png",
         price: "₹1,25,000",
         cta: "Explore Bulbul Pendant",
@@ -90,7 +90,7 @@ export const collections: Collection[] = [
         id: "p4",
         name: "Manik",
         tagline: "925 Silver • Green Enamel & Ruby",
-        description: "925 silver with rich green enamel, 24K gold bezel work framing a vibrant ruby on a pearl strand.",
+        description: "925 silver with rich green enamel, 22K gold bezel work framing a vibrant ruby on a pearl strand.",
         image: "/images/products/manik/1.png",
         price: "₹20,000",
         cta: "Explore Manik Pendant",
@@ -99,7 +99,7 @@ export const collections: Collection[] = [
         id: "p5",
         name: "Kalapi",
         tagline: "925 Silver • Emerald & Blue Sapphire",
-        description: "Hand-engraved motifs in 925 silver with emerald and blue sapphire set in 24K gold Kundan.",
+        description: "Hand-engraved motifs in 925 silver with emerald and blue sapphire set in 22K gold Kundan.",
         image: "/images/products/kalapi/1.png",
         price: "₹25,000",
         cta: "Explore Kalapi Pendant",
@@ -107,8 +107,8 @@ export const collections: Collection[] = [
       {
         id: "p6",
         name: "Boond",
-        tagline: "24K Gold • Polki & Emerald Drop",
-        description: "Lotus bud pendant in 24K gold with pink/green enamel, Polki work, and a radiant emerald drop.",
+        tagline: "22K Gold • Polki & Emerald Drop",
+        description: "Lotus bud pendant in 22K gold with pink/green enamel, Polki work, and a radiant emerald drop.",
         image: "/images/products/boond/1.png",
         price: "₹1,00,000",
         cta: "Explore Boond Pendant",
@@ -116,8 +116,8 @@ export const collections: Collection[] = [
       {
         id: "p7",
         name: "Naksh-e-Gul",
-        tagline: "24K Gold • Polki & Multi-Color Enamel",
-        description: "Statement 24K gold floral paisley composition with central Kundan polki and fine pearl strand.",
+        tagline: "22K Gold • Polki & Multi-Color Enamel",
+        description: "Statement 22K gold floral paisley composition with central Kundan polki and fine pearl strand.",
         image: "/images/products/naksh-e-gul/1.png",
         price: "₹1,60,000",
         cta: "Explore Naksh-e-Gul Pendant",
@@ -179,7 +179,7 @@ export const collections: Collection[] = [
       {
         id: "e1",
         name: "Neel",
-        tagline: "Copper & Silver Base • Soft Pink Enamel",
+        tagline: "Solid 925 Silver • Soft Pink Enamel",
         description: "Delicately hand-painted bird drop earrings on pastel pink enamel with wire hooks.",
         image: "/images/products/neel/1.png",
         price: "₹11,000",
@@ -188,7 +188,7 @@ export const collections: Collection[] = [
       {
         id: "e2",
         name: "Darbar",
-        tagline: "Copper & Silver Base • Deep Red Enamel",
+        tagline: "Solid 925 Silver • Deep Red Enamel",
         description: "Intricately hand-painted courtly miniature figures against a rich deep-red enamel background.",
         image: "/images/products/darbar/1.png",
         price: "₹15,000",
@@ -197,7 +197,7 @@ export const collections: Collection[] = [
       {
         id: "e3",
         name: "Kanak",
-        tagline: "Copper & Silver Base • Soft Blue Enamel",
+        tagline: "Solid 925 Silver • Soft Blue Enamel",
         description: "Ornate hand-painted floral motif in warm gold tones against a powder blue enamel background.",
         image: "/images/products/kanak/1.png",
         price: "₹11,000",
@@ -206,7 +206,7 @@ export const collections: Collection[] = [
       {
         id: "e4",
         name: "Gul",
-        tagline: "Copper & Silver Base • Soft Green Enamel",
+        tagline: "Solid 925 Silver • Soft Green Enamel",
         description: "Hand-painted bluebirds and blooming rosebuds on oval pistachio green enamel discs.",
         image: "/images/products/gul/1.png",
         price: "₹12,000",
@@ -215,7 +215,7 @@ export const collections: Collection[] = [
       {
         id: "e5",
         name: "Gulabi",
-        tagline: "Copper & Silver Base • Jet Black Enamel",
+        tagline: "Solid 925 Silver • Jet Black Enamel",
         description: "Romantic blushing pink lotus blossoms hand-painted on jet black enamel drop medallions.",
         image: "/images/products/gulabi/1.png",
         price: "₹11,000",
@@ -224,7 +224,7 @@ export const collections: Collection[] = [
       {
         id: "e6",
         name: "Gulnaar",
-        tagline: "Copper & Silver Base • Cobalt Blue Enamel",
+        tagline: "Solid 925 Silver • Cobalt Blue Enamel",
         description: "Warm pink and yellow petals blooming on a radiant royal blue enamel background.",
         image: "/images/products/gulnaar/1.png",
         price: "₹12,000",
@@ -233,7 +233,7 @@ export const collections: Collection[] = [
       {
         id: "e7",
         name: "Aabha",
-        tagline: "Copper & Silver Base • Vivid Turquoise Enamel",
+        tagline: "Solid 925 Silver • Vivid Turquoise Enamel",
         description: "Engraved geometric floral relief with brilliant turquoise blue cloisonné enamel inlay.",
         image: "/images/products/aabha/1.jpg",
         price: "₹9,000",
@@ -242,7 +242,7 @@ export const collections: Collection[] = [
       {
         id: "e8",
         name: "Pankhuri",
-        tagline: "Copper & Silver Base • Cobalt Blue Enamel",
+        tagline: "Solid 925 Silver • Cobalt Blue Enamel",
         description: "Gilded bird and floral tracery on midnight cobalt blue enamel with polished silver bezel.",
         image: "/images/products/pankhuri/1.png",
         price: "₹12,000",
@@ -251,7 +251,7 @@ export const collections: Collection[] = [
       {
         id: "e9",
         name: "Rang",
-        tagline: "Copper & Silver Base • Multi-Color Enamel",
+        tagline: "Solid 925 Silver • Multi-Color Enamel",
         description: "Vibrant abstract color blocking in vermilion, ochre, cobalt, and jade with silver lines.",
         image: "/images/products/rang/1.png",
         price: "₹10,000",
@@ -260,7 +260,7 @@ export const collections: Collection[] = [
       {
         id: "e10",
         name: "Leher",
-        tagline: "Copper & Silver Base • Rose & Black Enamel",
+        tagline: "Solid 925 Silver • Rose & Black Enamel",
         description: "Sculptural fan silhouette featuring alternating blush pink and black enamel flutes.",
         image: "/images/products/leher/1.png",
         price: "₹10,000",
@@ -269,7 +269,7 @@ export const collections: Collection[] = [
       {
         id: "e11",
         name: "Neelkamal",
-        tagline: "Copper & Silver Base • Royal Violet Enamel",
+        tagline: "Solid 925 Silver • Royal Violet Enamel",
         description: "Crisp white floral petals hand-painted against a royal violet enamel ground on drop hooks.",
         image: "/images/products/neelkamal/1.png",
         price: "₹10,000",
