@@ -61,7 +61,7 @@ export default function CollectionClient({ slug }: { slug: string }) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/75 pointer-events-none" />
 
         {/* Hero Narrative Container - Perfectly Centered */}
-        <div className="relative z-20 flex flex-col items-center justify-center text-center max-w-4xl mx-auto px-6 sm:px-10 md:px-14 py-28 sm:py-36 md:py-40 space-y-6 sm:space-y-7">
+        <div className="relative z-20 flex flex-col items-center justify-center text-center max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-24 sm:py-32 md:py-36 space-y-6 sm:space-y-7">
           
           {/* Title & Gold Accent Line */}
           <div className="flex flex-col items-center space-y-4">
@@ -71,8 +71,8 @@ export default function CollectionClient({ slug }: { slug: string }) {
             <div className="w-12 sm:w-14 h-[1.5px] bg-[#d4af37] shadow-[0_1px_4px_rgba(0,0,0,0.8)]" />
           </div>
 
-          {/* Narrative Text Paragraphs — Same as Home Page Brand Story */}
-          <div className="space-y-3.5 sm:space-y-4 text-[12px] sm:text-[13px] md:text-[13.5px] text-[#fffaee] font-sans font-light leading-[1.7] sm:leading-[1.75] max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+          {/* Narrative Text Paragraphs — Wider Layout with Less Side Padding */}
+          <div className="space-y-3.5 sm:space-y-4 text-[12.5px] sm:text-[13.5px] md:text-[14px] text-[#fffaee] font-sans font-light leading-[1.7] sm:leading-[1.75] max-w-4xl lg:max-w-5xl mx-auto px-2 sm:px-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             <p>
               Meenakari is the art of placing colour onto metal and making it permanent. The name comes from the Persian mina, meaning paradise, and the craft travelled from Persia into the Mughal court, and from there to Jaipur, where it found the hands that would keep it alive for centuries to come.
             </p>
