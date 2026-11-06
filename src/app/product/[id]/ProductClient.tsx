@@ -73,17 +73,78 @@ export default function ProductClient({
 
   const currentIndex = Math.max(0, product.gallery.indexOf(selectedImage));
 
+  const mobileCarouselRef = useRef<HTMLDivElement>(null);
+  const lightboxCarouselRef = useRef<HTMLDivElement>(null);
+  const isProgrammaticScroll = useRef(false);
+
+  const scrollToSlide = (idx: number, smooth = true) => {
+    if (idx < 0 || idx >= product.gallery.length) return;
+    setSelectedImage(product.gallery[idx]);
+    isProgrammaticScroll.current = true;
+
+    if (mobileCarouselRef.current) {
+      const width = mobileCarouselRef.current.clientWidth;
+      mobileCarouselRef.current.scrollTo({
+        left: idx * width,
+        behavior: smooth ? "smooth" : "instant",
+      });
+    }
+
+    if (lightboxCarouselRef.current) {
+      const width = lightboxCarouselRef.current.clientWidth;
+      lightboxCarouselRef.current.scrollTo({
+        left: idx * width,
+        behavior: smooth ? "smooth" : "instant",
+      });
+    }
+
+    setTimeout(() => {
+      isProgrammaticScroll.current = false;
+    }, 450);
+  };
+
+  const handleMobileScroll = () => {
+    if (isProgrammaticScroll.current || !mobileCarouselRef.current) return;
+    const { scrollLeft, clientWidth } = mobileCarouselRef.current;
+    if (clientWidth === 0) return;
+    const newIdx = Math.round(scrollLeft / clientWidth);
+    if (newIdx !== currentIndex && newIdx >= 0 && newIdx < product.gallery.length) {
+      setSelectedImage(product.gallery[newIdx]);
+    }
+  };
+
+  const handleLightboxScroll = () => {
+    if (isProgrammaticScroll.current || !lightboxCarouselRef.current) return;
+    const { scrollLeft, clientWidth } = lightboxCarouselRef.current;
+    if (clientWidth === 0) return;
+    const newIdx = Math.round(scrollLeft / clientWidth);
+    if (newIdx !== currentIndex && newIdx >= 0 && newIdx < product.gallery.length) {
+      setSelectedImage(product.gallery[newIdx]);
+    }
+  };
+
   const handlePrevImage = () => {
     if (product.gallery.length <= 1) return;
     const nextIdx = (currentIndex - 1 + product.gallery.length) % product.gallery.length;
-    setSelectedImage(product.gallery[nextIdx]);
+    scrollToSlide(nextIdx);
   };
 
   const handleNextImage = () => {
     if (product.gallery.length <= 1) return;
     const nextIdx = (currentIndex + 1) % product.gallery.length;
-    setSelectedImage(product.gallery[nextIdx]);
+    scrollToSlide(nextIdx);
   };
+
+  // Sync carousel slide when lightbox opens
+  useEffect(() => {
+    if (isLightboxOpen && lightboxCarouselRef.current) {
+      const width = lightboxCarouselRef.current.clientWidth;
+      lightboxCarouselRef.current.scrollTo({
+        left: currentIndex * width,
+        behavior: "instant",
+      });
+    }
+  }, [isLightboxOpen]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -223,129 +284,235 @@ export default function ProductClient({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
             {/* LEFT COLUMN: MULTI-IMAGE GALLERY (7 Cols) */}
-            <div className="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4 lg:gap-6">
+            <div className="lg:col-span-7">
 
-              {/* Thumbnails rail */}
-              <div className="flex md:flex-col gap-2.5 overflow-x-auto md:overflow-y-auto max-h-[680px] scrollbar-none flex-shrink-0 py-0.5">
-                {product.gallery.map((imgUrl, idx) => (
-                  <button
-                    key={idx}
-                    ref={(el) => {
-                      pageThumbRefs.current[idx] = el;
-                    }}
-                    onClick={() => setSelectedImage(imgUrl)}
-                    aria-label={`View ${product.name} angle ${idx + 1}`}
-                    className={`relative w-16 h-22 sm:w-20 sm:h-26 md:w-22 md:h-28 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 flex items-center justify-center ${selectedImage === imgUrl
-                        ? "ring-2 ring-primary shadow-md scale-[1.02] opacity-100"
-                        : "opacity-60 hover:opacity-100 hover:scale-[1.01]"
-                      }`}
+              {/* MOBILE GALLERY VIEW (md:hidden) — Native Smooth Touch-Swipe Carousel & Stable Frame */}
+              <div className="md:hidden flex flex-col gap-3.5">
+                {/* Fixed Aspect-Ratio Stage: Stable, Zero Layout Shifts */}
+                <div className="relative w-full aspect-[4/5] bg-[#f7f2e7]/80 rounded-2xl overflow-hidden shadow-xs border border-[#420002]/5">
+                  <div
+                    ref={mobileCarouselRef}
+                    onScroll={handleMobileScroll}
+                    className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none touch-pan-x w-full h-full"
                   >
-                    <Img
-                      src={getMediaUrl(imgUrl)}
-                      sizes="96px"
-                      alt={`${product.name} view ${idx + 1}`}
-                      className="w-full h-full object-cover rounded-xl"
-                    />
-                  </button>
-                ))}
-              </div>
-
-              {/* Main Featured Image — Clean, direct presentation with zero extra section box */}
-              <div
-                className="relative flex-1 select-none flex items-start justify-center group"
-                onMouseEnter={() => setIsZoomed(true)}
-                onMouseLeave={() => setIsZoomed(false)}
-                onMouseMove={handleMouseMove}
-              >
-                {/* Main Image with Zoom pan */}
-                <div
-                  onClick={() => setIsLightboxOpen(true)}
-                  className="relative w-full cursor-zoom-in overflow-hidden rounded-2xl flex items-center justify-center"
-                  title="Click to view full screen"
-                >
-                  <Img
-                    src={getMediaUrl(selectedImage)}
-                    sizes="(max-width: 1024px) 100vw, 55vw"
-                    priority
-                    alt={product.name}
-                    style={{
-                      transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                      transform: isZoomed ? "scale(1.35)" : "scale(1)",
-                    }}
-                    className="w-full h-auto max-h-[760px] object-contain mx-auto rounded-2xl transition-transform duration-200 ease-out pointer-events-none"
-                  />
-
-                  {/* Floating Action Controls: Fullscreen Zoom & Share */}
-                  <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsLightboxOpen(true);
-                      }}
-                      className="h-9 w-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-105"
-                      title="Fullscreen zoom"
-                      aria-label="Zoom image"
-                    >
-                      <Maximize2 className="h-4 w-4 stroke-[1.7]" />
-                    </button>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigator.clipboard?.writeText(window.location.href);
-                      }}
-                      className="h-9 w-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-105"
-                      title="Copy link to product"
-                      aria-label="Share product"
-                    >
-                      <Share2 className="h-4 w-4 stroke-[1.7]" />
-                    </button>
+                    {product.gallery.map((imgUrl, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setSelectedImage(imgUrl);
+                          setIsLightboxOpen(true);
+                        }}
+                        className="min-w-full w-full h-full snap-center flex-shrink-0 relative flex items-center justify-center p-3.5 cursor-zoom-in select-none"
+                      >
+                        <Img
+                          src={getMediaUrl(imgUrl)}
+                          sizes="(max-width: 768px) 100vw, 55vw"
+                          priority={idx === 0}
+                          alt={`${product.name} view ${idx + 1}`}
+                          className="w-full h-full object-contain pointer-events-none drop-shadow-sm transition-transform duration-300"
+                        />
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Floating Left / Right Nav Arrows */}
-                  {product.gallery.length > 1 && (
-                    <>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePrevImage();
-                        }}
-                        className="absolute left-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
-                        aria-label="Previous view"
-                      >
-                        <ChevronLeft className="h-5 w-5 stroke-[1.8]" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleNextImage();
-                        }}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
-                        aria-label="Next view"
-                      >
-                        <ChevronRight className="h-5 w-5 stroke-[1.8]" />
-                      </button>
-                    </>
-                  )}
-
-                  {/* Availability Badge */}
-                  <div className="absolute top-4 left-4 z-10 pointer-events-none">
+                  {/* Top-Left: Availability Badge */}
+                  <div className="absolute top-3 left-3 z-20 pointer-events-none">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.22em] font-medium backdrop-blur-md shadow-xs font-sans ${product.status === "Ready to Ship"
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9.5px] uppercase tracking-[0.2em] font-medium backdrop-blur-md shadow-xs ${
+                        product.status === "Ready to Ship"
                           ? "bg-[#1E3A2F]/90 text-[#D7EFE2] border border-[#2F5848]/40"
                           : "bg-[#420002]/90 text-[#FAF7F2] border border-[#d4af37]/30"
-                        }`}
+                      }`}
                     >
                       <span className="text-[#d4af37]">✦</span> {product.status}
                     </span>
                   </div>
 
-                  {/* Bottom Gallery Position Indicator */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#420002] text-[10px] font-sans font-semibold uppercase tracking-[0.22em] border border-[#420002]/10 shadow-xs pointer-events-none opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                    {currentIndex + 1} of {product.gallery.length}
+                  {/* Top-Right: Fullscreen Zoom & Share */}
+                  <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsLightboxOpen(true);
+                      }}
+                      className="h-8 w-8 rounded-full bg-white/90 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center shadow-xs active:scale-95 transition-all"
+                      aria-label="Fullscreen zoom"
+                    >
+                      <Maximize2 className="h-3.5 w-3.5 stroke-[1.8]" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigator.clipboard?.writeText(window.location.href);
+                      }}
+                      className="h-8 w-8 rounded-full bg-white/90 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center shadow-xs active:scale-95 transition-all"
+                      aria-label="Share product"
+                    >
+                      <Share2 className="h-3.5 w-3.5 stroke-[1.8]" />
+                    </button>
+                  </div>
+
+                  {/* Floating Bottom: Counter Pill */}
+                  <div className="absolute bottom-3 inset-x-0 z-20 pointer-events-none flex flex-col items-center gap-1.5">
+                    <div className="px-3 py-1 rounded-full bg-black/45 backdrop-blur-md text-[#fffaee] text-[10px] font-sans font-medium tracking-[0.2em] shadow-xs">
+                      {currentIndex + 1} / {product.gallery.length}
+                    </div>
                   </div>
                 </div>
 
+                {/* Mobile Thumbnails Strip */}
+                {product.gallery.length > 1 && (
+                  <div className="flex items-center gap-2.5 overflow-x-auto py-1 scrollbar-none w-full">
+                    {product.gallery.map((imgUrl, idx) => (
+                      <button
+                        key={idx}
+                        ref={(el) => {
+                          pageThumbRefs.current[idx] = el;
+                        }}
+                        onClick={() => scrollToSlide(idx)}
+                        aria-label={`View ${product.name} angle ${idx + 1}`}
+                        className={`relative aspect-[4/5] w-14 sm:w-16 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 bg-[#f7f2e7]/80 flex items-center justify-center border-2 ${
+                          currentIndex === idx
+                            ? "border-[#c82127] ring-2 ring-[#c82127]/20 scale-105 opacity-100 shadow-sm"
+                            : "border-transparent opacity-60 hover:opacity-100"
+                        }`}
+                      >
+                        <Img
+                          src={getMediaUrl(imgUrl)}
+                          sizes="80px"
+                          alt={`${product.name} view ${idx + 1}`}
+                          className="w-full h-full object-contain p-1"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* DESKTOP GALLERY VIEW (hidden md:flex) */}
+              <div className="hidden md:flex gap-4 lg:gap-6">
+                {/* Thumbnails rail */}
+                <div className="flex flex-col gap-2.5 overflow-y-auto max-h-[680px] scrollbar-none flex-shrink-0 py-0.5">
+                  {product.gallery.map((imgUrl, idx) => (
+                    <button
+                      key={idx}
+                      ref={(el) => {
+                        pageThumbRefs.current[idx] = el;
+                      }}
+                      onClick={() => scrollToSlide(idx)}
+                      aria-label={`View ${product.name} angle ${idx + 1}`}
+                      className={`relative w-20 h-26 md:w-22 md:h-28 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0 flex items-center justify-center bg-[#f7f2e7]/80 border-2 ${
+                        currentIndex === idx
+                          ? "border-[#c82127] ring-2 ring-[#c82127]/20 shadow-md scale-[1.02] opacity-100"
+                          : "border-transparent opacity-60 hover:opacity-100 hover:scale-[1.01]"
+                      }`}
+                    >
+                      <Img
+                        src={getMediaUrl(imgUrl)}
+                        sizes="96px"
+                        alt={`${product.name} view ${idx + 1}`}
+                        className="w-full h-full object-contain p-1 rounded-xl"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Main Featured Image with Hover Zoom Pan */}
+                <div
+                  className="relative flex-1 select-none flex items-start justify-center group"
+                  onMouseEnter={() => setIsZoomed(true)}
+                  onMouseLeave={() => setIsZoomed(false)}
+                  onMouseMove={handleMouseMove}
+                >
+                  <div
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="relative w-full aspect-[4/5] max-h-[720px] bg-[#f7f2e7]/80 cursor-zoom-in overflow-hidden rounded-2xl flex items-center justify-center border border-[#420002]/5 shadow-xs"
+                    title="Click to view full screen"
+                  >
+                    <Img
+                      src={getMediaUrl(selectedImage)}
+                      sizes="(max-width: 1024px) 100vw, 55vw"
+                      priority
+                      alt={product.name}
+                      style={{
+                        transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                        transform: isZoomed ? "scale(1.4)" : "scale(1)",
+                      }}
+                      className="w-full h-full object-contain p-4 mx-auto rounded-2xl transition-transform duration-200 ease-out pointer-events-none drop-shadow-sm"
+                    />
+
+                    {/* Floating Action Controls */}
+                    <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsLightboxOpen(true);
+                        }}
+                        className="h-9 w-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-105"
+                        title="Fullscreen zoom"
+                        aria-label="Zoom image"
+                      >
+                        <Maximize2 className="h-4 w-4 stroke-[1.7]" />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigator.clipboard?.writeText(window.location.href);
+                        }}
+                        className="h-9 w-9 rounded-full bg-white/85 hover:bg-white backdrop-blur-md text-[#420002] border border-[#420002]/10 flex items-center justify-center transition-all duration-300 shadow-sm opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-105"
+                        title="Copy link to product"
+                        aria-label="Share product"
+                      >
+                        <Share2 className="h-4 w-4 stroke-[1.7]" />
+                      </button>
+                    </div>
+
+                    {/* Floating Left / Right Nav Arrows */}
+                    {product.gallery.length > 1 && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePrevImage();
+                          }}
+                          className="absolute left-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
+                          aria-label="Previous view"
+                        >
+                          <ChevronLeft className="h-5 w-5 stroke-[1.8]" />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleNextImage();
+                          }}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 z-20 h-10 w-10 rounded-full bg-white/85 hover:bg-white text-[#420002] backdrop-blur-md border border-[#420002]/10 shadow-md flex items-center justify-center transition-all duration-300 opacity-80 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 active:scale-95"
+                          aria-label="Next view"
+                        >
+                          <ChevronRight className="h-5 w-5 stroke-[1.8]" />
+                        </button>
+                      </>
+                    )}
+
+                    {/* Availability Badge */}
+                    <div className="absolute top-4 left-4 z-10 pointer-events-none">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.22em] font-medium backdrop-blur-md shadow-xs font-sans ${
+                          product.status === "Ready to Ship"
+                            ? "bg-[#1E3A2F]/90 text-[#D7EFE2] border border-[#2F5848]/40"
+                            : "bg-[#420002]/90 text-[#FAF7F2] border border-[#d4af37]/30"
+                        }`}
+                      >
+                        <span className="text-[#d4af37]">✦</span> {product.status}
+                      </span>
+                    </div>
+
+                    {/* Bottom Gallery Position Indicator */}
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#420002] text-[10px] font-sans font-semibold uppercase tracking-[0.22em] border border-[#420002]/10 shadow-xs pointer-events-none opacity-90 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                      {currentIndex + 1} of {product.gallery.length}
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -649,7 +816,7 @@ export default function ProductClient({
           onClick={() => setIsLightboxOpen(false)}
         >
           {/* Top Bar */}
-          <div className="flex-shrink-0 flex items-center justify-between text-white/90 z-20 px-4 sm:px-6 md:px-8 pt-4 pb-3 border-b border-white/10 max-w-7xl mx-auto w-full">
+          <div className="flex-shrink-0 flex items-center justify-between text-white/90 z-30 px-4 sm:px-6 md:px-8 pt-4 pb-3 border-b border-white/10 max-w-7xl mx-auto w-full">
             <div className="flex items-center gap-3">
               <span className="font-display text-lg sm:text-xl md:text-2xl text-[#f3eedf]">{product.name}</span>
               <span className="text-white/30">•</span>
@@ -659,52 +826,65 @@ export default function ProductClient({
             </div>
             <button
               onClick={() => setIsLightboxOpen(false)}
-              className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shadow-sm"
+              className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all shadow-sm active:scale-95 cursor-pointer"
               aria-label="Close fullscreen view"
             >
-              <X className="h-4 w-4 sm:h-5 sm:w-5" />
+              <X className="h-5 w-5" />
             </button>
           </div>
 
-          {/* Main Full-Res Display with Navigation (Strictly contained within viewport flex) */}
+          {/* Main Full-Res Display Carousel (Smooth swipe on mobile, smooth navigation on desktop) */}
           <div
-            className="relative flex-1 min-h-0 flex items-center justify-center max-w-6xl mx-auto w-full px-4 sm:px-8 py-2 my-auto"
+            ref={lightboxCarouselRef}
+            onScroll={handleLightboxScroll}
+            className="relative flex-1 min-h-0 flex items-center overflow-x-auto snap-x snap-mandatory scrollbar-none touch-pan-x w-full animate-modal-in"
             onClick={(e) => e.stopPropagation()}
             onWheel={handleLightboxWheel}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
           >
-            {product.gallery.length > 1 && (
+            {product.gallery.map((imgUrl, idx) => (
+              <div
+                key={idx}
+                className="min-w-full w-full h-full snap-center flex-shrink-0 flex items-center justify-center p-3 sm:p-6"
+              >
+                <Img
+                  src={getMediaUrl(imgUrl)}
+                  sizes="100vw"
+                  alt={`${product.name} fullscreen view ${idx + 1}`}
+                  className="max-h-[76vh] sm:max-h-[82vh] max-w-[92vw] sm:max-w-4xl object-contain rounded-xl drop-shadow-2xl select-none"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Chevron Floating Buttons */}
+          {product.gallery.length > 1 && (
+            <>
               <button
-                onClick={handlePrevImage}
-                className="absolute left-2 sm:left-4 md:-left-6 top-1/2 -translate-y-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all z-20 backdrop-blur-md shadow-lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrevImage();
+                }}
+                className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/15 hover:bg-white/30 text-white items-center justify-center transition-all z-30 backdrop-blur-md shadow-lg active:scale-95"
                 aria-label="Previous view"
               >
-                <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+                <ChevronLeft className="h-6 w-6" />
               </button>
-            )}
-
-            <Img
-              src={getMediaUrl(selectedImage)}
-              sizes="100vw"
-              alt={product.name}
-              className="max-h-full max-w-full object-contain rounded-xl drop-shadow-2xl select-none"
-            />
-
-            {product.gallery.length > 1 && (
               <button
-                onClick={handleNextImage}
-                className="absolute right-2 sm:right-4 md:-right-6 top-1/2 -translate-y-1/2 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-all z-20 backdrop-blur-md shadow-lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleNextImage();
+                }}
+                className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full bg-white/15 hover:bg-white/30 text-white items-center justify-center transition-all z-30 backdrop-blur-md shadow-lg active:scale-95"
                 aria-label="Next view"
               >
-                <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+                <ChevronRight className="h-6 w-6" />
               </button>
-            )}
-          </div>
+            </>
+          )}
 
           {/* Bottom Thumbnails Strip in Lightbox - Fully Visible, Elevated with Breathing Room */}
           <div
-            className="flex-shrink-0 z-20 max-w-4xl mx-auto w-full px-4 pt-2 pb-4 sm:pb-6"
+            className="flex-shrink-0 z-30 max-w-4xl mx-auto w-full px-4 pt-2 pb-5 sm:pb-7"
             onClick={(e) => e.stopPropagation()}
           >
             <div
@@ -717,10 +897,10 @@ export default function ProductClient({
                   ref={(el) => {
                     lightboxThumbRefs.current[idx] = el;
                   }}
-                  onClick={() => setSelectedImage(imgUrl)}
-                  className={`relative w-12 h-16 sm:w-14 sm:h-19 md:w-16 md:h-22 rounded-lg overflow-hidden border transition-all duration-200 flex-shrink-0 ${
-                    selectedImage === imgUrl
-                      ? "border-[#d4af37] ring-2 ring-[#d4af37] scale-105 opacity-100 shadow-[0_0_14px_rgba(212,175,55,0.45)]"
+                  onClick={() => scrollToSlide(idx)}
+                  className={`relative w-12 h-16 sm:w-14 sm:h-19 md:w-16 md:h-22 rounded-lg overflow-hidden border-2 transition-all duration-200 flex-shrink-0 bg-white/5 ${
+                    currentIndex === idx
+                      ? "border-[#d4af37] ring-2 ring-[#d4af37]/40 scale-105 opacity-100 shadow-[0_0_14px_rgba(212,175,55,0.45)]"
                       : "border-white/20 opacity-45 hover:opacity-100 hover:border-white/50"
                   }`}
                   aria-label={`View angle ${idx + 1}`}
@@ -729,7 +909,7 @@ export default function ProductClient({
                     src={getMediaUrl(imgUrl)}
                     sizes="80px"
                     alt={`${product.name} thumbnail ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-contain p-1 rounded-lg"
                   />
                 </button>
               ))}

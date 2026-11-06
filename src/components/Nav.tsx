@@ -132,10 +132,10 @@ export function Nav() {
             : "bg-[#fffaee] border-b border-transparent text-[#420002]"
         }`}
       >
-        <nav className="mx-auto flex max-w-[1600px] items-center h-[3.6rem] md:h-[4.0rem] px-5 sm:px-8 md:px-14 justify-between">
+        <nav className="relative mx-auto flex max-w-[1600px] items-center h-[3.6rem] md:h-[4.0rem] px-4 sm:px-8 md:px-14 justify-between">
 
           {/* Left: Minimal Hamburger Icon */}
-          <div className="flex-1 flex justify-start items-center">
+          <div className="flex items-center justify-start z-20">
             {menuOpen ? (
               <button
                 aria-label="Close menu"
@@ -163,25 +163,27 @@ export function Nav() {
             )}
           </div>
 
-          {/* Center: Monogram Submark Logo */}
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className="flex justify-center items-center group py-0.5"
-          >
-            <div className="relative flex items-center justify-center">
-              <img
-                src="/logos/submark.png"
-                alt="Zevar Baksa Monogram"
-                className={`h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
-                  isTransparentDarkHero ? "brightness-0 invert drop-shadow-md" : ""
-                }`}
-              />
-            </div>
-          </Link>
+          {/* Center: Monogram Submark Logo — Strictly Absolute Screen Centered */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-auto">
+            <Link
+              href="/"
+              onClick={() => setMenuOpen(false)}
+              className="flex justify-center items-center group py-0.5"
+            >
+              <div className="relative flex items-center justify-center">
+                <img
+                  src="/logos/submark.png"
+                  alt="Zevar Baksa Monogram"
+                  className={`h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 group-hover:scale-105 ${
+                    isTransparentDarkHero ? "brightness-0 invert drop-shadow-md" : ""
+                  }`}
+                />
+              </div>
+            </Link>
+          </div>
 
           {/* Right: Currency, Search, Wishlist & Cart */}
-          <div className={`flex-1 flex justify-end items-center gap-2 sm:gap-4 md:gap-5 transition-colors duration-300 ${
+          <div className={`flex items-center justify-end gap-1.5 sm:gap-2.5 md:gap-4 z-20 transition-colors duration-300 ${
             isTransparentDarkHero ? "text-[#fffaee]" : "text-[#420002]"
           }`}>
 
@@ -230,7 +232,7 @@ export function Nav() {
               <Search className="h-4 w-4 sm:h-[18px] sm:w-[18px] stroke-[1.5]" />
             </button>
 
-            {/* Account / Login */}
+            {/* Account / Login — Hidden on small mobile to avoid header clutter; accessible in drawer */}
             <button
               aria-label="Account"
               onClick={() => {
@@ -240,7 +242,7 @@ export function Nav() {
                   openLogin();
                 }
               }}
-              className={`p-2 rounded-full transition-all duration-300 relative cursor-pointer active:scale-95 ${
+              className={`hidden md:inline-flex p-2 rounded-full transition-all duration-300 relative cursor-pointer active:scale-95 ${
                 isTransparentDarkHero
                   ? "hover:text-[#c82127] hover:bg-white/15"
                   : "hover:text-[#c82127] hover:bg-[#420002]/5"
@@ -418,8 +420,26 @@ export function Nav() {
           })}
         </div>
 
+        {/* Mobile Drawer Account Access */}
+        <div className="relative z-10 w-full max-w-xs flex items-center justify-center my-4 md:hidden font-sans">
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              if (authLoaded && isSignedIn) {
+                router.push("/account");
+              } else {
+                openLogin();
+              }
+            }}
+            className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-2.5 rounded-full border border-[#420002]/25 hover:border-[#c82127] text-[11px] uppercase tracking-[0.22em] font-medium text-[#420002] hover:text-[#c82127] transition-all bg-[#fffaee] active:scale-95 shadow-xs"
+          >
+            <User className="h-3.5 w-3.5 stroke-[1.5]" />
+            <span>{authLoaded && isSignedIn ? "My Atelier Account" : "Sign In / Register"}</span>
+          </button>
+        </div>
+
         {/* Delicate Line Divider */}
-        <div className="relative z-10 flex items-center gap-2.5 my-6 sm:my-8">
+        <div className="relative z-10 flex items-center gap-2.5 my-4 sm:my-8">
           <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#420002]/20" />
           <div className="h-1.5 w-1.5 rotate-45 border border-[#c82127]" />
           <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#420002]/20" />
