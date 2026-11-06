@@ -1011,7 +1011,7 @@ export default function CheckoutPage() {
         order_id: orderData.order_id,
         name: "Zevar Baksa Atelier",
         description: `${orderItems.length} heirloom piece${orderItems.length > 1 ? "s" : ""}`,
-        image: "/favicon.ico",
+        image: "/icon.png",
         prefill: {
           name: `${address.firstName} ${address.lastName}`.trim(),
           email: address.email,
