@@ -4,6 +4,11 @@ import { useEffect, useState, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useUIStore } from "@/store/uiStore";
 
+// Keep the loader up for at least one sweep of the gold sheen, so fast page changes still show
+// the full branded animation instead of a flash. Slow loads are never made longer than this.
+const MIN_VISIBLE_MS = 900;
+const MIN_VISIBLE_REDUCED_MOTION_MS = 300;
+
 export function LuxuryLoadingScreen() {
   const { pageLoading, pageLoadingMessage, stopPageLoading, startPageLoading } = useUIStore();
   const pathname = usePathname();
@@ -17,10 +22,12 @@ export function LuxuryLoadingScreen() {
   const lastRouteRef = useRef(pathname + (searchParams ? searchParams.toString() : ""));
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const safetyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const shownAtRef = useRef(0);
 
   // Sync with pageLoading state from store
   useEffect(() => {
     if (pageLoading) {
+      shownAtRef.current = Date.now();
       // Mount to DOM immediately
       setMounted(true);
       // Slight tick for CSS opacity transition to trigger cleanly
@@ -51,7 +58,10 @@ export function LuxuryLoadingScreen() {
       lastRouteRef.current = currentRoute;
 
       if (pageLoading) {
-        // Quick 120ms tick so the new page has painted its initial DOM
+        // At least 120ms so the new page has painted, and at least the minimum display time.
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const minVisible = reduceMotion ? MIN_VISIBLE_REDUCED_MOTION_MS : MIN_VISIBLE_MS;
+        const wait = Math.max(120, minVisible - (Date.now() - shownAtRef.current));
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
           setVisible(false);
@@ -59,7 +69,7 @@ export function LuxuryLoadingScreen() {
             stopPageLoading();
             setMounted(false);
           }, 280);
-        }, 120);
+        }, wait);
       }
     }
   }, [pathname, searchParams, pageLoading, stopPageLoading]);
