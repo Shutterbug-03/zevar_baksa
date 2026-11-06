@@ -1,6 +1,7 @@
 import { Layout } from "@/components/Layout";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Img } from "@/components/Img";
 
 export const metadata = {
   title: "Our Story",
@@ -70,8 +71,9 @@ export default function About() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
             {/* 1. Needle & Enamel Application */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
-              <img 
-                src="/bento-1-needle.jpg" 
+              <Img 
+                src="/bento-1-needle.jpg"
+                sizes="(max-width: 768px) 100vw, 33vw" 
                 alt="Artisan applying vibrant enamel with precision needle" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -79,8 +81,9 @@ export default function About() {
 
             {/* 2. Camel Meenakari Crafting */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
-              <img 
-                src="/bento-2-camel.jpg" 
+              <Img 
+                src="/bento-2-camel.jpg"
+                sizes="(max-width: 768px) 100vw, 33vw" 
                 alt="Artisan crafting gold and meenakari camel heirloom piece" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -88,8 +91,9 @@ export default function About() {
 
             {/* 3. Brass Pigment Palette */}
             <div className="group relative aspect-[4/3.8] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
-              <img 
-                src="/bento-3-palette.jpg" 
+              <Img 
+                src="/bento-3-palette.jpg"
+                sizes="(max-width: 768px) 100vw, 33vw" 
                 alt="Traditional brass palette with natural enamel color pigments" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -100,8 +104,9 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
             {/* 4. Flower Filigree Assembly with Tweezers */}
             <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
-              <img 
-                src="/bento-4-tweezers.jpg" 
+              <Img 
+                src="/bento-4-tweezers.jpg"
+                sizes="(max-width: 768px) 100vw, 33vw" 
                 alt="Karigar handcrafting delicate jewellery flower motif with precision tweezers" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -109,8 +114,9 @@ export default function About() {
 
             {/* 5. Liquid Crucible Pouring */}
             <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500">
-              <img 
-                src="/bento-5-pouring.jpg" 
+              <Img 
+                src="/bento-5-pouring.jpg"
+                sizes="(max-width: 768px) 100vw, 33vw" 
                 alt="Hands pouring molten liquid from traditional crucible into vessel" 
                 className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
               />
@@ -191,8 +197,9 @@ export default function About() {
             <div className="lg:col-span-6 grid grid-cols-12 gap-4 sm:gap-6 items-center">
               <div className="col-span-7">
                 <div className="aspect-[3/4] overflow-hidden rounded-md shadow-md bg-[#f4eee1] group">
-                  <img 
-                    src="/about/artisan-workshop.jpg" 
+                  <Img 
+                    src="/about/artisan-workshop.jpg"
+                    sizes="(max-width: 768px) 100vw, 50vw" 
                     alt="Master artisan at work in Jaipur" 
                     className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
                   />
@@ -200,8 +207,9 @@ export default function About() {
               </div>
               <div className="col-span-5">
                 <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-md shadow-md bg-[#f4eee1] group">
-                  <img 
-                    src="/about/artisan-tweezers.jpg" 
+                  <Img 
+                    src="/about/artisan-tweezers.jpg"
+                    sizes="(max-width: 768px) 100vw, 50vw" 
                     alt="Artisan handcrafting delicate jewellery motif with precision tweezers" 
                     className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
                   />

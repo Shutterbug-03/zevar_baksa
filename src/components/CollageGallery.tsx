@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Img } from "@/components/Img";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -81,8 +82,9 @@ export function CollageGallery() {
                 key={`top-${idx}`}
                 className="group relative aspect-[4/3.8] w-full overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500"
               >
-                <img
+                <Img
                   src={card.src}
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   alt={card.alt}
                   className={`h-full w-full object-cover ${card.position || "object-center"} transition-transform duration-700 group-hover:scale-105`}
                 />
@@ -97,8 +99,9 @@ export function CollageGallery() {
                 key={`bottom-${idx}`}
                 className="group relative aspect-[16/9.5] w-full overflow-hidden rounded-lg bg-[#f4eee1] shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500"
               >
-                <img
+                <Img
                   src={card.src}
+                  sizes="(max-width: 768px) 50vw, 33vw"
                   alt={card.alt}
                   className={`h-full w-full object-cover ${card.position || "object-center"} transition-transform duration-700 group-hover:scale-105`}
                 />

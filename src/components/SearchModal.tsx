@@ -6,6 +6,7 @@ import { X, Search, ArrowRight } from "lucide-react";
 import { useUIStore } from "@/store/uiStore";
 import { useProductStore } from "@/store/productStore";
 import { useCurrencyStore } from "@/store/currencyStore";
+import { Img } from "@/components/Img";
 
 export function SearchModal() {
   const { searchOpen, closeSearch } = useUIStore();
@@ -132,8 +133,9 @@ export function SearchModal() {
                     className="group flex gap-3 p-3 rounded-xl hover:bg-secondary/50 transition-colors"
                   >
                     <div className="w-14 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-secondary">
-                      <img
+                      <Img
                         src={product.image}
+                        sizes="64px"
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />

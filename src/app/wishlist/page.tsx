@@ -9,6 +9,7 @@ import { useCurrencyStore } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
 import { useAuth } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
+import { Img } from "@/components/Img";
 
 export default function WishlistPage() {
   const { items, removeItem } = useWishlistStore();
@@ -59,8 +60,9 @@ export default function WishlistPage() {
                 {/* Image */}
                 <Link href={`/product/${product.id}`} className="block">
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-secondary/40">
-                    <img
+                    <Img
                       src={product.image}
+                      sizes="(max-width: 768px) 50vw, 25vw"
                       alt={product.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />

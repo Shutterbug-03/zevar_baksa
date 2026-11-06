@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { Img } from "@/components/Img";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Layout } from "@/components/Layout";
@@ -48,8 +49,10 @@ export default function CollectionClient({ slug }: { slug: string }) {
       ════════════════════════════════════════════════════ */}
       <section className="relative w-full min-h-[92vh] md:min-h-screen overflow-hidden bg-[#0c0204] flex items-center justify-center">
         {/* Full-Bleed Center-Aligned Hero Image — Fully Visible with Subtle Cinematic Blur */}
-        <img
+        <Img
           src={collection.heroImage}
+          sizes="100vw"
+          priority
           alt={collection.heroTitle}
           style={{ filter: "blur(2.5px)" }}
           className="absolute inset-0 w-full h-full object-cover object-center scale-105 pointer-events-none select-none transition-opacity duration-700"

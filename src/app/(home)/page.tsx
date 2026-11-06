@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Img } from "@/components/Img";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Layout } from "@/components/Layout";
@@ -97,11 +98,11 @@ export default function Home() {
           >
             <source
               media="(max-width: 768px)"
-              src="/hero-video-mobile.mp4?v=3"
+              src="/hero-video-mobile.mp4?v=4"
               type="video/mp4"
             />
             <source
-              src="/hero-video.mp4?v=3"
+              src="/hero-video.mp4?v=4"
               type="video/mp4"
             />
           </video>
@@ -170,8 +171,9 @@ export default function Home() {
                 
                 {/* Main Photo: Brand Story Showcase */}
                 <div className="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl rounded-lg bg-[#f4eee1] group">
-                  <img
+                  <Img
                     src="/brand-story.jpg"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     alt="Zevar Baksa Brand Story Jewellery"
                     className="h-full w-full object-cover object-center transition-transform duration-1000 group-hover:scale-105"
                   />

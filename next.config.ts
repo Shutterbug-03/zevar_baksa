@@ -81,8 +81,21 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  // No next/image in the app: keep the /_next/image optimizer off so it can't be used as a proxy.
-  images: { unoptimized: true },
+  // Optimizer serves resized AVIF/WebP of our own files only (no remote hosts, so it can't be
+  // used as a proxy). Each localPattern is an exact path + query allowlist.
+  images: {
+    localPatterns: [
+      { pathname: "/images/**", search: "" },
+      { pathname: "/images/**", search: "?v=portrait_v3" },
+      { pathname: "/about/**", search: "" },
+      { pathname: "/landing-grid/**", search: "" },
+      { pathname: "/*.jpg", search: "" },
+    ],
+    formats: ["image/avif", "image/webp"],
+    qualities: [80],
+    // A week. Replacing a photo under the same name? Bump its ?v= tag so the new one shows at once.
+    minimumCacheTTL: 604800,
+  },
   async rewrites() {
     return [
       {
@@ -92,7 +105,14 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    // Product photos and hero videos change rarely and are versioned with ?v=, so let browsers and
+    // the CDN keep them for a week instead of re-checking on every page view (default max-age=0).
+    const mediaCache = { key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=86400" };
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      { source: "/images/:path*", headers: [mediaCache] },
+      { source: "/:file(hero-video.mp4|hero-video-mobile.mp4|hero-poster.jpg)", headers: [mediaCache] },
+    ];
   },
 };
 

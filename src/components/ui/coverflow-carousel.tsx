@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Img } from "@/components/Img";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -344,11 +345,11 @@ export function CoverflowCarousel({
                   style={{ width: "var(--cf-card)" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Img
                     src={slide.src}
+                    sizes="(max-width: 768px) 70vw, 30vw"
                     alt={slide.alt}
                     draggable={false}
-                    loading="lazy"
                     onError={(e) => {
                       (e.currentTarget as HTMLImageElement).style.display = "none";
                     }}

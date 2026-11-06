@@ -10,6 +10,10 @@ import { useAuth } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useHydrated } from "@/hooks/useHydrated";
+import { Img } from "@/components/Img";
+
+// Card width in the shop/collection grids: 2 columns on phones, 3–4 on larger screens.
+const CARD_SIZES = "(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw";
 
 const getMediaUrl = (url: string) => {
   if (!url) return "";
@@ -32,6 +36,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  // Extra gallery photos are only fetched once someone hovers the card.
+  const [hasHovered, setHasHovered] = useState(false);
 
   useEffect(() => {
     if (!isHovered || !product.gallery || product.gallery.length <= 1) return;
@@ -49,16 +55,16 @@ export function ProductCard({ product }: { product: Product }) {
       <Link href={`/product/${product.id}`}>
         <div 
           className="relative overflow-hidden aspect-[4/5] rounded-xl bg-[#FAF7F2] border border-[#420002]/5 transition-all duration-500 group-hover:shadow-[0_12px_32px_-12px_rgba(66,0,2,0.12)]"
-          onMouseEnter={() => setIsHovered(true)}
+          onMouseEnter={() => { setIsHovered(true); setHasHovered(true); }}
           onMouseLeave={() => setIsHovered(false)}
         >
           {product.gallery && product.gallery.length > 0 ? (
-            product.gallery.map((imgSrc, idx) => (
-              <img
+            product.gallery.slice(0, hasHovered ? undefined : 1).map((imgSrc, idx) => (
+              <Img
                 key={imgSrc}
                 src={getMediaUrl(imgSrc)}
+                sizes={CARD_SIZES}
                 alt={`${product.name} - view ${idx + 1}`}
-                loading={idx === 0 ? "eager" : "lazy"}
                 className="absolute inset-0 h-full w-full object-cover group-hover:scale-105"
                 style={{ 
                   opacity: idx === currentImageIndex ? 1 : 0,
@@ -68,10 +74,10 @@ export function ProductCard({ product }: { product: Product }) {
               />
             ))
           ) : (
-            <img
+            <Img
               src={getMediaUrl(product.image)}
+              sizes={CARD_SIZES}
               alt={product.name}
-              loading="eager"
               className="h-full w-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
             />
           )}

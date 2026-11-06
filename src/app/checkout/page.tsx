@@ -26,6 +26,7 @@ import { Layout } from "@/components/Layout";
 import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
+import { Img } from "@/components/Img";
 
 /* ────────────────────────────────────────────────────────
    TYPES
@@ -149,8 +150,9 @@ function OrderSummary({ collapsed = false }: { collapsed?: boolean }) {
             >
               <div className="relative flex-shrink-0">
                 <div className="w-14 h-16 rounded-lg overflow-hidden border border-border/50 bg-secondary">
-                  <img
+                  <Img
                     src={item.product.image}
+                    sizes="64px"
                     alt={item.product.name}
                     className="w-full h-full object-cover"
                   />
@@ -726,8 +728,9 @@ function ConfirmStep({
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-12 rounded-md overflow-hidden flex-shrink-0 bg-secondary">
-                  <img
+                  <Img
                     src={item.product.image}
+                    sizes="64px"
                     alt={item.product.name}
                     className="w-full h-full object-cover"
                   />

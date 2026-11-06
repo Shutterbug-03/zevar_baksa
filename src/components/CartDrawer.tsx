@@ -7,6 +7,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useHydrated } from "@/hooks/useHydrated";
 import { whatsappLink } from "@/data/siteConfig";
+import { Img } from "@/components/Img";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalPrice } =
@@ -98,8 +99,9 @@ export function CartDrawer() {
                   onClick={closeCart}
                   className="flex-shrink-0 w-20 h-24 rounded-lg overflow-hidden bg-secondary/50 border border-border/40"
                 >
-                  <img
+                  <Img
                     src={item.product.image}
+                    sizes="96px"
                     alt={item.product.name}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />

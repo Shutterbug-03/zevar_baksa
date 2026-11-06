@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { Img } from "@/components/Img";
 import {
   ArrowLeft,
   ChevronLeft,
@@ -239,8 +240,9 @@ export default function ProductClient({
                         : "opacity-60 hover:opacity-100 hover:scale-[1.01]"
                       }`}
                   >
-                    <img
+                    <Img
                       src={getMediaUrl(imgUrl)}
+                      sizes="96px"
                       alt={`${product.name} view ${idx + 1}`}
                       className="w-full h-full object-cover rounded-xl"
                     />
@@ -261,8 +263,10 @@ export default function ProductClient({
                   className="relative w-full cursor-zoom-in overflow-hidden rounded-2xl flex items-center justify-center"
                   title="Click to view full screen"
                 >
-                  <img
+                  <Img
                     src={getMediaUrl(selectedImage)}
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    priority
                     alt={product.name}
                     style={{
                       transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
@@ -680,8 +684,9 @@ export default function ProductClient({
               </button>
             )}
 
-            <img
+            <Img
               src={getMediaUrl(selectedImage)}
+              sizes="100vw"
               alt={product.name}
               className="max-h-full max-w-full object-contain rounded-xl drop-shadow-2xl select-none"
             />
@@ -720,8 +725,9 @@ export default function ProductClient({
                   }`}
                   aria-label={`View angle ${idx + 1}`}
                 >
-                  <img
+                  <Img
                     src={getMediaUrl(imgUrl)}
+                    sizes="80px"
                     alt={`${product.name} thumbnail ${idx + 1}`}
                     className="w-full h-full object-cover rounded-lg"
                   />
