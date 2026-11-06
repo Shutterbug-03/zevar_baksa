@@ -91,7 +91,6 @@ export default function Home() {
         <div className="absolute inset-0 overflow-hidden">
           <video
             ref={videoRef}
-            poster="/hero-poster.jpg?v=3"
             autoPlay
             loop
             muted
@@ -111,7 +110,7 @@ export default function Home() {
           >
             <source
               media="(max-width: 768px)"
-              src="/hero-video-mobile.mp4?v=4"
+              src="/hero-video-mobile.mp4?v=5"
               type="video/mp4"
             />
             <source
@@ -123,7 +122,8 @@ export default function Home() {
           {/* Poster cover: hides any native play button until the video is actually playing */}
           <Img
             src="/hero-poster.jpg"
-            sizes="100vw"
+            // The hero fills the phone's height, so a 16:9 still must be ~1.78x the screen height wide.
+            sizes="(max-width: 768px) 178vh, 100vw"
             priority
             alt=""
             aria-hidden="true"
