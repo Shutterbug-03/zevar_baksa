@@ -16,29 +16,53 @@ export default function Home() {
     const video = videoRef.current;
     if (!video) return;
 
-    // If src is not already picked by <source>, set according to viewport
-    if (!video.currentSrc) {
-      video.src = window.matchMedia("(max-width: 768px)").matches
-        ? "/hero-video-mobile.mp4"
-        : "/hero-video.mp4";
-    }
-
-    // Safari requires muted to be set imperatively before calling play()
+    // Explicitly configure DOM properties required by Safari/WebKit & Chrome mobile autoplay
     video.muted = true;
     video.defaultMuted = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "true");
 
     const tryPlay = () => {
-      video.play().catch(() => {
-        // Autoplay blocked (e.g. Safari low-power mode) — silently ignored
-      });
+      const promise = video.play();
+      if (promise !== undefined) {
+        promise.catch(() => {
+          // Autoplay deferred (e.g. Safari low-power mode); will auto-start on first touch/scroll
+        });
+      }
     };
 
-    // Attempt immediately, then retry on canplay in case Safari defers
+    // Attempt immediately, then on load events in case browser defers
     tryPlay();
+    video.addEventListener("loadeddata", tryPlay, { once: true });
     video.addEventListener("canplay", tryPlay, { once: true });
+    video.addEventListener("canplaythrough", tryPlay, { once: true });
+
+    // Fallback trigger for mobile browsers: resume playing seamlessly on very first touch or scroll
+    const onUserInteraction = () => {
+      if (video.paused) {
+        video.play().catch(() => {});
+      }
+      removeInteractionListeners();
+    };
+
+    const removeInteractionListeners = () => {
+      window.removeEventListener("touchstart", onUserInteraction);
+      window.removeEventListener("touchend", onUserInteraction);
+      window.removeEventListener("scroll", onUserInteraction);
+      window.removeEventListener("pointerdown", onUserInteraction);
+    };
+
+    window.addEventListener("touchstart", onUserInteraction, { passive: true, once: true });
+    window.addEventListener("touchend", onUserInteraction, { passive: true, once: true });
+    window.addEventListener("scroll", onUserInteraction, { passive: true, once: true });
+    window.addEventListener("pointerdown", onUserInteraction, { passive: true, once: true });
 
     return () => {
+      video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("canplaythrough", tryPlay);
+      removeInteractionListeners();
     };
   }, []);
 
@@ -54,7 +78,7 @@ export default function Home() {
         <div className="absolute inset-0 overflow-hidden">
           <video
             ref={videoRef}
-            poster="/hero-poster.jpg?v=2"
+            poster="/hero-poster.jpg?v=3"
             autoPlay
             loop
             muted
@@ -62,16 +86,22 @@ export default function Home() {
             preload="auto"
             controls={false}
             disablePictureInPicture
-            {...{ "x-webkit-airplay": "deny" }}
-            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+            disableRemotePlayback
+            {...{
+              "webkit-playsinline": "true",
+              "x-webkit-airplay": "deny",
+              "x5-video-player-type": "h5",
+              "x5-video-player-fullscreen": "true",
+            }}
+            className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none [&::-webkit-media-controls]:hidden! [&::-webkit-media-controls-start-playback-button]:hidden! [&::-webkit-media-controls-play-button]:hidden!"
           >
             <source
               media="(max-width: 768px)"
-              src="/hero-video-mobile.mp4?v=2"
+              src="/hero-video-mobile.mp4?v=3"
               type="video/mp4"
             />
             <source
-              src="/hero-video.mp4?v=2"
+              src="/hero-video.mp4?v=3"
               type="video/mp4"
             />
           </video>

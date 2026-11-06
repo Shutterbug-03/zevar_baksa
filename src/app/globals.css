@@ -263,3 +263,18 @@ html {
 @utility ease-luxury {
   transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
 }
+
+/* Suppress mobile Safari/WebKit native play button overlay on background videos */
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+video::-webkit-media-controls-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}

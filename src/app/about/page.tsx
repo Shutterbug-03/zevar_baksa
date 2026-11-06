@@ -192,7 +192,7 @@ export default function About() {
               <div className="col-span-7">
                 <div className="aspect-[3/4] overflow-hidden rounded-md shadow-md bg-[#f4eee1] group">
                   <img 
-                    src="/IMG_8816.jpg" 
+                    src="/about/artisan-workshop.jpg" 
                     alt="Master artisan at work in Jaipur" 
                     className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
                   />
@@ -201,7 +201,7 @@ export default function About() {
               <div className="col-span-5">
                 <div className="aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-md shadow-md bg-[#f4eee1] group">
                   <img 
-                    src="/DSC00076.JPG" 
+                    src="/about/artisan-tweezers.jpg" 
                     alt="Artisan handcrafting delicate jewellery motif with precision tweezers" 
                     className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105" 
                   />
