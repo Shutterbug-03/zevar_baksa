@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Img } from "@/components/Img";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -12,6 +12,10 @@ import { FaqSection } from "@/components/FaqSection";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  // The poster still covers the video until it is really playing. If a phone blocks autoplay
+  // (iOS Low Power Mode, data saver, in-app browsers) visitors see a clean still frame instead of
+  // the browser's own play button, and the still fades into the video once it starts.
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -33,33 +37,41 @@ export default function Home() {
       }
     };
 
+    // The video often starts before React attaches onPlaying, so read its real state here too.
+    const markPlaying = () => {
+      if (!video.paused && video.currentTime > 0) setVideoPlaying(true);
+    };
+    markPlaying();
+    video.addEventListener("playing", markPlaying);
+    video.addEventListener("timeupdate", markPlaying);
+
     // Attempt immediately, then on load events in case browser defers
     tryPlay();
     video.addEventListener("loadeddata", tryPlay, { once: true });
     video.addEventListener("canplay", tryPlay, { once: true });
     video.addEventListener("canplaythrough", tryPlay, { once: true });
 
-    // Fallback trigger for mobile browsers: resume playing seamlessly on very first touch or scroll
+    // Phones that block autoplay (iOS Low Power Mode, data saver) allow play() after a tap.
+    // Keep listening until playback really starts: a failed attempt must not use up the retry.
+    // (Scroll is not a tap, so browsers reject play() from it; it is not used.)
     const onUserInteraction = () => {
-      if (video.paused) {
-        video.play().catch(() => {});
-      }
-      removeInteractionListeners();
+      if (!video.paused) return removeInteractionListeners();
+      video.play().then(removeInteractionListeners).catch(() => {});
     };
 
     const removeInteractionListeners = () => {
-      window.removeEventListener("touchstart", onUserInteraction);
       window.removeEventListener("touchend", onUserInteraction);
-      window.removeEventListener("scroll", onUserInteraction);
       window.removeEventListener("pointerdown", onUserInteraction);
+      window.removeEventListener("keydown", onUserInteraction);
     };
 
-    window.addEventListener("touchstart", onUserInteraction, { passive: true, once: true });
-    window.addEventListener("touchend", onUserInteraction, { passive: true, once: true });
-    window.addEventListener("scroll", onUserInteraction, { passive: true, once: true });
-    window.addEventListener("pointerdown", onUserInteraction, { passive: true, once: true });
+    window.addEventListener("touchend", onUserInteraction, { passive: true });
+    window.addEventListener("pointerdown", onUserInteraction, { passive: true });
+    window.addEventListener("keydown", onUserInteraction);
 
     return () => {
+      video.removeEventListener("playing", markPlaying);
+      video.removeEventListener("timeupdate", markPlaying);
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("canplaythrough", tryPlay);
@@ -94,6 +106,7 @@ export default function Home() {
               "x5-video-player-type": "h5",
               "x5-video-player-fullscreen": "true",
             }}
+            onPlaying={() => setVideoPlaying(true)}
             className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none [&::-webkit-media-controls]:hidden! [&::-webkit-media-controls-start-playback-button]:hidden! [&::-webkit-media-controls-play-button]:hidden!"
           >
             <source
@@ -106,6 +119,18 @@ export default function Home() {
               type="video/mp4"
             />
           </video>
+
+          {/* Poster cover: hides any native play button until the video is actually playing */}
+          <Img
+            src="/hero-poster.jpg"
+            sizes="100vw"
+            priority
+            alt=""
+            aria-hidden="true"
+            className={`absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none transition-opacity duration-700 ease-out ${
+              videoPlaying ? "opacity-0" : "opacity-100"
+            }`}
+          />
 
           {/* Minimal Soft Vignette: Subtle, transparent, does not dim the video */}
           <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
